@@ -1,0 +1,16 @@
+
+1 ) Open command prompt 
+
+2) Enter the following cd command
+
+cd .m2\repository\com\h2database\h2\1.4.193
+
+Run the JVM by enter the following command
+3)java -cp h2-1.4.193.jar  org.h2.tools.Server
+
+It will start H2 DB server and  web console( Browser)
+
+
+
+
+ 

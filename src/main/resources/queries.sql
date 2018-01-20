@@ -1,0 +1,1 @@
+### All CRUD queries can be added in here for future reference and for easy to prot to other systems ###

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<http pattern="/login.htm" security="none">
+	</http>
+	
+	<http auto-config="true" use-expressions="true">
+		<!-- <intercept-url pattern="/**" access="isAuthenticated()" />  -->
+		
+		<form-login login-page="/login.htm"
+			authentication-failure-url="/login.htm?login_error=1" username-parameter="enterprise"
+			password-parameter="password" default-target-url="/loginSignup.htm" />
+
+		<logout invalidate-session="true" logout-success-url="/login.htm"
+			logout-url="/j_spring_security_logout" />
+		<!-- <access-denied-handler error-page="/denied" /> -->
+		<session-management invalid-session-url="/login.htm">
+			<concurrency-control max-sessions="1"
+				expired-url="/login.htm" />
+		</session-management>
+		<!-- <headers>
+			<cache-control />
+		</headers> -->
+		<intercept-url pattern="/*.htm" access="isAuthenticated()" />
+	</http>
+	<authentication-manager>
+		<authentication-provider user-service-ref="userDetailsService"></authentication-provider>
+	</authentication-manager>
+	<beans:bean id='userDetailsService'
+		class='com.acc.service.UserDetailsServiceImpl'>
+	</beans:bean>
+</beans:beans>
