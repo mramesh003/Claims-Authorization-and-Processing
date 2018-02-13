@@ -1,294 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
- 
+
 <!DOCTYPE tiles-definitions PUBLIC
     "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
 
-	<definition name="baseLayout" template="/WEB-INF/jsp/layout/SiteTemplate.jsp">
-		<put-attribute name="title" value="Employee Dashboard" />
-		<put-attribute name="header" value="/WEB-INF/jsp/layout/header.jsp" />
-		<put-attribute name="menu" value="/WEB-INF/jsp/layout/menu.jsp" />
-		<put-attribute name="body" value="/WEB-INF/jsp/layout/body.jsp" />
-		<put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
-	</definition>
+                <definition name="baseLayout" template="/WEB-INF/jsp/layout/SiteTemplate.jsp">
+                                <put-attribute name="title" value="Claims Authorization And Processing" />
+                                <put-attribute name="header" value="/WEB-INF/jsp/layout/header.jsp" />
+                                <put-attribute name="menu" value="/WEB-INF/jsp/layout/menu.jsp" />
+                                <put-attribute name="body" value="/WEB-INF/jsp/layout/body.jsp" />
+                                <put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
+                </definition>
 
-	
-	
-	
-	<definition name="addTechnology" extends="baseLayout">
-		<put-attribute name="title" value="Add Technology" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/addTechnology.jsp" />
-			
-	</definition>
-	<definition name="adminPanel" extends="baseLayout">
-		<put-attribute name="title" value="Admin Panel" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/adminPanel.jsp" />
-	</definition>
-	
-	<definition name="approve" extends="baseLayout">
-		<put-attribute name="title" value="Approve" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/approve.jsp" />
-	</definition>
-	<definition name="assignProject" extends="baseLayout">
-		<put-attribute name="title" value="assignProject" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/assignProject.jsp" />
-	</definition>
-	<!-- <definition name="changePassword" extends="baseLayout">
-		<put-attribute name="title" value="Change Password" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/changePassword.jsp" />
-	</definition> -->
-	<definition name="employeeDetails" extends="baseLayout">
-		<put-attribute name="title" value="Employee Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/employeeDetails.jsp" />
-	</definition>
-	<definition name="employeeHub" extends="baseLayout">
-		<put-attribute name="title" value="Employee Hub" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/employeeHub.jsp" />
-	</definition>
-	<definition name="employeeTabs" extends="baseLayout">
-		<put-attribute name="title" value="employeeTabs" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/employeeTabs.jsp" />
-	</definition>
-	<definition name="index" extends="baseLayout">
-		<put-attribute name="title" value="Index" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/index.jsp" />
-	</definition>
-	
-	<definition name="myPersonaldetails" extends="baseLayout">
-		<put-attribute name="title" value="My Personal details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/myPersonaldetails.jsp" />
-	</definition>
-	<definition name="myProfile" extends="baseLayout">
-		<put-attribute name="title" value="My Profile" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/myProfile.jsp" />
-	</definition>
-	<definition name="myTeam" extends="baseLayout">
-		<put-attribute name="title" value="My Team" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/myTeam.jsp" />
-	</definition>
-	<definition name="portfolio" extends="baseLayout">
-		<put-attribute name="title" value="portfolio" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/portfolio.jsp" />
-	</definition>
-	<definition name="portfolioDetails" extends="baseLayout">
-		<put-attribute name="title" value="Portfolio Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/portfolioDetails.jsp" />
-	</definition>
-	<definition name="program" extends="baseLayout">
-		<put-attribute name="title" value="Program" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/program.jsp" />
-	</definition>
-	<definition name="programDetails" extends="baseLayout">
-		<put-attribute name="title" value="Program Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/programDetails.jsp" />
-	</definition>
-	<definition name="project" extends="baseLayout">
-		<put-attribute name="title" value="Project" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/project.jsp" />
-	</definition>
-	<definition name="projectDetails" extends="baseLayout">
-		<put-attribute name="title" value="Project Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/projectDetails.jsp" />
-	</definition>
-	<definition name="report" extends="baseLayout">
-		<put-attribute name="title" value="report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/report.jsp" />
-	</definition>
-	<definition name="Signup" extends="baseLayout">
-		<put-attribute name="title" value="Signup" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/Signup.jsp" />
-	</definition>
-	<definition name="statistics" extends="baseLayout">
-		<put-attribute name="title" value="Statistics" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/statistics.jsp" />
-	</definition>
-	<definition name="technologyDetails" extends="baseLayout">
-		<put-attribute name="title" value="Technology Details" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/technologyDetails.jsp" />
-	</definition>
-	<definition name="timesheet" extends="baseLayout">
-		<put-attribute name="title" value="Timesheet" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/timesheet.jsp" />
-	</definition>
-	<definition name="updateEmployee" extends="baseLayout">
-		<put-attribute name="title" value="updateEmployee" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updateEmployee.jsp" />
-	</definition>
-	<definition name="updatePortfolio" extends="baseLayout">
-		<put-attribute name="title" value="Update Portfolio" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updatePortfolio.jsp" />
-	</definition>
-	<definition name="updateProgram" extends="baseLayout">
-		<put-attribute name="title" value="Update Program" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updateProgram.jsp" />
-	</definition>
-	<definition name="updateProject" extends="baseLayout">
-		<put-attribute name="title" value="Update Project" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updateProject.jsp" />
-	</definition>
-	<definition name="WeeklyStatus" extends="baseLayout">
-		<put-attribute name="title" value="Weekly Status" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/WeeklyStatus.jsp" />
-	</definition>
-	
-	<definition name="navriti" extends="baseLayout">
-		<put-attribute name="title" value="Navriti" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/navriti.jsp" />
-	</definition>
-	
-	<definition name="ProjectwiseStatistics" extends="baseLayout">
-		<put-attribute name="title" value="Project Wise Statistics" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ProjectwiseStatistics.jsp" />
-	</definition>
-	
-	<definition name="allIdeas" extends="baseLayout">
-		<put-attribute name="title" value="All Ideas" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/allIdeas.jsp" />
-	</definition>
-	
-	<definition name="updatePassword" extends="baseLayout">
-		<put-attribute name="title" value="Update Password" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updatePassword.jsp" />
-	</definition>
-	
-	<definition name="employeeExcelUpload" extends="baseLayout">
-		<put-attribute name="title" value="employeeExcelUpload" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/employeeExcelUpload.jsp" />
-	</definition>
-	<definition name="Attachments" extends="baseLayout">
-		<put-attribute name="title" value="Attachments" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/Attachments.jsp" />
-	</definition>
-	<definition name="searchAttachment" extends="baseLayout">
-		<put-attribute name="title" value="searchAttachment" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/searchAttachment.jsp" />
-	</definition>
-	<definition name="addDevelopers" extends="baseLayout">
-		<put-attribute name="title" value="addDevelopers" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/addDevelopers.jsp" />
-	</definition>
-	<definition name="ideasUnderDevelopment" extends="baseLayout">
-		<put-attribute name="title" value="ideasUnderDevelopment" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ideasUnderDevelopment.jsp" />
-	</definition>
-	<definition name="wsrReportContainer" extends="baseLayout">
-		<put-attribute name="title" value="wsrReportContainer" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/wsrReportContainer.jsp" />
-	</definition>
-	<definition name="resourceView" extends="baseLayout">
-		<put-attribute name="title" value="resourceView" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/resourceView.jsp" />
-	</definition>
-	<definition name="updateCareerLevel" extends="baseLayout">
-		<put-attribute name="title" value="updateCareerLevel" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updateCareerLevel.jsp" />
-	</definition>
-	<definition name="careerLevelDetails" extends="baseLayout">
-		<put-attribute name="title" value="careerLevelDetails" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/careerLevelDetails.jsp" />
-	</definition>
-	<definition name="menuDetails" extends="baseLayout">
-		<put-attribute name="title" value="menuDetails" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/menuDetails.jsp" />
-	</definition>
-	<definition name="updateMenu" extends="baseLayout">
-		<put-attribute name="title" value="updateMenu" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updateMenu.jsp" />
-	</definition>	
-	
-	<definition name="addMenu" extends="baseLayout">
-		<put-attribute name="title" value="addMenu" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/addMenu.jsp" />
-	</definition>
-	<definition name="roleDetails" extends="baseLayout">
-		<put-attribute name="title" value="roleDetails" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/roleDetails.jsp" />
-	</definition>	
-	
-	<definition name="addRole" extends="baseLayout">
-		<put-attribute name="title" value="addRole" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/addRole.jsp" />
-	</definition>
-	<definition name="updateRoleDetails" extends="baseLayout">
-		<put-attribute name="title" value="updateRoleDetails" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/updateRoleDetails.jsp" />
-	</definition>	
-	<definition name="reviewIdeas" extends="baseLayout">
-		<put-attribute name="title" value="reviewIdeas" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/reviewIdeas.jsp" />
-	</definition>	
-	<definition name="AddTemplate" extends="baseLayout">
-		<put-attribute name="title" value="AddTemplate" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/AddTemplate.jsp" />
-	</definition>
-	<definition name="allTemplate" extends="baseLayout">
-		<put-attribute name="title" value="allTemplate" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/allTemplate.jsp" />
-	</definition>
-	
-	<definition name="UpdateAllTemplates" extends="baseLayout">
-		<put-attribute name="title" value="UpdateAllTemplates" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/UpdateAllTemplates.jsp" />
-	</definition>	
-	
-	<definition name="employeeExcelUpdate" extends="baseLayout">
-		<put-attribute name="title" value="employeeExcelUpdate" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/employeeExcelUpdate.jsp" />
-	</definition>	
+                
+                
+                
+                <definition name="prepareTrainingData" extends="baseLayout">
+                                <put-attribute name="title" value="Prepare Training Data" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/prepareTrainingData.jsp" />
+                                                
+                </definition>
+                <definition name="prepareTrainingModel" extends="baseLayout">
+                                <put-attribute name="title" value="Prepare Model" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/prepareTrainingModel.jsp" />
+                </definition>
+                
+                <definition name="trainSaveModel" extends="baseLayout">
+                                <put-attribute name="title" value="Save Model" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/trainSaveModel.jsp" />
+                </definition>
+                <definition name="testModel" extends="baseLayout">
+                                <put-attribute name="title" value="Test Model" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/testModel.jsp" />
+                </definition>
+                
+                <definition name="executeData" extends="baseLayout">
+                                <put-attribute name="title" value="Execute Data" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/executeData.jsp" />
+                </definition>
+                
+                <definition name="executeBatchData" extends="baseLayout">
+                                <put-attribute name="title" value="Execute Batch Data" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/executeBatchData.jsp" />
+                </definition>
+                
 </tiles-definitions>
 
 
