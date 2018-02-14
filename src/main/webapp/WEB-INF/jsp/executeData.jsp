@@ -6,14 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Execute Model</title>
-
+<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
 </head>
 <body>
 	<h1>Execute Data</h1><br>
-   <form action="executeData.htm" method="post"
-		enctype="multipart/form-data">
-		<input name="inputfile" type="file"> <br> <br> 
-		<input type="submit" value="Execute Model">
+   <form action="executeData.htm" method="post" enctype="multipart/form-data">
+		<input id = "file" name="file" type="file"> <br> <br> 
+		<input id = "submit" type="submit" value="Execute Model" disabled>
 	</form>
 </body>
 </html>

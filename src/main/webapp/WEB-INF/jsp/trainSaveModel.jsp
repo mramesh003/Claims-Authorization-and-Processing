@@ -6,14 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Save Model</title>
-
+<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
 </head>
 <body>
 	<h1>Train And Save Model</h1><br>
-   <form action="arffToModel.htm" method="post"
-		enctype="multipart/form-data">
-		<input name="arfffile" type="file"> <br> <br> 
-		<input type="submit" value="Train & Save Model">
+   <form action="arffToModel.htm" method="post" enctype="multipart/form-data">
+		<input id = "file" name="file" type="file"> <br> <br> 
+		<input id = "submit" type="submit" value="Train & Save Model" disabled>
 	</form>
 </body>
 </html>
