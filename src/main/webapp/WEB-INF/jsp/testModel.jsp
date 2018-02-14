@@ -6,15 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Test Model</title>
-
+<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
 </head>
 <body>
 	<h1>Test Model</h1><br>
-   <form action="testModel.htm" method="post"
-		enctype="multipart/form-data">
-		Model : <input name="modelfile" type="file"> <br> <br> 
-		<!-- Test Data : <input name="testfile" type="file"> <br> <br>  -->
-		<input type="submit" value="Test Model">
+   <form action="testModel.htm" method="post" enctype="multipart/form-data">
+		Model : <input id = "file" name="file" type="file"> <br> <br> 
+		<input id = "submit" type="submit" value="Test Model" disabled>
 	</form>
 </body>
 </html>

@@ -5,21 +5,20 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Accordian - Prototype</title>
-
 </head>
 <body>
-	<div class="panel-group" id="accordion">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion"
-							href="#collapse1"><span
-							class="glyphicon glyphicon-folder-close"> </span>&nbsp;Menus</a>
+	 <div class="panel-group" id="accordion"> 
+			 <div class="panel panel-default">
+				 <div class="panel-heading"> 
+				 <h4 class="panel-title"> 
+						<span
+							class="glyphicon glyphicon-folder-close"> </span> Menus
+							
 					</h4>
-				</div>
+				</div> 
 
-				<div id="collapse1" class="panel-collapse collapse">
+				<!--  <div id="collapse1" class="panel-collapse collapse"> --> 
+				<div id="accordion" class="panel-group">
 					<div class="panel-body">
 						<table class="table">
 									<tr>
