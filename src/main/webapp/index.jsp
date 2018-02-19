@@ -13,7 +13,6 @@
 </script>
 </head>
 <body onload="submit();">
-<%-- <jsp:forward  page="WEB-INF\jsp\prepareData.jsp" /> --%> 
 <form id = "defaultLoad" action = "prepareTrainData.htm"></form>
 </body>
 </html>  

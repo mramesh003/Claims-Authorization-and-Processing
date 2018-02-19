@@ -1,10 +1,12 @@
-### All CRUD queries can be added in here for future reference and for easy to prot to other systems ###
+-- All CRUD queries can be added in here for future reference and for easy to prot to other systems ###
 
-# ExcelFile
-create table excelfiles(id int(10) primary key, filename varchar(20), content BLOB);
+-- ExcelFile
+create table excelfiles(id int(10) AUTO_INCREMENT, filename varchar(50), filecontent BLOB, primary key(id));
 
-# ArffFile
-create table arfffiles(id int(10) primary key, filename varchar(20), content BLOB);
+--CsvFile
+create table csvfiles(id int(10) AUTO_INCREMENT, filename varchar(50), filecontent BLOB, excelId int(10), primary key(id), FOREIGN KEY (excelId) REFERENCES excelfiles(id));
 
-#CsvFile
-create table csvfiles(id int(10) primary key, filename varchar(20), content BLOB);
+-- ArffFile
+-- **This query needs to be updated**
+--create table arfffiles(id int(10) AUTO_INCREMENT, filename varchar(50), filecontent BLOB, primary key(id));
+
