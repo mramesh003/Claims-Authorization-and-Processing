@@ -27,7 +27,7 @@ public class CsvFile {
 	private Integer excelId;
 
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(insertable=false,updatable=false,name="portfolio_id")
+	@JoinColumn(insertable=false,updatable=false,name="excelId")
 	private ExcelFile excelFile;
 	
 	public Integer getId() {
