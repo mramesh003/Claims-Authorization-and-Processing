@@ -8,15 +8,32 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Prepare Training Data</title>
 	<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
+	<c:if test="${message == 'success'}">
+		<script>
+			alert("File Conversion Successful");
+		</script>
+	</c:if>
 </head>	
 <body>
 <h1>Prepare Training Data</h1><br>
-	<form action="xlsToCsv.htm" method="post" enctype="multipart/form-data">
+	<form action="xlToCsv.htm" method="post" enctype="multipart/form-data">
 		<input id = "file" name="file" type="file"> <br> <br> 
 	
 		<input id = "submit" type="submit" value="Convert CSV" disabled>
 
 	</form>
-	
+	<table class="display jqueryDataTable" id="csvTable">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>File Name</th>
+				<th>Row Count</th>
+				<th>Download</th>
+			</tr>
+		</thead>
+		<tbody>
+	</table>
 </body>
 </html>
+
+

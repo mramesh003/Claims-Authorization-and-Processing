@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -25,7 +26,7 @@ public class ClaimsUtility {
 		/*File inputFile = new File("C:\\AISamplefiles\\Mocked_Data.xlsx");
 		String xlsxFile = inputFile.getAbsolutePath();*/
 		
-		File outputFile = new File("C:\\AISamplefiles\\SampleData\\Mocked_Data_Updated.csv");
+		File outputFile = new File("C:\\Users\\renga.r.santh.ledge\\Documents\\test.csv");
 		String csvFile = outputFile.getAbsolutePath();
 		
 		/*File outputFile = new File("C:\\AISamplefiles\\SampleData\\Mocked_Data_Test.csv");
@@ -39,7 +40,7 @@ public class ClaimsUtility {
 		/*File outputCSVFile = new File("C:\\AISamplefiles\\Mocked_Data.csv");
 		String csvFile1 = outputCSVFile.getAbsolutePath();*/
 		
-		File inputArffFile = new File("C:\\AISamplefiles\\SampleData\\Mocked_Data_New.arff");
+		File inputArffFile = new File("C:\\Users\\renga.r.santh.ledge\\Documents\\Mocked_Data_New.arff");
 		String arffFile = inputArffFile.getAbsolutePath();
 		
 		/*File inputArffFile = new File("C:\\AISamplefiles\\SampleData\\Mocked_Data_Test.arff");
@@ -55,69 +56,65 @@ public class ClaimsUtility {
 	   * - XLSX input file
 	   * - CSV output file
 	*/
-	public static void XLSX2CSV(String xlsxFile, String csvFile) throws IOException{
-		 // For storing data into CSV files
+	public static byte[] XLSX2CSV(InputStream inputStream) throws IOException{
+		// For storing data into CSV files
 		StringBuffer cellValue = new StringBuffer();
-		try 
-		{
-		        FileOutputStream fos = new FileOutputStream(csvFile);
+		byte[] csvData = null;
+		try {
+			// FileOutputStream fos = new FileOutputStream(csvFile);
 
-		        // Get the workbook instance for XLSX file
-		        XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(xlsxFile));
+			// Get the workbook instance for XLSX file
+			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
 
-		        // Get first sheet from the workbook
-		        XSSFSheet sheet = wb.getSheetAt(0);
+			// Get first sheet from the workbook
+			XSSFSheet sheet = wb.getSheetAt(0);
 
-		        Row row;
-		        Cell cell;
+			Row row;
+			Cell cell;
 
-		        // Iterate through each rows from first sheet
-		        Iterator<Row> rowIterator = sheet.iterator();
+			// Iterate through each rows from first sheet
+			Iterator<Row> rowIterator = sheet.iterator();
 
-		        while (rowIterator.hasNext()) 
-		        {
-		        row = rowIterator.next();
+			while (rowIterator.hasNext()) {
+				row = rowIterator.next();
 
-		        // For each row, iterate through each columns
-		        Iterator<Cell> cellIterator = row.cellIterator();
-		        while (cellIterator.hasNext()) 
-		        {
-		                cell = cellIterator.next();
+				// For each row, iterate through each columns
+				Iterator<Cell> cellIterator = row.cellIterator();
+				while (cellIterator.hasNext()) {
+					cell = cellIterator.next();
 
-		                switch (cell.getCellType()) 
-		                {
-		                
-		                case Cell.CELL_TYPE_BOOLEAN:
-		                        cellValue.append(cell.getBooleanCellValue() + ",");
-		                        break;
-		                
-		                case Cell.CELL_TYPE_NUMERIC:
-		                        cellValue.append(cell.getNumericCellValue() + ",");
-		                        break;
-		                
-		                case Cell.CELL_TYPE_STRING:
-		                        cellValue.append(cell.getStringCellValue() + ",");
-		                        break;
+					switch (cell.getCellType()) {
 
-		                case Cell.CELL_TYPE_BLANK:
-		                        cellValue.append("" + ",");
-		                        break;
-		                        
-		                default:
-		                        cellValue.append(cell + ",");
+					case Cell.CELL_TYPE_BOOLEAN:
+						cellValue.append(cell.getBooleanCellValue() + ",");
+						break;
 
-		                }
-		        }
-		        }
+					case Cell.CELL_TYPE_NUMERIC:
+						cellValue.append(cell.getNumericCellValue() + ",");
+						break;
 
-		fos.write(cellValue.toString().getBytes());
-		fos.close();
+					case Cell.CELL_TYPE_STRING:
+						cellValue.append(cell.getStringCellValue() + ",");
+						break;
 
-		} 
-		catch (Exception e) 
-		{
-		        System.err.println("Exception :" + e.getMessage());
+					case Cell.CELL_TYPE_BLANK:
+						cellValue.append("" + ",");
+						break;
+
+					default:
+						cellValue.append(cell + ",");
+
+					}
+				}
+			}
+			csvData = cellValue.toString().getBytes();
+			// fos.write(cellValue.toString().getBytes());
+			// fos.close();
+
+		} catch (Exception e) {
+			System.err.println("Exception :" + e.getMessage());
 		}
+		return csvData;
 	}
 
 	/**
@@ -125,15 +122,14 @@ public class ClaimsUtility {
 	   * - XLS input file
 	   * - CSV output file
 	*/
-	public static void XLS2CSV(String xlsFile, String csvFile) throws IOException{
+	public static byte[] XLS2CSV(InputStream inputStream) throws IOException{
 		// For storing data into CSV files
 		StringBuffer cellDData = new StringBuffer();
+		byte[] csvData = null;
 		try 
 		{
-		        FileOutputStream fos = new FileOutputStream(csvFile);
-
 		        // Get the workbook instance for XLS file
-		        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(xlsFile));
+		        HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
 		        // Get first sheet from the workbook
 		        HSSFSheet sheet = workbook.getSheetAt(0);
 		        Cell cell;
@@ -176,10 +172,9 @@ public class ClaimsUtility {
 		        }
 		        }
 
-		fos.write(cellDData.toString().getBytes());
-		fos.close();
-
+		        csvData = cellDData.toString().getBytes();
 		}
+		
 		catch (FileNotFoundException e) 
 		{
 		    System.err.println("Exception" + e.getMessage());
@@ -188,6 +183,7 @@ public class ClaimsUtility {
 		{
 		        System.err.println("Exception" + e.getMessage());
 		}
+		return csvData;
 	}
 	
 	/**
