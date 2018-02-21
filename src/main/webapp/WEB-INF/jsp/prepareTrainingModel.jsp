@@ -48,8 +48,6 @@
   						<!-- <img src="css/images/Excel.png" alt="Download" style="width:30px;height:28px;border:0;"> -->
 					</a>
 				</td> 
-				
-				
 			</tr>
 			</c:forEach>
 		</tbody>
