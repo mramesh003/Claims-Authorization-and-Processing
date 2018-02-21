@@ -33,7 +33,7 @@
 				<th>Row Count</th>
 				<th>Download</th>
 				<th>Convert to CSV</th>
-				<th>
+				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
