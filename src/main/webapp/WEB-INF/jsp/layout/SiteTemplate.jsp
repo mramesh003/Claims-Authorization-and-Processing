@@ -12,6 +12,9 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css"/>
+ <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
 <style>
 	/* Set height of the grid so .sidenav can be 100% (adjust if needed) */
 	.row.content {
