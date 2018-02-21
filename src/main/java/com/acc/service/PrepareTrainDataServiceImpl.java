@@ -1,6 +1,8 @@
 package com.acc.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +18,23 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 	@Autowired
 	PrepareTrainDataDao prepareTrainDataDao;
 	
-	@Transactional(readOnly=true)
+	@Transactional
 	public void saveExcelFile(ExcelFile excelFile) {
 		prepareTrainDataDao.saveExcelFile(excelFile);
 	}
 	
-	@Transactional(readOnly=true)
+	@Transactional
 	public void saveCsvFile(CsvFile csvFile) {
 		prepareTrainDataDao.saveCsvFile(csvFile);
+	}
+
+	@Transactional(readOnly=true)
+	public List<ExcelFile> listAllExcels() {
+		return prepareTrainDataDao.listAllExcels();
+	}
+	
+	@Transactional(readOnly=true)
+	public ExcelFile getExcelFileById(Integer fileId) {
+		return prepareTrainDataDao.getExcelFileById(fileId);
 	}
 }
