@@ -23,5 +23,7 @@ public interface PrepareTrainDataDao {
 	
 	public List<CsvFile> listAllCsvs();
 	
+	public void deleteCsv(CsvFile csvFile);
+	
 	
 }
