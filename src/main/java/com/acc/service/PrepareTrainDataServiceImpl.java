@@ -43,16 +43,24 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 		return prepareTrainDataDao.listAllCsvs();
 	}
 	
-	
-
-	
 	@Transactional(readOnly=true)
 	public CsvFile getCsvFileById(Integer csvId) {		
 		return prepareTrainDataDao.getCsvFileById(csvId);
+	}
+	
+	@Transactional(readOnly=true)
+	public CsvFile getCsvFileByExcelId(Integer excelId){
+		return prepareTrainDataDao.getCsvFileByExcelId(excelId);
 	}
 	
 	@Transactional
 	public void deleteCsv(CsvFile csvFile) {		
 		 prepareTrainDataDao.deleteCsv(csvFile);
 	}
+	
+	@Transactional
+	public void deleteExcel(ExcelFile excelFile) {
+		 prepareTrainDataDao.deleteExcel(excelFile);
+	}
+
 }

@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +25,8 @@ import com.acc.dto.ExcelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
 import com.acc.utility.ClaimsUtility;
+import com.acc.utility.RowCount;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 
 @Controller
@@ -59,6 +60,9 @@ public class PrepareTrainDataController {
 			inputStream = file.getInputStream();
 			byte[] excelfileData = IOUtils.toByteArray(inputStream);
 
+		
+			
+			
 			ExcelFile excelFile = new ExcelFile();
 			excelFile.setFileName(fileName);
 			excelFile.setFileContent(excelfileData);
@@ -93,15 +97,28 @@ public class PrepareTrainDataController {
 		 ModelAndView modelandview = new ModelAndView();
 		 List<MultipartFile> files = uploadItem.getFile();
 		 InputStream inputStream = null;
+		 InputStream inputStream1 = null;
 		 for(MultipartFile file : files)
 		 {
 			String fileName = file.getOriginalFilename();
 			inputStream = file.getInputStream();
-			byte[] excelfileData = IOUtils.toByteArray(inputStream);
+			inputStream1 = file.getInputStream();
 			ExcelFile excelFile = new ExcelFile();
+			int position = fileName.lastIndexOf(".");
+			String fileType = fileName.substring(position);
+			if (".xlsx".equals(fileType)) {
+				excelFile.setRowcount(RowCount.xlsxRowCount(inputStream));
+			}
+			else if(".xls".equals(fileType)) {
+				excelFile.setRowcount(RowCount.xlsRowCount(inputStream));
+			}
+			
+			byte[] excelfileData = IOUtils.toByteArray(inputStream1);
 			excelFile.setFileName(fileName);
 			excelFile.setFileContent(excelfileData);
+			
 			prepareTrainDataService.saveExcelFile(excelFile);
+			
 		 }
 		 List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
          modelandview.addObject("excelFiles", excelFiles);
@@ -136,10 +153,10 @@ public class PrepareTrainDataController {
 		String fileType = excelFile.getFileName().substring(position);
 		InputStream inputStream = new ByteArrayInputStream(excelFile.getFileContent());
 		byte[] csvData = null;
-		if(".xlsx".equals(fileType)) {
+		if (".xlsx".equals(fileType)) {
 			csvData = ClaimsUtility.XLSX2CSV(inputStream);
 		}
-		else if(".xls".equals(fileType)) {
+		else if (".xls".equals(fileType)) {
 			csvData = ClaimsUtility.XLS2CSV(inputStream);
 		}
 		String csvName = excelFile.getFileName().substring(0, position) + ".csv";
@@ -155,6 +172,23 @@ public class PrepareTrainDataController {
 		modelandview.addObject("message", "successConversion");
 		return modelandview;
 	 }
+	 @RequestMapping("deleteExcel.htm")
+	 public ModelAndView deleteExcel(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
+			ModelAndView modelandview = new ModelAndView();
+			CsvFile csvFile = prepareTrainDataService.getCsvFileByExcelId(Integer.valueOf(id));
+			ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id));
+			if (csvFile.getExcelId() != null){
+				modelandview.addObject("message", "CannotDeleteExcel");
+			}	
+			else{
+				prepareTrainDataService.deleteExcel(excelFile);
+				modelandview.addObject("message", "deletedSuccessfully");
+			}
+			List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
+			modelandview.addObject("excelFiles", excelFiles);
+			modelandview.setViewName("prepareTrainingData");
+			return modelandview;
+		 }
 
 }
 
