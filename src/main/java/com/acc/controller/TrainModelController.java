@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
+import com.acc.service.TrainModelService;
 
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
@@ -30,6 +32,9 @@ public class TrainModelController {
 	
 	@Autowired
 	PrepareTrainDataService prepareTrainDataService;
+	
+	@Autowired
+	TrainModelService trainModelService;
 
 	 static Logger log = Logger.getLogger(TrainModelController.class.getName());
 	 
@@ -79,6 +84,28 @@ public class TrainModelController {
 		 modelandview.setViewName("prepareTrainingModel");
          return modelandview;
 	 }
+	 
+	 @RequestMapping("uploadArff.htm")
+		public ModelAndView uploadArff(HttpServletRequest request, FileUpload uploadItem) throws IOException {
+			ModelAndView modelandview = new ModelAndView();
+			List<MultipartFile> files = uploadItem.getFile();
+			InputStream inputStream = null;		 
+			for(MultipartFile file : files)
+			{
+				String fileName = file.getOriginalFilename();
+				inputStream = file.getInputStream();
+				byte[] arfffileData = IOUtils.toByteArray(inputStream);
+				ArffFile arffFile = new ArffFile();
+				arffFile.setFileName(fileName);
+				arffFile.setFileContent(arfffileData);
+				trainModelService.saveArffFile(arffFile);
+			}
+			// List<ExcelFile> arffFiles = trainModelService.listAllExcels();
+			// modelandview.addObject("arffFiles", arffFiles);
+			modelandview.addObject("message", "successUpload");
+			modelandview.setViewName("trainSaveModel");
+			return modelandview;
+		}
 }
 
 

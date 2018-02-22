@@ -7,12 +7,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Save Model</title>
 <script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
+<c:if test="${message == 'successUpload'}">
+<script>
+	alert("Arff File Saved Successfully");
+</script>
+</c:if>
+
+
 </head>
 <body>
 	<h1>Train And Save Model</h1><br>
-   <form action="arffToModel.htm" method="post" enctype="multipart/form-data">
-		<input id = "file" name="file" type="file"> <br> <br> 
-		<input id = "submit" type="submit" value="Train & Save Model" disabled>
+   <form action="uploadArff.htm" method="post" enctype="multipart/form-data">
+		<label>Select ARFF File: </label><input id = "file" name="file" type="file"> <br> <br> 
+		<input id = "submit" type="submit" value="save ARFF" disabled>
 	</form>
+	<br>
+	<table class="display jqueryDataTable" id="csvTable">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>File Name</th>				
+				<th>Download</th>
+				<th>Train and save model</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+
+	</table>
 </body>
 </html>
