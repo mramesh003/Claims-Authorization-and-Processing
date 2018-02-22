@@ -12,7 +12,11 @@
 	alert("Arff File Saved Successfully");
 </script>
 </c:if>
-
+<script>
+	$(document).ready(function(){
+	$('#csvTable').DataTable();
+ });
+ </script>
 
 </head>
 <body>
@@ -32,7 +36,28 @@
 				<th>Delete</th>
 			</tr>
 		</thead>
-
+		<tbody>
+			<c:forEach items="${arffFiles}" var = "arffFiles" varStatus = "loop">
+			<tr>
+				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
+				<td><c:out value = "${arffFiles.fileName}"/></td>
+				<td>
+					<a href="downloadArff.htm?id=${arffFiles.id}">
+						Download
+  						
+					</a>
+				</td> 
+				<td>
+					<a href="trainModel.htm?id=${arffFiles.id}">Train and Save Model</a>
+				</td>
+				<td><a href="deleteArff.htm?id=${arffFiles.id}">				
+				<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;">
+				</a>
+				
+				</td>
+			</tr>
+			</c:forEach>
+		</tbody>
 	</table>
 </body>
 </html>
