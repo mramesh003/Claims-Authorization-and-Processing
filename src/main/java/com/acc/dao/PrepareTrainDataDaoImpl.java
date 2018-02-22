@@ -1,14 +1,11 @@
 package com.acc.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import com.acc.dao.AbstractDao;
-import com.acc.dao.PrepareTrainDataDao;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 
@@ -57,6 +54,17 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		return csvfile;	
 	} 
 	
+	public CsvFile getCsvFileByExcelId(Integer excelId){
+		Session session = getSession();
+		CsvFile csvfile = new CsvFile();
+		Query query = session.createQuery("select e from CsvFile e where e.excelId=:excelId ");
+		query.setParameter("excelId", excelId);
+		List<CsvFile> csvList = query.list();
+		for (CsvFile file : csvList) {
+			csvfile = file;
+		}
+		return csvfile;	
+	}
 
 	public List<CsvFile> listAllCsvs() {
 		Session session = getSession();
@@ -67,7 +75,11 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 	public void deleteCsv(CsvFile csvFile) {
 		Session session = getSession();
 		session.delete(csvFile);
-		
-		
 	}
+	
+	public void deleteExcel(ExcelFile excelFile){
+		Session session = getSession();
+		session.delete(excelFile);
+	}
+
 }

@@ -18,7 +18,17 @@
 			alert("Excel File Converted to CSV Successfully");
 		</script>
 	</c:if>
- <script>
+	<c:if test="${message == 'deletedSuccessfully'}">
+		<script>
+			alert("Excel File deleted Successfully");
+		</script>
+	</c:if>
+	<c:if test="${message == 'CannotDeleteExcel'}">
+		<script>
+			alert("Selected Excel file cannot be deleted as it has CSV dependency");
+		</script>
+	</c:if>
+<script>
 	$(document).ready(function(){
 	$('#csvTable').DataTable();
  });
@@ -43,6 +53,7 @@
 				<th>Row Count</th>
 				<th>Download</th>
 				<th>Convert to CSV</th>
+				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -50,7 +61,8 @@
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
 				<td><c:out value = "${excelFiles.fileName}"/></td>
-				<td></td>
+				<td><c:out value = "${excelFiles.rowcount}"/></td> 
+				
 				<td>
 					<a href="downloadExcel.htm?id=${excelFiles.id}">
 						Download
@@ -59,6 +71,9 @@
 				</td> 
 				<td>
 					<a href="convertToCsv.htm?id=${excelFiles.id}"> Convert</a>
+				</td>
+				<td>
+					<a href="deleteExcel.htm?id=${excelFiles.id}"> Delete</a>
 				</td>
 			</tr>
 			</c:forEach>

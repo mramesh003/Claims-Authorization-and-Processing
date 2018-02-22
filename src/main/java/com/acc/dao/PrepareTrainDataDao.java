@@ -21,9 +21,14 @@ public interface PrepareTrainDataDao {
 	
 	public CsvFile getCsvFileById(Integer csvId);
 	
+	public CsvFile getCsvFileByExcelId(Integer excelId);
+	
 	public List<CsvFile> listAllCsvs();
 	
 	public void deleteCsv(CsvFile csvFile);
+	
+	public void deleteExcel(ExcelFile excelFile);
+
 	
 	
 }
