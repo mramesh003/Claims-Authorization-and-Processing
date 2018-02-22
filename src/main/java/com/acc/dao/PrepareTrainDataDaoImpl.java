@@ -44,4 +44,22 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		}
 		return excelFile;	
 	}
+	
+	public CsvFile getCsvFileById(Integer csvId){
+		Session session = getSession();
+		CsvFile csvfile = new CsvFile();
+		Query query = session.createQuery("select e from CsvFile e where e.id=:csvId ");
+		query.setParameter("csvId", csvId);
+		List<CsvFile> csvList = query.list();
+		for (CsvFile file : csvList) {
+			csvfile = file;
+		}
+		return csvfile;	
+	} 
+
+	public List<CsvFile> listAllCsvs() {
+		Session session = getSession();
+		Query query = session.createQuery("from CsvFile");
+		return query.list();
+	}
 }

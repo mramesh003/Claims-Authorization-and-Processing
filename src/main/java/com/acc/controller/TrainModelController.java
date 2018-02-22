@@ -9,12 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.acc.dto.CsvFile;
 import com.acc.entity.FileUpload;
+import com.acc.service.PrepareTrainDataService;
 
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
@@ -24,6 +27,9 @@ import org.apache.log4j.Logger;
 
 @Controller
 public class TrainModelController {
+	
+	@Autowired
+	PrepareTrainDataService prepareTrainDataService;
 
 	 static Logger log = Logger.getLogger(TrainModelController.class.getName());
 	 
@@ -31,6 +37,8 @@ public class TrainModelController {
      public ModelAndView testModel(HttpServletRequest request, HttpServletResponse response)
      {
                      ModelAndView modelandview = new ModelAndView();
+                     List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
+                     modelandview.addObject("csvFiles", csvFiles);
                      modelandview.setViewName("prepareTrainingModel");
                      return modelandview;
      }

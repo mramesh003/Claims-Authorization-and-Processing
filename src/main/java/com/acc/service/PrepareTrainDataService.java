@@ -14,6 +14,10 @@ public interface PrepareTrainDataService {
 	
 	public List<ExcelFile> listAllExcels();
 	
+	public List<CsvFile> listAllCsvs();
+	
 	public ExcelFile getExcelFileById(Integer fileId);
+	
+	public CsvFile getCsvFileById(Integer csvId);
 
 }

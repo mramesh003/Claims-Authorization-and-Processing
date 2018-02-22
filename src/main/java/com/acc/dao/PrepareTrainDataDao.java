@@ -18,4 +18,8 @@ public interface PrepareTrainDataDao {
 	public List<ExcelFile> listAllExcels();
 	
 	public ExcelFile getExcelFileById(Integer fileId);
+	
+	public CsvFile getCsvFileById(Integer csvId);
+	
+	public List<CsvFile> listAllCsvs();
 }
