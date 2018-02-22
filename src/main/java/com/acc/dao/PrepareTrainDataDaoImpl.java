@@ -63,4 +63,11 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		Query query = session.createQuery("from CsvFile");
 		return query.list();
 	}
+
+	public void deleteCsv(CsvFile csvFile) {
+		Session session = getSession();
+		session.delete(csvFile);
+		
+		
+	}
 }

@@ -69,5 +69,20 @@ public class CSVController {
 			outStream.write(buffer, 0, bytesRead);
 		}
 	 }
+	 
+	 @RequestMapping("deletecsv.htm")
+	 public ModelAndView deleteCsv(HttpServletRequest request)
+	 {
+		 ModelAndView modelandview = new ModelAndView();
+		 Integer id = Integer.valueOf(request.getParameter("id"));
+		 CsvFile csvFile = prepareTrainDataService.getCsvFileById(id);
+		 prepareTrainDataService.deleteCsv(csvFile);		 
+		 modelandview.setViewName("prepareTrainingModel");
+		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
+         modelandview.addObject("csvFiles", csvFiles);
+		 return modelandview;
+	 }
+	 
+	 
 
 }

@@ -50,4 +50,9 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 	public CsvFile getCsvFileById(Integer csvId) {		
 		return prepareTrainDataDao.getCsvFileById(csvId);
 	}
+	
+	@Transactional
+	public void deleteCsv(CsvFile csvFile) {		
+		 prepareTrainDataDao.deleteCsv(csvFile);
+	}
 }

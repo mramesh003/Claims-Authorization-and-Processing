@@ -56,6 +56,13 @@
 					</a>
 				</td> 
 				
+				<td><a href="deletecsv.htm?id=${csvFiles.id}">				
+				<img src="images/delete.png" alt="delete employee" style="width:30px;height:28px;border:0;">
+				</a>
+				
+				</td>
+				
+				
 				
 				
 			</tr>

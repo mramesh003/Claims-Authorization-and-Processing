@@ -20,5 +20,7 @@ public interface PrepareTrainDataService {
 	
 	public CsvFile getCsvFileById(Integer csvId);
 	
+	public void deleteCsv(CsvFile csvFile);
+	
 
 }
