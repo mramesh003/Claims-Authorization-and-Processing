@@ -56,16 +56,9 @@ public class TrainModelController {
 	 
 	 @RequestMapping("csvToArff.htm")
 	 public ModelAndView convertToArff(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
-		 System.out.println("Controller start");
 		 ModelAndView modelandview = new ModelAndView();
-
-		 System.out.println("inside controller");
-		 
 		 Boolean flag = trainModelService.getArffFilebyCsvId(Integer.valueOf(id));
-		 
-		 System.out.println("csv to arff conversion"+flag);
 		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
-		 
 		 modelandview.addObject("flag", flag);
          modelandview.addObject("csvFiles", csvFiles);
 		 modelandview.setViewName("prepareTrainingModel");
