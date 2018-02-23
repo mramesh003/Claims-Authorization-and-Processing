@@ -54,39 +54,13 @@ public class TrainModelController {
                      return modelandview;
      }
 	 
-	 
-	 
 	 @RequestMapping("csvToArff.htm")
-	 public ModelAndView convertToArff(HttpServletRequest request, HttpServletResponse response, FileUpload uploadItem) throws IOException {
+	 public ModelAndView convertToArff(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
 		 ModelAndView modelandview = new ModelAndView();
-		 List<MultipartFile> files = uploadItem.getFile();
-		 log.info("Hello this is a debug message");
-		 InputStream inputStream = null;
-		 for(MultipartFile file : files){
-				//if (file.getSize() > 0)
-					inputStream = file.getInputStream();
-					log.info("aaaaaaaaaa"+inputStream); 
-				byte[] fileData = IOUtils.toByteArray(inputStream);
-				String fileName = file.getOriginalFilename();
-				int position = fileName.lastIndexOf(".");
-				String fileType = fileName.substring(position);
-				log.info(fileData+ " "+fileName+ " "+ fileType);
-				
-				/*File convFile = new File(file.getOriginalFilename());
-			    convFile.createNewFile();
-			    convFile.*/
-				
-				
-				CSVLoader loader = new CSVLoader();
-				 loader.setSource(inputStream);
-				 Instances data = loader.getDataSet();
-				 
-				 ArffSaver saver = new ArffSaver();
-				saver.setInstances(data);
-				
-			    saver.setFile(new File("test.arff"));
-			    saver.writeBatch();
-			}
+		 Boolean flag = trainModelService.getArffFilebyCsvId(Integer.valueOf(id));
+		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
+		 modelandview.addObject("flag", flag);
+         modelandview.addObject("csvFiles", csvFiles);
 		 modelandview.setViewName("prepareTrainingModel");
          return modelandview;
 	 }

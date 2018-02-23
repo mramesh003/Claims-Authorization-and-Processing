@@ -12,6 +12,11 @@
 			alert("Csv File Saved Successfully");
 		</script>
 	</c:if>
+	<c:if test="${flag == true}">
+		<script>
+			alert("Csv File is converted to ARFF Successfully");
+		</script>
+	</c:if>
 	<script>
 	$(document).ready(function(){
 	$('#csvTable').DataTable();
@@ -50,7 +55,7 @@
 				</td> 
 				
 				<td>
-					<a href="csvToArff.htm ?id=${csvFiles.id}">
+					<a href="csvToArff.htm?id=${csvFiles.id}">
 						Convert
   						<!-- <img src="css/images/Excel.png" alt="Download" style="width:30px;height:28px;border:0;"> -->
 					</a>

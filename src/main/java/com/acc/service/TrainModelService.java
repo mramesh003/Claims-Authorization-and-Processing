@@ -12,4 +12,6 @@ public interface TrainModelService {
 	public ArffFile getArffFileById(Integer fileId);
 	
 	public void deleteArff(ArffFile arffFile);
+	
+	public Boolean getArffFilebyCsvId(Integer csvId);
 }
