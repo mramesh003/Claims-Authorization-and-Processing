@@ -30,6 +30,9 @@ public class CsvFile {
 	@JoinColumn(insertable=false,updatable=false,name="excelId")
 	private ExcelFile excelFile;
 	
+	@Column(name = "rowcount")
+	private Integer rowCount;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -69,6 +72,14 @@ public class CsvFile {
 	public void setExcelFile(ExcelFile excelFile) {
 		this.excelFile = excelFile;
 	}
+
+	public Integer getRowCount() {
+		return rowCount;
+	}
+
+	public void setRowCount(Integer rowCount) {
+		this.rowCount = rowCount;
+	}
 	
-	
+		
 }

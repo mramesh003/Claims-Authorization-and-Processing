@@ -165,6 +165,7 @@ public class PrepareTrainDataController {
 		csvFile.setFileName(csvName);
 		csvFile.setFileContent(csvData);
 		csvFile.setExcelId(excelFile.getId());
+		csvFile.setRowCount(excelFile.getRowcount());
 		prepareTrainDataService.saveCsvFile(csvFile);
 		List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
 		modelandview.addObject("excelFiles", excelFiles);

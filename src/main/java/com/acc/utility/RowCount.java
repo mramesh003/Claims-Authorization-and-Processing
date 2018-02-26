@@ -1,5 +1,7 @@
 package com.acc.utility;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -24,6 +26,19 @@ public class RowCount {
 		XSSFSheet sheet = workbook.getSheetAt(0);
 		rowCount = sheet.getLastRowNum();
 		return rowCount;
+	}
+	
+	public static int csvRowCount(String filePath) throws IOException{
+		
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+	     String input;
+	     int count = 0;
+	     while((input = bufferedReader.readLine()) != null)
+	     {
+	         count++;
+	     }
+
+		return count;
 	}
 
 }

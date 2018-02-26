@@ -12,18 +12,21 @@
 		alert("Csv File Saved Successfully");
 	</script>
 </c:if>
-<c:choose>
-	<c:when test="${flag == true}">
-		<script>
-			alert("Csv File converted to ARFF Successfully");
-		</script>
-	</c:when>
-	<c:otherwise>
-		<script>
-			alert("Error in conversion.. Please select a valid CSV File..");
-		</script>
-	</c:otherwise>
-</c:choose>
+<c:if test="${flag == true}">
+	<script>
+		alert("Csv File converted to ARFF Successfully");
+	</script>
+</c:if>
+<c:if test="${flag == false}">
+	<script>
+		alert("Error in conversion.. Please select a valid CSV File..");
+	</script>
+</c:if>
+<c:if test="${delete == 'error'}">
+	<script>
+		alert("Cannot delete CSV..");
+	</script>
+</c:if>
 <script>
 	$(document).ready(function() {
 		$('#csvTable').DataTable();
@@ -53,7 +56,7 @@
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
 				<td><c:out value = "${csvFiles.fileName}"/></td>
-				<td></td>
+				<td><c:out value = "${csvFiles.rowCount}"/></td>
 				<td>
 					<a href="downloadCsv.htm?id=${csvFiles.id}">
 						Download
