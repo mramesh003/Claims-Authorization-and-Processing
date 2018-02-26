@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Prepare Training Model</title>
 <script type="text/javascript" src = "javascript/buttonDisable.js"></script>
+<script type="text/javascript" src = "javascript/csvFileExtensionValidation.js"></script>
 <c:if test="${message == 'successUpload'}">
 	<script>
 		alert("Csv File Saved Successfully");
