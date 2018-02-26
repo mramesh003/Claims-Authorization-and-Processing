@@ -8,6 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Prepare Training Data</title>
 	<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
+	<script type="text/javascript" src = "javascript/excelFileExtensionValidation.js"></script>
 	<c:if test="${message == 'successUpload'}">
 		<script>
 			alert("Excel File Saved Successfully");
@@ -73,7 +74,8 @@
 					<a href="convertToCsv.htm?id=${excelFiles.id}"> Convert</a>
 				</td>
 				<td>
-					<a href="deleteExcel.htm?id=${excelFiles.id}"> Delete</a>
+					<a href="deleteExcel.htm?id=${excelFiles.id}">
+					<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;"></a>
 				</td>
 			</tr>
 			</c:forEach>
