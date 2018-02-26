@@ -20,7 +20,7 @@
 </c:if>
 <c:if test="${flag == false}">
 	<script>
-		alert("Error in conversion.. Please select a valid CSV File..");
+		alert("Error in conversion..Please refer LOG file for more info..");
 	</script>
 </c:if>
 <c:if test="${delete == 'error'}">
