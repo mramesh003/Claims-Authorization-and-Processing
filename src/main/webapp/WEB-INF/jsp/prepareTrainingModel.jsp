@@ -8,20 +8,27 @@
 <title>Prepare Training Model</title>
 <script type="text/javascript" src = "javascript/buttonDisable.js"></script>
 <c:if test="${message == 'successUpload'}">
-		<script>
-			alert("Csv File Saved Successfully");
-		</script>
-	</c:if>
-	<c:if test="${flag == true}">
-		<script>
-			alert("Csv File is converted to ARFF Successfully");
-		</script>
-	</c:if>
 	<script>
-	$(document).ready(function(){
-	$('#csvTable').DataTable();
- });
- </script>
+		alert("Csv File Saved Successfully");
+	</script>
+</c:if>
+<c:choose>
+	<c:when test="${flag == true}">
+		<script>
+			alert("Csv File converted to ARFF Successfully");
+		</script>
+	</c:when>
+	<c:otherwise>
+		<script>
+			alert("Error in conversion.. Please select a valid CSV File..");
+		</script>
+	</c:otherwise>
+</c:choose>
+<script>
+	$(document).ready(function() {
+		$('#csvTable').DataTable();
+	});
+</script>
 </head>
 <body>
 	<h1>Prepare Training Model</h1><br>
