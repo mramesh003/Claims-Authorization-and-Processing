@@ -110,6 +110,7 @@ public class TrainModelController {
 		 modelandview.setViewName("trainSaveModel");
 		 List<ArffFile> arffFiles = trainModelService.listAllArffs();
          modelandview.addObject("arffFiles", arffFiles);
+         modelandview.addObject("message", "Deleted");
 		 return modelandview;
 	 }
 	 
