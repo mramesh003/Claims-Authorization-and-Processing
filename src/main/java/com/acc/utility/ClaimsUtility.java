@@ -105,7 +105,11 @@ public class ClaimsUtility {
 						cellValue.append(cell + ",");
 
 					}
+					
+					
 				}
+				cellValue.setLength(cellValue.length() - 1);
+				cellValue.append("\n");
 			}
 			csvData = cellValue.toString().getBytes();
 			// fos.write(cellValue.toString().getBytes());
