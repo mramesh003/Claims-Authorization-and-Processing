@@ -47,7 +47,7 @@ public class CSVController {
 			String filePath = System.getProperty("java.io.tmpdir") + File.separator + fileName;		
 			outputstream = new FileOutputStream(new File(filePath));
 			outputstream.write(file.getBytes());
-			rowcount = RowCount.csvRowCount(filePath);
+			rowcount = RowCount.csvRowCount(filePath) - 1;
 			byte[] csvfileData = IOUtils.toByteArray(inputStream);
 			
 			CsvFile csvFile = new CsvFile();
