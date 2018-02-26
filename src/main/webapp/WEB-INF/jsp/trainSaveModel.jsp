@@ -6,12 +6,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Save Model</title>
-<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
-<c:if test="${message == 'successUpload'}">
-<script>
-	alert("Arff File Saved Successfully");
+<script language="javascript" type="text/javascript" >
 </script>
-</c:if>
+<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
+<script  type="text/javascript" src = "javascript/arffextensionvalidation.js"></script>
+
 <script>
 	$(document).ready(function(){
 	$('#csvTable').DataTable();
@@ -20,10 +19,24 @@
 
 </head>
 <body>
+
+
 	<h1>Train And Save Model</h1><br>
-   <form action="uploadArff.htm" method="post" enctype="multipart/form-data">
-		<label>Select ARFF File: </label><input id = "file" name="file" type="file"> <br> <br> 
-		<input id = "submit" type="submit" value="save ARFF" disabled>
+   <form action="uploadArff.htm" method="post" enctype="multipart/form-data" >
+   <c:if test="${message == 'successUpload'}">
+<div style="color:#556B2F" ><b> ARFF FILE SAVED SUCCESSFULLY</b>
+</div>
+</c:if>
+<c:if test="${message == 'Deleted'}">
+<div style="color:#B22222" ><b> ARFF FILE DELETED SUCCESSFULLY</b>
+</div>
+</c:if>
+<br><br>
+		<label>Select ARFF File: </label><input id = "file" name="file" type="file" onchange="ValidateSingleInput(this);"/> <br>
+		
+		 <br> 
+		
+		<input id = "submit" type="submit" value="save ARFF"  disabled>
 	</form>
 	<br>
 	<table class="display jqueryDataTable" id="csvTable">
