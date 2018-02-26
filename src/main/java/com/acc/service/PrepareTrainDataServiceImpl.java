@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.acc.dao.PrepareTrainDataDao;
+import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 import com.acc.service.PrepareTrainDataService;
@@ -61,6 +62,11 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 	@Transactional
 	public void deleteExcel(ExcelFile excelFile) {
 		 prepareTrainDataDao.deleteExcel(excelFile);
+	}
+
+	@Transactional
+	public List<ArffFile> getArffByCsvId(Integer csvId) {
+		return prepareTrainDataDao.getArffFileByCsId(csvId);
 	}
 
 }

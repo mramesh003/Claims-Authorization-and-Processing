@@ -3,6 +3,7 @@ package com.acc.service;
 
 import java.util.List;
 
+import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 
@@ -25,6 +26,8 @@ public interface PrepareTrainDataService {
 	public void deleteCsv(CsvFile csvFile);
 	
 	public void deleteExcel(ExcelFile excelFile);
+	
+	public List<ArffFile> getArffByCsvId(Integer csvId);
 
 	
 

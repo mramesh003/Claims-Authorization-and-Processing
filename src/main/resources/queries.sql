@@ -11,3 +11,7 @@ create table arfffiles(id int(10) AUTO_INCREMENT, filename varchar(50), filecont
 
 ---adding rowcount column in excelfiles table
 alter table excelfiles add column rowcount int(10);
+
+--Csv RowCount
+alter table csvfiles add column rowcount integer(1000);
+

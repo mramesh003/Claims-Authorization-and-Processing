@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 
@@ -38,6 +39,7 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 			excelFile.setId(file.getId());
 			excelFile.setFileName(file.getFileName());
 			excelFile.setFileContent(file.getFileContent());
+			excelFile.setRowcount(file.getRowcount());
 		}
 		return excelFile;	
 	}
@@ -80,6 +82,15 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 	public void deleteExcel(ExcelFile excelFile){
 		Session session = getSession();
 		session.delete(excelFile);
+	}
+
+	public List<ArffFile> getArffFileByCsId(Integer csvId) {
+		Session session = getSession();
+		ArffFile arffFile = new ArffFile();
+		Query query = session.createQuery("select e from ArffFile e where e.csvId=:csvId");
+		query.setParameter("csvId", csvId);
+		List<ArffFile> arffList = query.list();
+		return arffList;
 	}
 
 }

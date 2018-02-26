@@ -1,6 +1,8 @@
 package com.acc.controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
+import com.acc.utility.RowCount;
 
 @Controller
 public class CSVController {
@@ -33,16 +37,24 @@ public class CSVController {
 		 ModelAndView modelandview = new ModelAndView();
 		 List<MultipartFile> files = uploadItem.getFile();
 		 InputStream inputStream = null;
+		 OutputStream outputstream = null;
+		 Integer rowcount = null;
 		 for(MultipartFile file : files)
 		 {
 			String fileName = file.getOriginalFilename();
 			inputStream = file.getInputStream();
+			InputStream inputStream1 = file.getInputStream();
+			String filePath = System.getProperty("java.io.tmpdir") + File.separator + fileName;		
+			outputstream = new FileOutputStream(new File(filePath));
+			outputstream.write(file.getBytes());
+			rowcount = RowCount.csvRowCount(filePath);
 			byte[] csvfileData = IOUtils.toByteArray(inputStream);
 			
 			CsvFile csvFile = new CsvFile();
 			csvFile.setFileName(fileName);
 			csvFile.setFileContent(csvfileData);
-			csvFile.setExcelId(null);			
+			csvFile.setExcelId(null);
+			csvFile.setRowCount(rowcount);
 			prepareTrainDataService.saveCsvFile(csvFile);
 		 }
 		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
@@ -75,8 +87,14 @@ public class CSVController {
 	 {
 		 ModelAndView modelandview = new ModelAndView();
 		 Integer id = Integer.valueOf(request.getParameter("id"));
-		 CsvFile csvFile = prepareTrainDataService.getCsvFileById(id);
-		 prepareTrainDataService.deleteCsv(csvFile);		 
+		 List<ArffFile> arffFileList = prepareTrainDataService.getArffByCsvId(id);
+		 if(arffFileList.size() != 0)
+			 modelandview.addObject("delete","error");
+		 else
+		 {			 
+			 CsvFile csvFile = prepareTrainDataService.getCsvFileById(id);
+			 prepareTrainDataService.deleteCsv(csvFile);		
+		 }
 		 modelandview.setViewName("prepareTrainingModel");
 		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
          modelandview.addObject("csvFiles", csvFiles);
