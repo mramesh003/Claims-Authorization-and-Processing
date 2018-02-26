@@ -1,7 +1,6 @@
 package com.acc.controller;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,14 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
-import com.acc.dto.ExcelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
 import com.acc.service.TrainModelService;
-
-import weka.core.Instances;
-import weka.core.converters.ArffSaver;
-import weka.core.converters.CSVLoader;
 
 import org.apache.log4j.Logger;
 
@@ -57,7 +51,7 @@ public class TrainModelController {
 	 @RequestMapping("csvToArff.htm")
 	 public ModelAndView convertToArff(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
 		 ModelAndView modelandview = new ModelAndView();
-		 Boolean flag = trainModelService.getArffFilebyCsvId(Integer.valueOf(id));
+		 boolean flag = trainModelService.convertToArffFilebyCsvId(Integer.valueOf(id));
 		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
 		 modelandview.addObject("flag", flag);
          modelandview.addObject("csvFiles", csvFiles);

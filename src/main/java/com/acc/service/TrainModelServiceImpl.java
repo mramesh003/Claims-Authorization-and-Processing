@@ -47,8 +47,8 @@ public class TrainModelServiceImpl implements TrainModelService{
 	
 	//CSV TO ARFF CONVERSION
 		@Transactional(readOnly=true)
-		public Boolean getArffFilebyCsvId(Integer csvId) {
-			Boolean flag=false;
+		public boolean convertToArffFilebyCsvId(Integer csvId) {
+			boolean flag=false;
 			CsvFile csvfile = prepareTrainDataDao.getCsvFileById(csvId);
 			InputStream inputStream = new ByteArrayInputStream(csvfile.getFileContent());
 			try {
