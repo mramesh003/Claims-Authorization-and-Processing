@@ -15,3 +15,6 @@ alter table excelfiles add column rowcount int(10);
 --Csv RowCount
 alter table csvfiles add column rowcount integer(1000);
 
+--Arff RowCount
+alter table arfffiles add column rowcount integer(1000);
+

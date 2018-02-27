@@ -28,6 +28,11 @@ public class ArffFile {
 	
 	@Column(name = "csvId")
 	private Integer csvId;
+	
+	@Column(name = "rowcount")
+	private Integer rowCount;
+
+	
 
 	
 
@@ -93,6 +98,12 @@ public class ArffFile {
 	public void setCsvFile(CsvFile csvFile) {
 		this.csvFile = csvFile;
 	}
-	
+	public Integer getRowCount() {
+		return rowCount;
+	}
+
+	public void setRowCount(Integer rowCount) {
+		this.rowCount = rowCount;
+	}
 	
 }
