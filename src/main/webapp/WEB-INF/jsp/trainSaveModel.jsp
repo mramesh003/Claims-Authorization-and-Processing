@@ -13,7 +13,7 @@
 
 <script>
 	$(document).ready(function(){
-	$('#csvTable').DataTable();
+	$('#arffTable').DataTable();
  });
  </script>
 
@@ -39,11 +39,12 @@
 		<input id = "submit" type="submit" value="save ARFF"  disabled>
 	</form>
 	<br>
-	<table class="display jqueryDataTable" id="csvTable">
+	<table class="display jqueryDataTable" id="arffTable">
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>File Name</th>				
+				<th>File Name</th>	
+				<th>Row Count</th>
 				<th>Download</th>
 				<th>Train and save model</th>
 				<th>Delete</th>
@@ -54,6 +55,7 @@
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
 				<td><c:out value = "${arffFiles.fileName}"/></td>
+				<td><c:out value = "${arffFiles.rowCount}"/></td>
 				<td>
 					<a href="downloadArff.htm?id=${arffFiles.id}">
 						Download
