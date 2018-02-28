@@ -6,6 +6,7 @@ package com.acc.dao;
 
 import java.util.List;
 
+import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 
@@ -18,4 +19,19 @@ public interface PrepareTrainDataDao {
 	public List<ExcelFile> listAllExcels();
 	
 	public ExcelFile getExcelFileById(Integer fileId);
+	
+	public CsvFile getCsvFileById(Integer csvId);
+	
+	public CsvFile getCsvFileByExcelId(Integer excelId);
+	
+	public List<CsvFile> listAllCsvs();
+	
+	public void deleteCsv(CsvFile csvFile);
+	
+	public void deleteExcel(ExcelFile excelFile);
+	
+	public List<ArffFile> getArffFileByCsId(Integer csvId);
+
+	
+	
 }

@@ -1,14 +1,12 @@
 package com.acc.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import com.acc.dao.AbstractDao;
-import com.acc.dao.PrepareTrainDataDao;
+import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 
@@ -41,7 +39,58 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 			excelFile.setId(file.getId());
 			excelFile.setFileName(file.getFileName());
 			excelFile.setFileContent(file.getFileContent());
+			excelFile.setRowcount(file.getRowcount());
 		}
 		return excelFile;	
 	}
+	
+	public CsvFile getCsvFileById(Integer csvId){
+		Session session = getSession();
+		CsvFile csvfile = new CsvFile();
+		Query query = session.createQuery("select e from CsvFile e where e.id=:csvId ");
+		query.setParameter("csvId", csvId);
+		List<CsvFile> csvList = query.list();
+		for (CsvFile file : csvList) {
+			csvfile = file;
+		}
+		return csvfile;	
+	} 
+	
+	public CsvFile getCsvFileByExcelId(Integer excelId){
+		Session session = getSession();
+		CsvFile csvfile = new CsvFile();
+		Query query = session.createQuery("select e from CsvFile e where e.excelId=:excelId ");
+		query.setParameter("excelId", excelId);
+		List<CsvFile> csvList = query.list();
+		for (CsvFile file : csvList) {
+			csvfile = file;
+		}
+		return csvfile;	
+	}
+
+	public List<CsvFile> listAllCsvs() {
+		Session session = getSession();
+		Query query = session.createQuery("from CsvFile");
+		return query.list();
+	}
+
+	public void deleteCsv(CsvFile csvFile) {
+		Session session = getSession();
+		session.delete(csvFile);
+	}
+	
+	public void deleteExcel(ExcelFile excelFile){
+		Session session = getSession();
+		session.delete(excelFile);
+	}
+
+	public List<ArffFile> getArffFileByCsId(Integer csvId) {
+		Session session = getSession();
+		ArffFile arffFile = new ArffFile();
+		Query query = session.createQuery("select e from ArffFile e where e.csvId=:csvId");
+		query.setParameter("csvId", csvId);
+		List<ArffFile> arffList = query.list();
+		return arffList;
+	}
+
 }

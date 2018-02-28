@@ -68,49 +68,59 @@ public class ClaimsUtility {
 
 			// Get first sheet from the workbook
 			XSSFSheet sheet = wb.getSheetAt(0);
-
+			
 			Row row;
 			Cell cell;
-
-			// Iterate through each rows from first sheet
-			Iterator<Row> rowIterator = sheet.iterator();
-
-			while (rowIterator.hasNext()) {
-				row = rowIterator.next();
-
-				// For each row, iterate through each columns
-				Iterator<Cell> cellIterator = row.cellIterator();
-				while (cellIterator.hasNext()) {
-					cell = cellIterator.next();
-
-					switch (cell.getCellType()) {
-
-					case Cell.CELL_TYPE_BOOLEAN:
-						cellValue.append(cell.getBooleanCellValue() + ",");
-						break;
-
-					case Cell.CELL_TYPE_NUMERIC:
-						cellValue.append(cell.getNumericCellValue() + ",");
-						break;
-
-					case Cell.CELL_TYPE_STRING:
-						cellValue.append(cell.getStringCellValue() + ",");
-						break;
-
-					case Cell.CELL_TYPE_BLANK:
-						cellValue.append("" + ",");
-						break;
-
-					default:
-						cellValue.append(cell + ",");
-
+			row = sheet.getRow(0);
+			int ColumnCount = row.getLastCellNum();
+			int rowCount = sheet.getLastRowNum();
+			
+			for(int rownum = 0; rownum <= rowCount; rownum++ )
+			{
+				row = sheet.getRow(rownum);
+				for(int colnum = 0; colnum < ColumnCount; colnum++)
+				{
+					cell = row.getCell(colnum);
+					if(cell == null)
+					{
+						cellValue.append("$$" + ",");
 					}
-				}
-			}
-			csvData = cellValue.toString().getBytes();
-			// fos.write(cellValue.toString().getBytes());
-			// fos.close();
+						
+					else
+					{
+						switch (cell.getCellType()) {
+						
+						case Cell.CELL_TYPE_BOOLEAN:
+							cellValue.append(cell.getBooleanCellValue() + ",");
+							break;
 
+						case Cell.CELL_TYPE_NUMERIC:
+							cellValue.append(cell.getNumericCellValue() + ",");
+							break;
+
+						case Cell.CELL_TYPE_STRING:
+							cellValue.append(cell.getStringCellValue() + ",");
+							break;
+
+						case Cell.CELL_TYPE_BLANK:
+							cellValue.append("" + ",");
+							break;
+						
+												
+						default:
+							cellValue.append(cell + ",");
+
+						}				
+						
+					}
+					
+				}
+				cellValue.setLength(cellValue.length() - 1);
+				cellValue.append("\n");
+			}	
+			
+			csvData = cellValue.toString().getBytes();
+			
 		} catch (Exception e) {
 			System.err.println("Exception :" + e.getMessage());
 		}
@@ -134,45 +144,56 @@ public class ClaimsUtility {
 		        HSSFSheet sheet = workbook.getSheetAt(0);
 		        Cell cell;
 		        Row row;
+		    	row = sheet.getRow(0);
+				int ColumnCount = row.getLastCellNum();
+				int rowCount = sheet.getLastRowNum();
+				
+				for(int rownum = 0; rownum <= rowCount; rownum++ )
+				{
+					row = sheet.getRow(rownum);
+					for(int colnum = 0; colnum < ColumnCount; colnum++)
+					{
+						cell = row.getCell(colnum);
+						if(cell == null)
+						{
+							cellDData.append("$$" + ",");
+						}
+							
+						else
+						{
+							switch (cell.getCellType()) {
+							
+							case Cell.CELL_TYPE_BOOLEAN:
+								cellDData.append(cell.getBooleanCellValue() + ",");
+								break;
 
-		        // Iterate through each rows from first sheet
-		        Iterator<Row> rowIterator = sheet.iterator();
-		        while (rowIterator.hasNext()) 
-		        {
-		        row = rowIterator.next();
+							case Cell.CELL_TYPE_NUMERIC:
+								cellDData.append(cell.getNumericCellValue() + ",");
+								break;
 
-		        // For each row, iterate through each columns
-		        Iterator<Cell> cellIterator = row.cellIterator();
-		        while (cellIterator.hasNext()) 
-		        {
-		        cell = cellIterator.next();
+							case Cell.CELL_TYPE_STRING:
+								cellDData.append(cell.getStringCellValue() + ",");
+								break;
 
-		        switch (cell.getCellType()) 
-		        {
+							case Cell.CELL_TYPE_BLANK:
+								cellDData.append("" + ",");
+								break;
+							
+													
+							default:
+								cellDData.append(cell + ",");
+
+							}				
+							
+						}
+						
+					}
+					cellDData.setLength(cellDData.length() - 1);
+					cellDData.append("\n");
+				}					
+				csvData = cellDData.toString().getBytes();           
+
 		        
-		        case Cell.CELL_TYPE_BOOLEAN:
-		                cellDData.append(cell.getBooleanCellValue() + ",");
-		                break;
-		        
-		        case Cell.CELL_TYPE_NUMERIC:
-		                cellDData.append(cell.getNumericCellValue() + ",");
-		                break;
-		        
-		        case Cell.CELL_TYPE_STRING:
-		                cellDData.append(cell.getStringCellValue() + ",");
-		                break;
-
-		        case Cell.CELL_TYPE_BLANK:
-		                cellDData.append("" + ",");
-		                break;
-		                
-		        default:
-		                cellDData.append(cell + ",");
-		        }
-		        }
-		        }
-
-		        csvData = cellDData.toString().getBytes();
 		}
 		
 		catch (FileNotFoundException e) 

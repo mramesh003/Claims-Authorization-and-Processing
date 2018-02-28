@@ -8,6 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Prepare Training Data</title>
 	<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
+	<script type="text/javascript" src = "javascript/excelFileExtensionValidation.js"></script>
 	<c:if test="${message == 'successUpload'}">
 		<script>
 			alert("Excel File Saved Successfully");
@@ -18,7 +19,17 @@
 			alert("Excel File Converted to CSV Successfully");
 		</script>
 	</c:if>
- <script>
+	<c:if test="${message == 'deletedSuccessfully'}">
+		<script>
+			alert("Excel File deleted Successfully");
+		</script>
+	</c:if>
+	<c:if test="${message == 'CannotDeleteExcel'}">
+		<script>
+			alert("Selected Excel file cannot be deleted as it has CSV dependency");
+		</script>
+	</c:if>
+<script>
 	$(document).ready(function(){
 	$('#csvTable').DataTable();
  });
@@ -43,6 +54,7 @@
 				<th>Row Count</th>
 				<th>Download</th>
 				<th>Convert to CSV</th>
+				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -50,7 +62,8 @@
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
 				<td><c:out value = "${excelFiles.fileName}"/></td>
-				<td></td>
+				<td><c:out value = "${excelFiles.rowcount}"/></td> 
+				
 				<td>
 					<a href="downloadExcel.htm?id=${excelFiles.id}">
 						Download
@@ -59,6 +72,10 @@
 				</td> 
 				<td>
 					<a href="convertToCsv.htm?id=${excelFiles.id}"> Convert</a>
+				</td>
+				<td>
+					<a href="deleteExcel.htm?id=${excelFiles.id}">
+					<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;"></a>
 				</td>
 			</tr>
 			</c:forEach>

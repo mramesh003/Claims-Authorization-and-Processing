@@ -22,6 +22,15 @@ public class ExcelFile {
 	@Column(name = "filecontent")
 	private byte[] fileContent;
 	
+	@Column(name = "rowcount")
+	private Integer rowcount;
+	
+	public Integer getRowcount() {
+		return rowcount;
+	}
+	public void setRowcount(Integer rowcount) {
+		this.rowcount = rowcount;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -34,6 +43,8 @@ public class ExcelFile {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	
+	
 	public byte[] getFileContent() {
 		return fileContent;
 	}

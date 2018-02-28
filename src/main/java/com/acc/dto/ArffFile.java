@@ -11,8 +11,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "csvfiles")
-public class CsvFile {
+@Table(name = "arfffiles")
+public class ArffFile {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
@@ -25,13 +25,24 @@ public class CsvFile {
 	
 	@Column(name = "excelId")
 	private Integer excelId;
+	
+	@Column(name = "csvId")
+	private Integer csvId;
+	
+	@Column(name = "rowcount")
+	private Integer rowCount;
+
+	
+
+	
 
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(insertable=false,updatable=false,name="excelId")
 	private ExcelFile excelFile;
 	
-	@Column(name = "rowcount")
-	private Integer rowCount;
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(insertable=false,updatable=false,name="csvId")
+	private CsvFile csvFile;
 	
 	public Integer getId() {
 		return id;
@@ -72,7 +83,21 @@ public class CsvFile {
 	public void setExcelFile(ExcelFile excelFile) {
 		this.excelFile = excelFile;
 	}
+	public Integer getCsvId() {
+		return csvId;
+	}
 
+	public void setCsvId(Integer csvId) {
+		this.csvId = csvId;
+	}
+
+	public CsvFile getCsvFile() {
+		return csvFile;
+	}
+
+	public void setCsvFile(CsvFile csvFile) {
+		this.csvFile = csvFile;
+	}
 	public Integer getRowCount() {
 		return rowCount;
 	}
@@ -81,5 +106,4 @@ public class CsvFile {
 		this.rowCount = rowCount;
 	}
 	
-		
 }

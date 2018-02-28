@@ -7,22 +7,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Prepare Training Model</title>
 <script type="text/javascript" src = "javascript/buttonDisable.js"></script>
+<script type="text/javascript" src = "javascript/csvFileExtensionValidation.js"></script>
 <c:if test="${message == 'successUpload'}">
-		<script>
-			alert("Csv File Saved Successfully");
-		</script>
-	</c:if>
 	<script>
-	$(document).ready(function(){
-	$('#csvTable').DataTable();
- });
- </script>
+		alert("Csv File Saved Successfully");
+	</script>
+</c:if>
+<c:if test="${flag == true}">
+	<script>
+		alert("Csv File converted to ARFF Successfully");
+	</script>
+</c:if>
+<c:if test="${flag == false}">
+	<script>
+		alert("Error in conversion..Please refer LOG file for more info..");
+	</script>
+</c:if>
+<c:if test="${delete == 'error'}">
+	<script>
+		alert("Cannot delete CSV..");
+	</script>
+</c:if>
+<script>
+	$(document).ready(function() {
+		$('#csvTable').DataTable();
+	});
+</script>
 </head>
 <body>
 	<h1>Prepare Training Model</h1><br>
-	<form action="csvToArff.htm" method="post" enctype="multipart/form-data">
+	<form action="uploadCsv.htm" method="post" enctype="multipart/form-data">
 		<label>Select CSV file:</label><input id = "file" name="file" type="file"> <br> <br> 
-		<input id = "submit" type="submit" value="Convert ARFF" disabled>
+		<input id = "submit" type="submit" value="Upload CSV" disabled>
 	</form>
 	<br>
 	<table class="display jqueryDataTable" id="csvTable">
@@ -32,22 +48,39 @@
 				<th>File Name</th>
 				<th>Row Count</th>
 				<th>Download</th>
-				<th>Convert to CSV</th>
+				<th>Convert to ARFF</th>
 				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${CsvFiles}" var = "CsvFiles" varStatus = "loop">
+			<c:forEach items="${csvFiles}" var = "csvFiles" varStatus = "loop">
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
-				<td><c:out value = "${CsvFiles.fileName}"/></td>
-				<td></td>
+				<td><c:out value = "${csvFiles.fileName}"/></td>
+				<td><c:out value = "${csvFiles.rowCount}"/></td>
 				<td>
-					<a href="downloadCsv.htm?id=${CsvFiles.id}">
+					<a href="downloadCsv.htm?id=${csvFiles.id}">
 						Download
   						<!-- <img src="css/images/Excel.png" alt="Download" style="width:30px;height:28px;border:0;"> -->
 					</a>
 				</td> 
+				
+				<td>
+					<a href="csvToArff.htm?id=${csvFiles.id}">
+						Convert
+  						<!-- <img src="css/images/Excel.png" alt="Download" style="width:30px;height:28px;border:0;"> -->
+					</a>
+				</td> 
+				
+				<td><a href="deletecsv.htm?id=${csvFiles.id}">				
+				<img src="images/delete.png" alt="delete employee" style="width:30px;height:28px;border:0;">
+				</a>
+				
+				</td>
+				
+				
+				
+				
 			</tr>
 			</c:forEach>
 		</tbody>
