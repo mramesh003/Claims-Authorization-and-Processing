@@ -15,11 +15,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 import weka.core.converters.ArffSaver;
 import weka.core.converters.CSVLoader;
 import weka.core.converters.CSVSaver;
+import weka.core.converters.ConverterUtils.DataSource;
 
 public class ClaimsUtility {
 	public static void main(String args[]) throws Exception{
@@ -83,7 +86,7 @@ public class ClaimsUtility {
 					cell = row.getCell(colnum);
 					if(cell == null)
 					{
-						cellValue.append("$$" + ",");
+						cellValue.append(" " + ",");
 					}
 						
 					else
@@ -99,7 +102,10 @@ public class ClaimsUtility {
 							break;
 
 						case Cell.CELL_TYPE_STRING:
-							cellValue.append(cell.getStringCellValue() + ",");
+							if(cell.getStringCellValue().equalsIgnoreCase("null"))
+								cellValue.append(" " +",");
+							else
+								cellValue.append(cell.getStringCellValue() + ",");
 							break;
 
 						case Cell.CELL_TYPE_BLANK:
@@ -156,7 +162,7 @@ public class ClaimsUtility {
 						cell = row.getCell(colnum);
 						if(cell == null)
 						{
-							cellDData.append("$$" + ",");
+							cellDData.append(" " + ",");
 						}
 							
 						else
@@ -228,6 +234,15 @@ public class ClaimsUtility {
 		saver.writeBatch();
 	}
 	
+	public static byte[] CSV2ARFF(InputStream inputStream) throws IOException{
+		CSVLoader loader = new CSVLoader();
+		loader.setSource(inputStream);
+		Instances data = loader.getDataSet();
+		byte[] arffContent = data.toString().getBytes();
+		return arffContent;
+	
+	}
+	
 	/**
 	   * takes 2 arguments:
 	   * - ARFF input file
@@ -248,4 +263,18 @@ public class ClaimsUtility {
 		saver.setFile(new File(csvFile));
 		saver.writeBatch();
 	}
+	
+	public static byte[] ARFF2Model(InputStream inputStream ) throws Exception
+	{
+		DataSource trainSource = new DataSource(inputStream);		
+		Instances trainDataset = trainSource.getDataSet();		
+		trainDataset.setClassIndex(trainDataset.numAttributes() - 1);		
+		NaiveBayes nb = new NaiveBayes();
+		nb.buildClassifier(trainDataset);
+		
+		/*J48 tree = new J48();
+		tree.buildClassifier(trainDataset);*/
+		return nb.toString().getBytes();
+	}
+	
 }

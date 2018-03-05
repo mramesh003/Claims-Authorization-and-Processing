@@ -38,6 +38,11 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 	public ExcelFile getExcelFileById(Integer fileId) {
 		return prepareTrainDataDao.getExcelFileById(fileId);
 	}
+	
+	@Transactional(readOnly=true)
+	public ExcelFile getExcelFileByName(String fileName){
+		return prepareTrainDataDao.getExcelFileByName(fileName);
+	}
 
 	@Transactional(readOnly=true)
 	public List<CsvFile> listAllCsvs() {

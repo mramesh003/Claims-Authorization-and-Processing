@@ -44,6 +44,13 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		return excelFile;	
 	}
 	
+	public ExcelFile getExcelFileByName(String fileName) {
+		Session session = getSession();
+		Query query = session.createQuery("select e from ExcelFile e where e.fileName=:fileName ");
+		query.setParameter("fileName", fileName);
+		return (ExcelFile)query.uniqueResult();
+	}
+	
 	public CsvFile getCsvFileById(Integer csvId){
 		Session session = getSession();
 		CsvFile csvfile = new CsvFile();

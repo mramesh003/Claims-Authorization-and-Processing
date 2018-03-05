@@ -52,6 +52,12 @@
                                                 value="/WEB-INF/jsp/executeBatchData.jsp" />
                 </definition>
                 
+                 <definition name="userTestModel" extends="baseLayout">
+                                <put-attribute name="title" value="User Test Model" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/userTestModel.jsp" />
+                </definition>
+                
 </tiles-definitions>
 
 

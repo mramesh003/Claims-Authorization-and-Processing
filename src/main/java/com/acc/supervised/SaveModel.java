@@ -10,7 +10,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 public class SaveModel{
 	public static void main(String args[]) throws Exception{
-		File trainArffFile = new File("C:\\AISamplefiles\\SampleData\\Mocked_Data_Updated_single.arff");
+		File trainArffFile = new File("C:\\Users\\ilakkia.shanmugam\\Desktop\\samparff.arff");
 		//File trainArffFile = new File("C:\\AISamplefiles\\SampleData\\weather.arff");
 		String trainArff = trainArffFile.getAbsolutePath();
 		System.out.println(trainArff);

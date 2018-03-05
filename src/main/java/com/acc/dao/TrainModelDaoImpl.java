@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.acc.dto.ArffFile;
+import com.acc.dto.ModelFile;
 @Repository
 public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
 	
@@ -39,6 +40,12 @@ public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
 		Session session = getSession();
 		session.delete(arffFile);
 		
+		
+	}
+
+	public void saveModel(ModelFile modelFile) {
+		Session session = getSession();
+		session.save(modelFile);
 		
 	}
 }

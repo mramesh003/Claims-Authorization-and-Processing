@@ -46,7 +46,7 @@
 			<tr>
 				<th>#</th>
 				<th>File Name</th>
-				<th>Row Count</th>
+				<th>Data Count</th>
 				<th>Download</th>
 				<th>Convert to ARFF</th>
 				<th>Delete</th>

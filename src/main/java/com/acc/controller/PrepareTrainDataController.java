@@ -47,51 +47,6 @@ public class PrepareTrainDataController {
                      return modelandview;
      }
 	 
-	 @RequestMapping("xlToCsv.htm")
-	 public ModelAndView convertToArff(HttpServletRequest request, HttpServletResponse response, FileUpload uploadItem) throws IOException {
-		 ModelAndView modelandview = new ModelAndView();
-		 List<MultipartFile> files = uploadItem.getFile();
-		 InputStream inputStream = null;
-		 for(MultipartFile file : files)
-		 {
-			String fileName = file.getOriginalFilename();
-			int position = fileName.lastIndexOf(".");
-			String fileType = fileName.substring(position);
-			inputStream = file.getInputStream();
-			byte[] excelfileData = IOUtils.toByteArray(inputStream);
-
-		
-			
-			
-			ExcelFile excelFile = new ExcelFile();
-			excelFile.setFileName(fileName);
-			excelFile.setFileContent(excelfileData);
-			prepareTrainDataService.saveExcelFile(excelFile);
-			Integer excelId = excelFile.getId();
-			
-			inputStream = file.getInputStream();
-			byte[] csvData = null;
-			log.info("fileTyppe : " + fileType);
-			if(".xlsx".equals(fileType)) {
-				csvData = ClaimsUtility.XLSX2CSV(inputStream);
-			}
-			else if(".xls".equals(fileType)) {
-				csvData = ClaimsUtility.XLS2CSV(inputStream);
-			}
-			String csvName = fileName.substring(0, position) + ".csv";
-			log.info("csvName : " + csvName);
-			CsvFile csvFile = new CsvFile();
-			csvFile.setFileName(csvName);
-			csvFile.setFileContent(csvData);
-			csvFile.setExcelId(excelId);
-			prepareTrainDataService.saveCsvFile(csvFile);
-		 }
-	
-		 modelandview.setViewName("prepareTrainingData");
-		 modelandview.addObject("message", "success");
-         return modelandview;
-	 }
-	 
 	 @RequestMapping("uploadExcel.htm")
 	 public ModelAndView uploadExcel(HttpServletRequest request, FileUpload uploadItem) throws IOException {
 		 ModelAndView modelandview = new ModelAndView();

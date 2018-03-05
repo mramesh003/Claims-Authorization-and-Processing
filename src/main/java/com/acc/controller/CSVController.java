@@ -26,12 +26,27 @@ import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
+import com.acc.service.TrainModelService;
 import com.acc.utility.RowCount;
 
 @Controller
 public class CSVController {
 	@Autowired
 	PrepareTrainDataService prepareTrainDataService;
+	
+	@Autowired
+	TrainModelService trainModelService;
+	
+	@RequestMapping("prepareTrainingModel.htm")
+	public ModelAndView testModel(HttpServletRequest request, HttpServletResponse response)
+	{
+		ModelAndView modelandview = new ModelAndView();
+		List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
+		modelandview.addObject("csvFiles", csvFiles);
+		modelandview.setViewName("prepareTrainingModel");
+		return modelandview;
+	}
+	
 	 @RequestMapping("uploadCsv.htm")
 	 public ModelAndView uploadCsv(HttpServletRequest request, FileUpload uploadItem) throws IOException {
 		 ModelAndView modelandview = new ModelAndView();
@@ -100,6 +115,17 @@ public class CSVController {
          modelandview.addObject("csvFiles", csvFiles);
 		 return modelandview;
 	 }
+	 
+	 @RequestMapping("csvToArff.htm")
+		public ModelAndView convertToArff(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
+			ModelAndView modelandview = new ModelAndView();
+			boolean flag = trainModelService.convertToArffFilebyCsvId(Integer.valueOf(id));
+			List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
+			modelandview.addObject("flag", flag);
+			modelandview.addObject("csvFiles", csvFiles);
+			modelandview.setViewName("prepareTrainingModel");
+			return modelandview;
+		}
 	 
 	 
 
