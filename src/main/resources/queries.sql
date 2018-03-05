@@ -18,3 +18,11 @@ alter table csvfiles add column rowcount integer(1000);
 --Arff RowCount
 alter table arfffiles add column rowcount integer(1000);
 
+--Excel attributeCount, active status
+-- This query can be used after the implementation of activestatus logic
+--alter table excelfiles add activestatus bit;
+alter table excelfiles add colcount int(10);
+
+--ModelFile
+create table modelfiles(id int(10) AUTO_INCREMENT, filename varchar(50), filecontent BLOB, arffId int(10),datacount int(10),colcount int(10), primary key(id), FOREIGN KEY (arffId) REFERENCES arfffiles(id));
+

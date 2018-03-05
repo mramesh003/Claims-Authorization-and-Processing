@@ -44,7 +44,7 @@
 			<tr>
 				<th>#</th>
 				<th>File Name</th>	
-				<th>Row Count</th>
+				<th>Data Count</th>
 				<th>Download</th>
 				<th>Train and save model</th>
 				<th>Delete</th>

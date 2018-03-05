@@ -19,6 +19,8 @@ public interface PrepareTrainDataService {
 	
 	public ExcelFile getExcelFileById(Integer fileId);
 	
+	public ExcelFile getExcelFileByName(String fileName);
+	
 	public CsvFile getCsvFileById(Integer csvId);
 	
 	public CsvFile getCsvFileByExcelId(Integer excelId);
