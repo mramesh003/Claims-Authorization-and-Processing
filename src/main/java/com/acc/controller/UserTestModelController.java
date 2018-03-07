@@ -3,7 +3,10 @@ package com.acc.controller;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
+import com.acc.dto.ModelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
+import com.acc.service.TestModelService;
 import com.acc.service.TrainModelService;
 import com.acc.utility.ClaimsUtility;
 import com.acc.utility.RowCount;
@@ -31,6 +36,9 @@ public class UserTestModelController {
 	
 	@Autowired
 	TrainModelService trainModelService;
+	
+	@Autowired
+	TestModelService testModelService;
 
 	@RequestMapping("userTestModel.htm")
 	public ModelAndView trainSaveModel(HttpServletRequest request) {
@@ -88,7 +96,18 @@ public class UserTestModelController {
 			arffFile.setCsvId(csvFile.getId());
 			arffFile.setExcelId(csvFile.getExcelId());
 			trainModelService.saveArffFile(arffFile);	
-
+			List<ModelFile> modelfiles = trainModelService.listAllModels();
+			ModelFile model = new ModelFile();
+			for(ModelFile file1 : modelfiles)
+				model = file1;
+			
+			List<String> results = new ArrayList<String>();
+            try {
+                  results = testModelService.testModel(model, arffFile);
+            } catch (Exception e) {
+                  e.printStackTrace();
+            }
+            modelandview.addObject("results", results);
 		}
 		modelandview.setViewName("userTestModel");
 		return modelandview;

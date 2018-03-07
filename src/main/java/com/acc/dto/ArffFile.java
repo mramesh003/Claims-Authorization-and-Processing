@@ -30,11 +30,7 @@ public class ArffFile {
 	private Integer csvId;
 	
 	@Column(name = "rowcount")
-	private Integer rowCount;
-
-	
-
-	
+	private Integer rowCount;	
 
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(insertable=false,updatable=false,name="excelId")

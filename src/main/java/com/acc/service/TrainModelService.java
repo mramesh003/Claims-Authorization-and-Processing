@@ -17,4 +17,9 @@ public interface TrainModelService {
 	public boolean convertToArffFilebyCsvId(Integer csvId);
 	
 	public void saveModel(ModelFile modelFile);
+	
+	public ModelFile getModelById(Integer fileId);
+    
+    public List<ModelFile> listAllModels();
+
 }

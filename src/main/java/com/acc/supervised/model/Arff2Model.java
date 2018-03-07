@@ -28,8 +28,7 @@ public class Arff2Model {
 	   */
 	  public static void main(String[] args) throws Exception {
 		  
-		File inputArffFile = new File("C:\\AISamplefiles\\03012018\\MockedDataTrain.arff");
-	    
+		File inputArffFile = new File("C:\\Users\\ilakkia.shanmugam\\Desktop\\MockedDataTrain.arff");
 		// load data
 	    ArffLoader loader = new ArffLoader();
 	    loader.setFile(new File(inputArffFile.getAbsolutePath()));
@@ -50,7 +49,7 @@ public class Arff2Model {
 	    fc.setClassifier(j48);
 	    // train and make predictions
 	    fc.buildClassifier(structure);
-	    weka.core.SerializationHelper.write("C:\\AISamplefiles\\03012018\\MockedDataTrain.model", fc);
+	    weka.core.SerializationHelper.write("C:\\Users\\ilakkia.shanmugam\\Desktop\\MockedDataTrain.model", fc);
 	    
 	    
 	    

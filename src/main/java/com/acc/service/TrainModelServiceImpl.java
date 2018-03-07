@@ -82,5 +82,16 @@ public class TrainModelServiceImpl implements TrainModelService {
 		trainModelDao.saveModel(modelFile);
 		
 	}
+	
+	@Transactional(readOnly = true)
+    public ModelFile getModelById(Integer fileId) {
+           return trainModelDao.getModelById(fileId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ModelFile> listAllModels() {
+           return trainModelDao.listAllModels();
+    }
+
 
 }

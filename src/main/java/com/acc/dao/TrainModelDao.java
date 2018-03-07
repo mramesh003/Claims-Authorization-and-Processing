@@ -15,4 +15,9 @@ public interface TrainModelDao {
 	public void deleteArff(ArffFile arffFile);
 	
 	public void saveModel(ModelFile modelFile);
+
+	public ModelFile getModelById(Integer fileId);
+    
+    public List<ModelFile> listAllModels();
+
 }
