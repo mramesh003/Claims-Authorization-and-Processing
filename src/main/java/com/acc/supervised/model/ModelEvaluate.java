@@ -30,7 +30,7 @@ public class ModelEvaluate{
 		J48 tree = new J48();
 		tree.buildClassifier(dataset);*/
 		
-		File inputArffFile = new File("C:\\AISamplefiles\\03012018\\MockedDataTrain.arff");
+		File inputArffFile = new File("C:\\Users\\ilakkia.shanmugam\\Desktop\\MockedDataTrain.arff");
 	    
 		// load data
 	    ArffLoader loader = new ArffLoader();
@@ -62,7 +62,7 @@ public class ModelEvaluate{
 		//Notice we build the classifier with the training set 
 		//we initialize evaluation with the train dataset and then
 		//evaluate using the test dataset
-		File testArffFile = new File("C:\\AISamplefiles\\03012018\\MockedDataTest.arff");
+		File testArffFile = new File("C:\\Users\\ilakkia.shanmugam\\Desktop\\MockedDataTrain.arff");
 		String testArff = testArffFile.getAbsolutePath();
 		//test dataset for evaluation
 		DataSource testSource = new DataSource(testArff);

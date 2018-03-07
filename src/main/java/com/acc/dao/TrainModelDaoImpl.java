@@ -45,7 +45,20 @@ public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
 
 	public void saveModel(ModelFile modelFile) {
 		Session session = getSession();
-		session.save(modelFile);
-		
+		session.save(modelFile);		
 	}
+	
+	public ModelFile getModelById(Integer fileId) {
+        Session session = getSession();
+        Query query = session.createQuery("select a from ModelFile a where a.id=:fileId ");
+        query.setParameter("fileId", fileId);
+        return (ModelFile)query.uniqueResult();
+ }
+
+ public List<ModelFile> listAllModels() {
+        Session session = getSession();
+        Query query = session.createQuery("select a from ModelFile a");
+        return query.list();
+ }
+
 }
