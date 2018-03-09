@@ -27,6 +27,9 @@ import com.acc.service.TestModelService;
 import com.acc.service.TrainModelService;
 import com.acc.utility.ClaimsUtility;
 import com.acc.utility.RowCount;
+import com.acc.utility.SupervisedModel;
+
+import weka.classifiers.Evaluation;
 
 @Controller
 public class UserTestModelController {
@@ -107,7 +110,18 @@ public class UserTestModelController {
             } catch (Exception e) {
                   e.printStackTrace();
             }
+            Map<String,Object> evaluationResult = new HashMap<String, Object>();
+            ArffFile trainArffFile = trainModelService.getArffFileById(model.getArffId());
+            try {
+            	evaluationResult = SupervisedModel.evaluateModel(trainArffFile, arffFile);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             modelandview.addObject("results", results);
+            modelandview.addObject("evaluationResult", evaluationResult);
+            modelandview.addObject("resultpage","yes");
 		}
 		modelandview.setViewName("userTestModel");
 		return modelandview;
