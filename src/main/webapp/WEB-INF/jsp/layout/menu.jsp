@@ -59,6 +59,10 @@
 								href="<c:url value="userTestModel.htm"/>">&nbsp;User Test
 									Model</a></td>
 						</tr>
+						<tr>
+							<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
+								href="<c:url value="python.htm"/>">&nbsp;Connect To Python</a></td>
+						</tr>
 					</table>
 				</div>
 			</div>
