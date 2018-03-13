@@ -45,6 +45,7 @@
 				<th>#</th>
 				<th>File Name</th>	
 				<th>Data Count</th>
+				<th>Attribute Count</th>
 				<th>Download</th>
 				<th>Train and save model</th>
 				<th>Delete</th>
@@ -56,6 +57,8 @@
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
 				<td><c:out value = "${arffFiles.fileName}"/></td>
 				<td><c:out value = "${arffFiles.rowCount}"/></td>
+				<td><c:out value = "${arffFiles.colCount}"/></td>
+				
 				<td>
 					<a href="downloadArff.htm?id=${arffFiles.id}">
 						Download

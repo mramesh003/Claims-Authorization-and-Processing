@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.acc.dto.ArffFile;
+import com.acc.dto.CsvFile;
 import com.acc.dto.ModelFile;
 @Repository
 public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
@@ -28,12 +29,7 @@ public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
 		Query query = session.createQuery("select a from ArffFile a where a.id=:arffId ");
 		query.setParameter("arffId", arffId);
 		List<ArffFile> arffList = query.list();
-		for (ArffFile file : arffList) {
-			arffFile.setId(file.getId());
-			arffFile.setFileName(file.getFileName());
-			arffFile.setFileContent(file.getFileContent());
-		}
-		return arffFile;	
+		return (ArffFile)query.uniqueResult();	
 	}
 	
 	public void deleteArff(ArffFile arffFile) {
