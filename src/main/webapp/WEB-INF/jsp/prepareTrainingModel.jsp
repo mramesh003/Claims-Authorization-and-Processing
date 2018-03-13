@@ -47,6 +47,7 @@
 				<th>#</th>
 				<th>File Name</th>
 				<th>Data Count</th>
+				<th>Attribute Count</th>
 				<th>Download</th>
 				<th>Convert to ARFF</th>
 				<th>Delete</th>
@@ -58,6 +59,7 @@
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
 				<td><c:out value = "${csvFiles.fileName}"/></td>
 				<td><c:out value = "${csvFiles.rowCount}"/></td>
+				<td><c:out value = "${csvFiles.columnCount}"/></td>
 				<td>
 					<a href="downloadCsv.htm?id=${csvFiles.id}">
 						Download

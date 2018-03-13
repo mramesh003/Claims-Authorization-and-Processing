@@ -27,6 +27,7 @@ import com.acc.dto.ExcelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
 import com.acc.service.TrainModelService;
+import com.acc.utility.ColumnCount;
 import com.acc.utility.RowCount;
 
 @Controller
@@ -54,6 +55,7 @@ public class CSVController {
 		 InputStream inputStream = null;
 		 OutputStream outputstream = null;
 		 Integer rowcount = null;
+		 Integer columnCount = null;
 		 for(MultipartFile file : files)
 		 {
 			String fileName = file.getOriginalFilename();
@@ -63,13 +65,14 @@ public class CSVController {
 			outputstream = new FileOutputStream(new File(filePath));
 			outputstream.write(file.getBytes());
 			rowcount = RowCount.csvRowCount(filePath) - 1;
+			columnCount = ColumnCount.csvColumnCount(filePath);
 			byte[] csvfileData = IOUtils.toByteArray(inputStream);
-			
 			CsvFile csvFile = new CsvFile();
 			csvFile.setFileName(fileName);
 			csvFile.setFileContent(csvfileData);
 			csvFile.setExcelId(null);
 			csvFile.setRowCount(rowcount);
+			csvFile.setColumnCount(columnCount);
 			prepareTrainDataService.saveCsvFile(csvFile);
 		 }
 		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
@@ -91,7 +94,6 @@ public class CSVController {
 		response.setHeader("Content-disposition", "attachment; filename=" + fileName);
 		byte[] buffer = new byte[4096];
 		int bytesRead = -1;
-
 		while ((bytesRead = in.read(buffer)) != -1) {
 			outStream.write(buffer, 0, bytesRead);
 		}

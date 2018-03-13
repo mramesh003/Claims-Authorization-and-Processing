@@ -36,10 +36,7 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		query.setParameter("excelId", excelId);
 		List<ExcelFile> excelList = query.list();
 		for (ExcelFile file : excelList) {
-			excelFile.setId(file.getId());
-			excelFile.setFileName(file.getFileName());
-			excelFile.setFileContent(file.getFileContent());
-			excelFile.setRowcount(file.getRowcount());
+			excelFile = file;
 		}
 		return excelFile;	
 	}

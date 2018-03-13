@@ -33,6 +33,9 @@ public class CsvFile {
 	@Column(name = "rowcount")
 	private Integer rowCount;
 	
+	@Column(name = "columncount")
+	private Integer columnCount;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -81,5 +84,12 @@ public class CsvFile {
 		this.rowCount = rowCount;
 	}
 	
-		
+	public Integer getColumnCount() {
+		return columnCount;
+	}
+
+	public void setColumnCount(Integer columnCount) {
+		this.columnCount = columnCount;
+	}
+	
 }
