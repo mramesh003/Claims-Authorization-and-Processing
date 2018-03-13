@@ -70,7 +70,7 @@ public class TrainSaveModelController {
 
 		}
 
-		@RequestMapping("downloadArff.htm")
+	 @RequestMapping("downloadArff.htm")
 		public void downloadArff(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws IOException {
 			ArffFile arffFile = trainModelService.getArffFileById(Integer.valueOf(id));
 
@@ -78,9 +78,10 @@ public class TrainSaveModelController {
 			OutputStream outStream = response.getOutputStream();
 			String fileName = URLEncoder.encode(arffFile.getFileName(), "UTF-8");
 			fileName = URLDecoder.decode(fileName, "ISO8859_1");
+			int fileContentSize=arffFile.getFileContent().length;
 			response.setContentType("application/x-msdownload");
 			response.setHeader("Content-disposition", "attachment; filename=" + fileName);
-			byte[] buffer = new byte[4096];
+			byte[] buffer = new byte[fileContentSize];
 			int bytesRead = -1;
 
 			while ((bytesRead = in.read(buffer)) != -1) {

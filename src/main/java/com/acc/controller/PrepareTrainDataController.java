@@ -25,6 +25,7 @@ import com.acc.dto.ExcelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
 import com.acc.utility.ClaimsUtility;
+import com.acc.utility.ColumnCount;
 import com.acc.utility.RowCount;
 
 
@@ -53,19 +54,24 @@ public class PrepareTrainDataController {
 		 List<MultipartFile> files = uploadItem.getFile();
 		 InputStream inputStream = null;
 		 InputStream inputStream1 = null;
+		 InputStream inputStream2 = null;
 		 for(MultipartFile file : files)
 		 {
 			String fileName = file.getOriginalFilename();
 			inputStream = file.getInputStream();
 			inputStream1 = file.getInputStream();
+			inputStream2 = file.getInputStream();
 			ExcelFile excelFile = new ExcelFile();
 			int position = fileName.lastIndexOf(".");
 			String fileType = fileName.substring(position);
 			if (".xlsx".equals(fileType)) {
 				excelFile.setRowcount(RowCount.xlsxRowCount(inputStream));
+				excelFile.setColCount(ColumnCount.xlsxColumnCount(inputStream2));
+				
 			}
 			else if(".xls".equals(fileType)) {
 				excelFile.setRowcount(RowCount.xlsRowCount(inputStream));
+				excelFile.setColCount(ColumnCount.xlsColumnCount(inputStream2));
 			}
 			
 			byte[] excelfileData = IOUtils.toByteArray(inputStream1);
@@ -121,6 +127,7 @@ public class PrepareTrainDataController {
 		csvFile.setFileContent(csvData);
 		csvFile.setExcelId(excelFile.getId());
 		csvFile.setRowCount(excelFile.getRowcount());
+		csvFile.setColumnCount(excelFile.getColCount());
 		prepareTrainDataService.saveCsvFile(csvFile);
 		List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
 		modelandview.addObject("excelFiles", excelFiles);

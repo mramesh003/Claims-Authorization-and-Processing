@@ -52,6 +52,7 @@
 				<th>#</th>
 				<th>File Name</th>
 				<th>Data Count</th>
+				<th>Attribute Count</th>
 				<th>Download</th>
 				<th>Convert to CSV</th>
 				<th>Delete</th>
@@ -63,7 +64,7 @@
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
 				<td><c:out value = "${excelFiles.fileName}"/></td>
 				<td><c:out value = "${excelFiles.rowcount}"/></td> 
-				
+				<td><c:out value = "${excelFiles.colCount}"/></td> 
 				<td>
 					<a href="downloadExcel.htm?id=${excelFiles.id}">
 						Download
