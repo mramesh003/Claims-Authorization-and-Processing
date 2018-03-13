@@ -64,6 +64,7 @@ public class TrainModelServiceImpl implements TrainModelService {
 			ArffFile arffFile = new ArffFile();
 			arffFile.setFileName(arffilename);
 			arffFile.setFileContent(arffFileContent);
+			arffFile.setColCount(data.numAttributes());
 			arffFile.setRowCount(data.size());
 			arffFile.setCsvId(csvId);
 

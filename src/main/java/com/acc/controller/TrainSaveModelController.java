@@ -59,6 +59,7 @@ public class TrainSaveModelController {
 				ArffFile arffFile = new ArffFile();
 				arffFile.setFileName(fileName);
 				arffFile.setFileContent(arffFileContent);
+				arffFile.setColCount(data.numAttributes());
 				arffFile.setRowCount(data.size());
 				trainModelService.saveArffFile(arffFile);				
 			}
@@ -116,6 +117,7 @@ public class TrainSaveModelController {
 		ModelFile modelFile = new ModelFile();
 		modelFile.setFileContent(modelContent);
 		modelFile.setFileName(modelName);
+		modelFile.setColCount(arffFile.getColCount());
 		modelFile.setRowcount(arffFile.getRowCount());
 		modelFile.setArffId(arffFile.getId());
 		trainModelService.saveModel(modelFile);

@@ -31,6 +31,9 @@ public class ArffFile {
 	
 	@Column(name = "rowcount")
 	private Integer rowCount;	
+	
+	@Column(name="colcount")
+	private Integer colCount;
 
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(insertable=false,updatable=false,name="excelId")
@@ -100,6 +103,14 @@ public class ArffFile {
 
 	public void setRowCount(Integer rowCount) {
 		this.rowCount = rowCount;
+	}
+
+	public Integer getColCount() {
+		return colCount;
+	}
+
+	public void setColCount(Integer colCount) {
+		this.colCount = colCount;
 	}
 	
 }
