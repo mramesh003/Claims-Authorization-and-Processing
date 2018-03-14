@@ -28,3 +28,17 @@ create table modelfiles(id int(10) AUTO_INCREMENT, filename varchar(50), filecon
 
 --Arff ColumnCount 
 alter table arfffiles add column colcount integer(1000); 
+
+--Roles
+create table roles(id int(8) AUTO_INCREMENT, rolename varchar(50), primary key(id));
+
+--User
+create table user(id int(8) AUTO_INCREMENT, username varchar(50), password varchar(50), roleId int(8), primary key(id), FOREIGN KEY (roleId) REFERENCES roles(id));
+
+--Roles
+insert into roles values(1,'admin')
+insert into roles values(2,'user')
+
+--User
+insert into user values(1, 'user',2,'user')
+insert into user values(2, 'admin',1,'admin')
