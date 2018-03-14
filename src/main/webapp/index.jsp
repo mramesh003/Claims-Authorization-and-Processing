@@ -13,6 +13,6 @@
 </script>
 </head>
 <body onload="submit();">
-<form id = "defaultLoad" action = "prepareTrainData.htm"></form>
+<form id = "defaultLoad" action = "Login-redirect.htm"></form>
 </body>
 </html>  
