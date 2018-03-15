@@ -40,5 +40,5 @@ insert into roles values(1,'admin')
 insert into roles values(2,'user')
 
 --User
-insert into user values(1, 'user',2,'user')
-insert into user values(2, 'admin',1,'admin')
+insert into user values(1, 'user','user',2)
+insert into user values(2, 'admin','admin',1)
