@@ -2,5 +2,6 @@
 applications:
 - name: ClaimsAuthorizationAndProcessing
   memory: 1024M
-  buildpack: https://github.com/cloudfoundry/java-buildpack.git#830f4c3
+  instances: 1
+  random-route: true
   timeout: 60
