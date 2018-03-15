@@ -140,8 +140,8 @@ a {
 				<h2>Log In</h2>
 			</div>
 			<form action="login.htm" method="post">
-				User Name : <input type="text" name="Username" /><br>
-				<br> Password : <input type="password" name="pw" /><br>
+				User Name : <input type="text" name="Username" required /><br>
+				<br> Password : <input type="password" name="pw" required /><br>
 				<br> <input class="button" type="submit" value="Login" />
 			</form>
 		</div>
