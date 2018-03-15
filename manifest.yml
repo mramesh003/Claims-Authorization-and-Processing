@@ -1,0 +1,5 @@
+---
+applications:
+- name: ClaimsAuthorizationAndProcessing
+  memory: 2048M
+  timeout: 60
