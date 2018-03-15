@@ -1,0 +1,7 @@
+---
+applications:
+- name: ClaimsAuthorizationAndProcessing
+  memory: 1024M
+  instances: 1
+  random-route: true
+  timeout: 60
