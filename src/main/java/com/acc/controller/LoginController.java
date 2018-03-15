@@ -1,5 +1,7 @@
 package com.acc.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.acc.dto.ExcelFile;
 import com.acc.dto.User;
 import com.acc.service.LoginService;
+import com.acc.service.PrepareTrainDataService;
 
 @Controller
 public class LoginController {
 	@Autowired
 	LoginService LoginService;
+	
+	@Autowired
+	PrepareTrainDataService prepareTrainDataService;
 
 	static Logger log = Logger.getLogger(LoginController.class.getName());
 	@RequestMapping("Login-redirect.htm")
@@ -41,6 +48,8 @@ public class LoginController {
 			if(password.equals(user.getPassword()))
 			{
 				session.setAttribute("user", user);
+				List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
+                modelandview.addObject("excelFiles", excelFiles);
 				modelandview.setViewName("prepareTrainingData");
 			}
 		}
