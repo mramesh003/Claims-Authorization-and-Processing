@@ -31,6 +31,6 @@ public interface PrepareTrainDataService {
 	
 	public List<ArffFile> getArffByCsvId(Integer csvId);
 
-	
+	public List<CsvFile> listAllPythonCsv();
 
 }

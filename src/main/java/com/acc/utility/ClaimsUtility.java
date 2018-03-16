@@ -73,7 +73,7 @@ public class ClaimsUtility {
 	/**
 	 * takes 2 arguments: - XLSX input file - CSV output file
 	 */
-	public static byte[] XLSX2CSV(InputStream inputStream) throws IOException {
+	public static byte[] XLSX2CSV(InputStream inputStream,String language) throws IOException {
 		// For storing data into CSV files
 		StringBuffer cellValue = new StringBuffer();
 		byte[] csvData = null;
@@ -96,8 +96,11 @@ public class ClaimsUtility {
 				row = sheet.getRow(rownum);
 				for (int colnum = 0; colnum < ColumnCount; colnum++) {
 					cell = row.getCell(colnum);
-					if (cell == null) {
-						cellValue.append(" " + ",");
+					if (cell == null && language.equals("java")) {
+						cellValue.append("?" + ",");
+					}
+					if (cell == null && language.equals("python")) {
+						cellValue.append("" + ",");
 					}
 
 					else {
@@ -112,14 +115,19 @@ public class ClaimsUtility {
 							break;
 
 						case Cell.CELL_TYPE_STRING:
-							if (cell.getStringCellValue().equalsIgnoreCase("null"))
-								cellValue.append(" " + ",");
+							if (cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("java"))
+								cellValue.append("?" + ",");
+							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("python"))
+								cellValue.append("" + ",");
 							else
 								cellValue.append(cell.getStringCellValue() + ",");
 							break;
 
 						case Cell.CELL_TYPE_BLANK:
-							cellValue.append("" + ",");
+							if(language.equals("java"))
+								cellValue.append("?" + ",");
+							if(language.equals("python"))
+								cellValue.append("" + ",");
 							break;
 
 						default:
@@ -145,7 +153,7 @@ public class ClaimsUtility {
 	/**
 	 * takes 2 arguments: - XLS input file - CSV output file
 	 */
-	public static byte[] XLS2CSV(InputStream inputStream) throws IOException {
+	public static byte[] XLS2CSV(InputStream inputStream,String language) throws IOException {
 		// For storing data into CSV files
 		StringBuffer cellDData = new StringBuffer();
 		byte[] csvData = null;
@@ -180,11 +188,17 @@ public class ClaimsUtility {
 							break;
 
 						case Cell.CELL_TYPE_STRING:
-							cellDData.append(cell.getStringCellValue() + ",");
+							if (cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("java"))
+								cellDData.append("?" + ",");
+							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("python"))
+								cellDData.append("" + ",");
 							break;
 
 						case Cell.CELL_TYPE_BLANK:
-							cellDData.append("" + ",");
+							if(language.equals("java"))
+								cellDData.append("?" + ",");
+							if(language.equals("python"))
+								cellDData.append("" + ",");
 							break;
 
 						default:

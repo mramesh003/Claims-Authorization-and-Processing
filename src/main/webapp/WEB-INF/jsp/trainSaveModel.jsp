@@ -14,6 +14,7 @@
 <script>
 	$(document).ready(function(){
 	$('#arffTable').DataTable();
+	$('#csvTable').DataTable();
  });
  </script>
 
@@ -39,6 +40,8 @@
 		<input id = "submit" type="submit" value="save ARFF"  disabled>
 	</form>
 	<br>
+	<div>
+	Java
 	<table class="display jqueryDataTable" id="arffTable">
 		<thead>
 			<tr>
@@ -77,5 +80,47 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	</div>
+	<div>
+	Python
+	<table class="display jqueryDataTable" id="csvTable">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>File Name</th>	
+				<th>Data Count</th>
+				<th>Attribute Count</th>
+				<th>Download</th>
+				<th>Train and save model</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${csvFiles}" var = "csvFiles" varStatus = "loop">
+			<tr>
+				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
+				<td><c:out value = "${csvFiles.fileName}"/></td>
+				<td><c:out value = "${csvFiles.rowCount}"/></td>
+				<td><c:out value = "${csvFiles.columnCount}"/></td>
+				
+				<td>
+					<a href="downloadCsv.htm?id=${csvFiles.id}">
+						Download
+  						
+					</a>
+				</td> 
+				<td>
+					<a href="executeeModel.htm?id=${csvFiles.id}">Train and Save Model</a>
+				</td>
+				<td><a href="deletecsv.htm?id=${csvFiles.id}&page=trainSaveModel">				
+				<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;">
+				</a>
+				
+				</td>
+			</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	</div>
 </body>
 </html>

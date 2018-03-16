@@ -74,4 +74,9 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 		return prepareTrainDataDao.getArffFileByCsId(csvId);
 	}
 
+	@Transactional
+	public List<CsvFile> listAllPythonCsv() {
+		return prepareTrainDataDao.listAllPythonCsv();
+	}
+
 }

@@ -33,6 +33,8 @@ public interface PrepareTrainDataDao {
 	public void deleteExcel(ExcelFile excelFile);
 	
 	public List<ArffFile> getArffFileByCsId(Integer csvId);
+	
+	public List<CsvFile> listAllPythonCsv();
 
 	
 	

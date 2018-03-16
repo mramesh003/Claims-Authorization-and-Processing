@@ -21,5 +21,7 @@ public interface TrainModelService {
 	public ModelFile getModelById(Integer fileId);
     
     public List<ModelFile> listAllModels();
+    
+    public ModelFile getModelFileByArffId(Integer id);
 
 }
