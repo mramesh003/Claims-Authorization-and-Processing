@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -106,8 +107,8 @@ public class PrepareTrainDataController {
 		}
 	 }
 
-	 @RequestMapping("convertToCsv.htm")
-	 public ModelAndView convertToCsv(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
+	 @RequestMapping(value={"convertToCsv.htm"},method = RequestMethod.POST)
+	 public ModelAndView convertToCsv(HttpServletRequest request, @RequestParam("id") String id,@RequestParam("language") String language) throws IOException {
 		ModelAndView modelandview = new ModelAndView();
 		ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id));
 		int position = excelFile.getFileName().lastIndexOf(".");
@@ -115,10 +116,10 @@ public class PrepareTrainDataController {
 		InputStream inputStream = new ByteArrayInputStream(excelFile.getFileContent());
 		byte[] csvData = null;
 		if (".xlsx".equals(fileType)) {
-			csvData = ClaimsUtility.XLSX2CSV(inputStream);
+			csvData = ClaimsUtility.XLSX2CSV(inputStream,language);
 		}
 		else if (".xls".equals(fileType)) {
-			csvData = ClaimsUtility.XLS2CSV(inputStream);
+			csvData = ClaimsUtility.XLS2CSV(inputStream,language);
 		}
 		String csvName = excelFile.getFileName().substring(0, position) + ".csv";
 		log.info("csvName : " + csvName);
@@ -128,6 +129,10 @@ public class PrepareTrainDataController {
 		csvFile.setExcelId(excelFile.getId());
 		csvFile.setRowCount(excelFile.getRowcount());
 		csvFile.setColumnCount(excelFile.getColCount());
+		if(language.equals("java"))
+			csvFile.setIsJava(true);
+		else
+			csvFile.setIsJava(false);
 		prepareTrainDataService.saveCsvFile(csvFile);
 		List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
 		modelandview.addObject("excelFiles", excelFiles);

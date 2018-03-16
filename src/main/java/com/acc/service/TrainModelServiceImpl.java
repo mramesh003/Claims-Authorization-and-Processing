@@ -94,5 +94,10 @@ public class TrainModelServiceImpl implements TrainModelService {
            return trainModelDao.listAllModels();
     }
 
+    @Transactional
+	public ModelFile getModelFileByArffId(Integer id) {
+		return trainModelDao.getModelFileByArffId(id);
+	}
+
 
 }

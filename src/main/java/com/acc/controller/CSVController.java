@@ -100,21 +100,33 @@ public class CSVController {
 	 }
 	 
 	 @RequestMapping("deletecsv.htm")
-	 public ModelAndView deleteCsv(HttpServletRequest request)
+	 public ModelAndView deleteCsv(HttpServletRequest request,@RequestParam("id") String id,@RequestParam("page") String page)
 	 {
 		 ModelAndView modelandview = new ModelAndView();
-		 Integer id = Integer.valueOf(request.getParameter("id"));
-		 List<ArffFile> arffFileList = prepareTrainDataService.getArffByCsvId(id);
+		 List<ArffFile> arffFileList = prepareTrainDataService.getArffByCsvId(Integer.valueOf(id));
 		 if(arffFileList.size() != 0)
 			 modelandview.addObject("delete","error");
 		 else
 		 {			 
-			 CsvFile csvFile = prepareTrainDataService.getCsvFileById(id);
+			 CsvFile csvFile = prepareTrainDataService.getCsvFileById(Integer.valueOf(id));
 			 prepareTrainDataService.deleteCsv(csvFile);		
 		 }
-		 modelandview.setViewName("prepareTrainingModel");
-		 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
-         modelandview.addObject("csvFiles", csvFiles);
+		 if(page.equalsIgnoreCase("trainsavemodel"))
+		 {
+			 List<ArffFile> arffFiles = trainModelService.listAllArffs();
+		 		List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
+		 		modelandview.addObject("arffFiles", arffFiles);
+		 		modelandview.addObject("csvFiles", csvFiles); 
+		 }
+			 
+		 else if(page.equalsIgnoreCase("preparetrainingmodel"))
+		 {			 
+			 List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
+	         modelandview.addObject("csvFiles", csvFiles);
+		 }
+		 
+         
+         modelandview.setViewName(page);
 		 return modelandview;
 	 }
 	 

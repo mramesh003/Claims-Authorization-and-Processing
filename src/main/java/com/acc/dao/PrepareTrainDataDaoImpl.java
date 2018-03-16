@@ -70,7 +70,8 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 
 	public List<CsvFile> listAllCsvs() {
 		Session session = getSession();
-		Query query = session.createQuery("from CsvFile");
+		Query query = session.createQuery("select e from CsvFile e where e.isJava=:isJava");
+		query.setParameter("isJava",true);
 		return query.list();
 	}
 
@@ -91,6 +92,13 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		query.setParameter("csvId", csvId);
 		List<ArffFile> arffList = query.list();
 		return arffList;
+	}
+
+	public List<CsvFile> listAllPythonCsv() {
+		Session session = getSession();
+		Query query = session.createQuery("select e from CsvFile e where e.isJava=:isJava");
+		query.setParameter("isJava",false);
+		return query.list();
 	}
 
 }

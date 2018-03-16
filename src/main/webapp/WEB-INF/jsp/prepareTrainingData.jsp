@@ -34,6 +34,12 @@
 	$('#csvTable').DataTable();
  });
  </script>
+ <script>
+ function jsFunction(a)
+ {
+	 document.getElementById("language").value = a.value;
+ }
+ </script>
 </head>	
 <body>
 <h1>Prepare Training Data</h1><br>
@@ -54,6 +60,7 @@
 				<th>Data Count</th>
 				<th>Attribute Count</th>
 				<th>Download</th>
+				<th>Java/Python</th>
 				<th>Convert to CSV</th>
 				<th>Delete</th>
 			</tr>
@@ -68,11 +75,23 @@
 				<td>
 					<a href="downloadExcel.htm?id=${excelFiles.id}">
 						Download
-  						<!-- <img src="css/images/Excel.png" alt="Download" style="width:30px;height:28px;border:0;"> -->
-					</a>
+  					</a>
 				</td> 
 				<td>
-					<a href="convertToCsv.htm?id=${excelFiles.id}"> Convert</a>
+				<select  onchange="jsFunction(this);">
+					  <option value="python">Python</option>
+					  <option value="java">Java</option>
+				</select>
+				
+				</td>
+				
+				<td>
+					<form action="convertToCsv.htm" method="post">
+					<input type="hidden" name="language" id="language" value="python"/>
+					<input type="hidden" name="id" id="id" value="${excelFiles.id}"/>
+					<%-- <a href="convertToCsv.htm?id=${excelFiles.id}&language=${language}"> Convert</a> --%>
+					<button type="submit" value="convert" name="convert">Convert</button>
+					</form>
 				</td>
 				<td>
 					<a href="deleteExcel.htm?id=${excelFiles.id}">

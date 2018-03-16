@@ -19,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.acc.dto.ArffFile;
+import com.acc.dto.CsvFile;
 import com.acc.dto.ModelFile;
 import com.acc.entity.FileUpload;
+import com.acc.service.PrepareTrainDataService;
 import com.acc.service.TrainModelService;
 import com.acc.utility.ClaimsUtility;
 
@@ -32,12 +34,17 @@ public class TrainSaveModelController {
 	@Autowired
 	TrainModelService trainModelService;
 	
+	@Autowired
+	PrepareTrainDataService prepareTrainDataService;
+	
 	 @RequestMapping("trainSaveModel.htm")
      public ModelAndView trainSaveModel(HttpServletRequest request)
      {
 		ModelAndView modelandview = new ModelAndView();
 		List<ArffFile> arffFiles = trainModelService.listAllArffs();
+		List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
 		modelandview.addObject("arffFiles", arffFiles);
+		modelandview.addObject("csvFiles", csvFiles);
 		modelandview.setViewName("trainSaveModel");
 		return modelandview;
      }
@@ -65,6 +72,8 @@ public class TrainSaveModelController {
 			}
 			List<ArffFile> arffFiles = trainModelService.listAllArffs();
 			modelandview.addObject("arffFiles", arffFiles);
+			List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
+			modelandview.addObject("csvFiles", csvFiles);
 			modelandview.addObject("message", "successUpload");
 			modelandview.setViewName("trainSaveModel");
 			return modelandview;
@@ -100,6 +109,8 @@ public class TrainSaveModelController {
 			modelandview.setViewName("trainSaveModel");
 			List<ArffFile> arffFiles = trainModelService.listAllArffs();
 			modelandview.addObject("arffFiles", arffFiles);
+			List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
+			modelandview.addObject("csvFiles", csvFiles);
 			modelandview.addObject("message", "Deleted");
 			return modelandview;
 		}
@@ -123,6 +134,8 @@ public class TrainSaveModelController {
 		trainModelService.saveModel(modelFile);
 		List<ArffFile> arffFiles = trainModelService.listAllArffs();
 		modelandview.addObject("arffFiles", arffFiles);
+		List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
+		modelandview.addObject("csvFiles", csvFiles);
 		modelandview.setViewName("trainSaveModel");
 		return modelandview;
      }

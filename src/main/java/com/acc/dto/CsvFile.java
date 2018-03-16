@@ -36,6 +36,9 @@ public class CsvFile {
 	@Column(name = "columncount")
 	private Integer columnCount;
 	
+	@Column(name = "isjava")
+	private Boolean isJava;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -92,4 +95,12 @@ public class CsvFile {
 		this.columnCount = columnCount;
 	}
 	
+	public Boolean getIsJava() {
+		return isJava;
+	}
+
+	public void setIsJava(Boolean isJava) {
+		this.isJava = isJava;
+	}
+
 }

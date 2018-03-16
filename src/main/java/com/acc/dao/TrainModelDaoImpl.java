@@ -57,4 +57,11 @@ public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
         return query.list();
  }
 
+public ModelFile getModelFileByArffId(Integer id) {
+	Session session = getSession();
+    Query query = session.createQuery("select a from ModelFile a where a.arffId=:fileId ");
+    query.setParameter("fileId", id);
+    return (ModelFile)query.uniqueResult();
+}
+
 }
