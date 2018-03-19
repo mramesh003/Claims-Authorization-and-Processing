@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -29,17 +28,39 @@
 			alert("Selected Excel file cannot be deleted as it has CSV dependency");
 		</script>
 	</c:if>
+	
+
 <script>
-	$(document).ready(function(){
-	$('#csvTable').DataTable();
- });
- </script>
- <script>
- function jsFunction(a)
- {
-	 document.getElementById("language").value = a.value;
- }
- </script>
+       $(document).ready(function(){
+    	   
+    	   $('#excelTable').DataTable();
+         $(".convert").click(function(){
+           butId = $(this).attr('id');
+           var lastChar = butId.substr(7);
+           var selectId = "select_"+lastChar;
+           var language = $("#"+selectId).val();
+           var id= $("#"+butId).val();
+           $.ajax({
+               type: "POST",
+               url: "convertToCsv.htm",
+              dataType: 'text',
+   			   data:{excelId:id,
+   				language : language
+   			},
+               success: function (result) {
+                   alert("file conversion successfull");
+               },
+               error: function (result) {
+            	   alert("file conversion successfull");
+               }
+           });
+
+       }); 
+      
+});
+       
+</script>
+ 
 </head>	
 <body>
 <h1>Prepare Training Data</h1><br>
@@ -52,7 +73,8 @@
 		
 	</form>
 	<br>
-	<table class="display jqueryDataTable" id="csvTable">
+	<br>
+	<table class="display jqueryDataTable" id="excelTable">
 		<thead>
 			<tr>
 				<th>#</th>
@@ -78,25 +100,21 @@
   					</a>
 				</td> 
 				<td>
-				<select  onchange="jsFunction(this);">
+				<select  id="select_${loop.count}">
+					  <option value="" selected>Select Language</option>
 					  <option value="python">Python</option>
 					  <option value="java">Java</option>
 				</select>
 				
 				</td>
-				
-				<td>
-					<form action="convertToCsv.htm" method="post">
-					<input type="hidden" name="language" id="language" value="python"/>
-					<input type="hidden" name="id" id="id" value="${excelFiles.id}"/>
-					<%-- <a href="convertToCsv.htm?id=${excelFiles.id}&language=${language}"> Convert</a> --%>
-					<button type="submit" value="convert" name="convert">Convert</button>
-					</form>
-				</td>
+			
+				<td><Button class="convert" id = "button_${loop.count}" value="${excelFiles.id}">Convert</Button></td>
+					
 				<td>
 					<a href="deleteExcel.htm?id=${excelFiles.id}">
 					<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;"></a>
 				</td>
+				<%-- <td><input type="hidden" id="excelid_${loop.count}" value="${excelFiles.id}"></td> --%>
 			</tr>
 			</c:forEach>
 		</tbody>

@@ -134,6 +134,10 @@ a {
 </head>
 <body>
 	<div class="container">
+<div id="title" >
+		  <h1 align="center">Claims Authorization and Processing</h1>
+		</div> 
+ 
 
 		<div class="login-box animated fadeInUp">
 			<div class="box-header">

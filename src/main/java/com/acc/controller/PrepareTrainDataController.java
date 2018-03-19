@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -108,7 +109,7 @@ public class PrepareTrainDataController {
 	 }
 
 	 @RequestMapping(value={"convertToCsv.htm"},method = RequestMethod.POST)
-	 public ModelAndView convertToCsv(HttpServletRequest request, @RequestParam("id") String id,@RequestParam("language") String language) throws IOException {
+	 public String convertToCsv(HttpServletRequest request, @RequestParam("excelId") String id,@RequestParam("language") String language) throws IOException {
 		ModelAndView modelandview = new ModelAndView();
 		ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id));
 		int position = excelFile.getFileName().lastIndexOf(".");
@@ -134,11 +135,7 @@ public class PrepareTrainDataController {
 		else
 			csvFile.setIsJava(false);
 		prepareTrainDataService.saveCsvFile(csvFile);
-		List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
-		modelandview.addObject("excelFiles", excelFiles);
-		modelandview.setViewName("prepareTrainingData");
-		modelandview.addObject("message", "successConversion");
-		return modelandview;
+		return "success";
 	 }
 	 @RequestMapping("deleteExcel.htm")
 	 public ModelAndView deleteExcel(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
