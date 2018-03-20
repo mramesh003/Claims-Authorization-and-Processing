@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +27,7 @@ import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
 import com.acc.utility.ClaimsUtility;
 import com.acc.utility.ColumnCount;
+import com.acc.utility.ExcelUtility;
 import com.acc.utility.RowCount;
 
 
@@ -52,43 +52,63 @@ public class PrepareTrainDataController {
 	 
 	 @RequestMapping("uploadExcel.htm")
 	 public ModelAndView uploadExcel(HttpServletRequest request, FileUpload uploadItem) throws IOException {
-		 ModelAndView modelandview = new ModelAndView();
-		 List<MultipartFile> files = uploadItem.getFile();
-		 InputStream inputStream = null;
-		 InputStream inputStream1 = null;
-		 InputStream inputStream2 = null;
-		 for(MultipartFile file : files)
-		 {
-			String fileName = file.getOriginalFilename();
-			inputStream = file.getInputStream();
-			inputStream1 = file.getInputStream();
-			inputStream2 = file.getInputStream();
-			ExcelFile excelFile = new ExcelFile();
-			int position = fileName.lastIndexOf(".");
-			String fileType = fileName.substring(position);
-			if (".xlsx".equals(fileType)) {
-				excelFile.setRowcount(RowCount.xlsxRowCount(inputStream));
-				excelFile.setColCount(ColumnCount.xlsxColumnCount(inputStream2));
-				
+			ModelAndView modelandview = new ModelAndView();
+			List<MultipartFile> files = uploadItem.getFile();
+			InputStream inputStream = null;
+			InputStream inputStream1 = null;
+			InputStream inputStream2 = null;
+			for (MultipartFile file : files) {
+				String fileName = file.getOriginalFilename();
+				inputStream = file.getInputStream();
+				inputStream1 = file.getInputStream();
+				inputStream2 = file.getInputStream();
+				ExcelFile excelFile = new ExcelFile();
+				int position = fileName.lastIndexOf(".");
+				String fileType = fileName.substring(position);
+				ExcelFile dupeExcel = prepareTrainDataService.getExcelFileByName(fileName);
+				if (dupeExcel != null && dupeExcel.getFileContent() != null) {
+					if (".xlsx".equals(fileType)) {
+						ExcelFile appendFile = new ExcelFile();
+						byte[] appendContent = ExcelUtility.xlsxDataAppend(file.getInputStream(),
+								new ByteArrayInputStream(dupeExcel.getFileContent()));
+						appendFile.setFileName(fileName);
+						appendFile.setFileContent(appendContent);
+						appendFile.setRowcount(RowCount.xlsxRowCount(new ByteArrayInputStream(appendContent)));
+						appendFile.setColCount(dupeExcel.getColCount());
+						prepareTrainDataService.saveExcelFile(appendFile);
+					} else if (".xls".equals(fileType)) {
+						ExcelFile appendFile = new ExcelFile();
+						byte[] appendContent = ExcelUtility.xlsDataAppend(file.getInputStream(),
+								new ByteArrayInputStream(dupeExcel.getFileContent()));
+						appendFile.setFileName(fileName);
+						appendFile.setFileContent(appendContent);
+						appendFile.setRowcount(RowCount.xlsRowCount(new ByteArrayInputStream(appendContent)));
+						appendFile.setColCount(dupeExcel.getColCount());
+						prepareTrainDataService.saveExcelFile(appendFile);
+					}
+				} else {
+					if (".xlsx".equals(fileType)) {
+						excelFile.setRowcount(RowCount.xlsxRowCount(file.getInputStream()));
+						excelFile.setColCount(ColumnCount.xlsxColumnCount(file.getInputStream()));
+
+					} else if (".xls".equals(fileType)) {
+						excelFile.setRowcount(RowCount.xlsRowCount(file.getInputStream()));
+						excelFile.setColCount(ColumnCount.xlsColumnCount(file.getInputStream()));
+
+					}
+					byte[] excelfileData = IOUtils.toByteArray(file.getInputStream());
+					excelFile.setFileName(fileName);
+					excelFile.setFileContent(excelfileData);
+					prepareTrainDataService.saveExcelFile(excelFile);
+				}
+
 			}
-			else if(".xls".equals(fileType)) {
-				excelFile.setRowcount(RowCount.xlsRowCount(inputStream));
-				excelFile.setColCount(ColumnCount.xlsColumnCount(inputStream2));
-			}
-			
-			byte[] excelfileData = IOUtils.toByteArray(inputStream1);
-			excelFile.setFileName(fileName);
-			excelFile.setFileContent(excelfileData);
-			
-			prepareTrainDataService.saveExcelFile(excelFile);
-			
-		 }
-		 List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
-         modelandview.addObject("excelFiles", excelFiles);
-		 modelandview.addObject("message", "successUpload");
-		 modelandview.setViewName("prepareTrainingData");
-         return modelandview;
-	 }
+			List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
+			modelandview.addObject("excelFiles", excelFiles);
+			modelandview.addObject("message", "successUpload");
+			modelandview.setViewName("prepareTrainingData");
+			return modelandview;
+		}
 	 
 	 @RequestMapping("downloadExcel.htm")
 	 public void downloadExcel(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws IOException {
