@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
@@ -139,5 +141,22 @@ public class TrainSaveModelController {
 		modelandview.setViewName("trainSaveModel");
 		return modelandview;
      }
+	 
+	 @RequestMapping("executeeModel.htm")
+		public ModelAndView executeModel(HttpServletRequest request, HttpServletResponse response,
+				@RequestParam("id") String id) throws Exception {
+			String baseUrl = "http://localhost:5000/saveModel/";
+			String completeUrl = baseUrl + id;
+			URL url = new URL(completeUrl);
+			URLConnection urlcon = url.openConnection();
+			InputStream stream = urlcon.getInputStream();
+			ModelAndView modelandview = new ModelAndView();
+			List<ArffFile> arffFiles = trainModelService.listAllArffs();
+			modelandview.addObject("arffFiles", arffFiles);
+			List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
+			modelandview.addObject("csvFiles", csvFiles);		
+			modelandview.setViewName("trainSaveModel");
+			return modelandview;
+		}
 
 }
