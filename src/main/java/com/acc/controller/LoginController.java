@@ -48,9 +48,13 @@ public class LoginController {
 			if(password.equals(user.getPassword()))
 			{
 				session.setAttribute("user", user);
-				List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
-                modelandview.addObject("excelFiles", excelFiles);
-				modelandview.setViewName("prepareTrainingData");
+				if (user.getUserName() == "admin") {
+					List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
+					modelandview.addObject("excelFiles", excelFiles);
+					modelandview.setViewName("prepareTrainingData");
+				} else if (user.getUserName() == "user") {
+					modelandview.setViewName("userTestModel");
+				}
 			}
 		}
 		else
