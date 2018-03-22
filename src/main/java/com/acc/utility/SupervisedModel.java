@@ -1,8 +1,12 @@
 package com.acc.utility;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,34 +46,19 @@ public class SupervisedModel {
 		return results;
 	}
 
-	public static Map<String,Object> evaluateModel(ArffFile trainArffFile, ArffFile testArffFile) throws Exception {
-		ArffLoader loader = new ArffLoader();
-		loader.setSource(new ByteArrayInputStream(trainArffFile.getFileContent()));
-		Instances structure = loader.getDataSet();
-		structure.setClassIndex(structure.numAttributes() - 1);
-		Remove rm = new Remove();
-		rm.setAttributeIndices("1");
-		Classifier j48 = new J48();
-	    FilteredClassifier fc = new FilteredClassifier();
-	    fc.setFilter(rm);
-	    fc.setClassifier(j48);
-	    fc.buildClassifier(structure);
-		Evaluation eval = new Evaluation(structure);
+	public static Map<String,Object> evaluateModel(ModelFile trainModel, ArffFile testArffFile) throws Exception {
+		FileOutputStream outputstream = null;
+		String filePath = System.getProperty("java.io.tmpdir") + File.separator + "ModelFile.model";		
+		outputstream = new FileOutputStream(filePath);
+		outputstream.write(trainModel.getFileContent());
+		outputstream.close();
+	    FilteredClassifier cls = (FilteredClassifier)weka.core.SerializationHelper.read(filePath);
 		DataSource testSource = new DataSource(new ByteArrayInputStream(testArffFile.getFileContent()));
 		Instances testDataset = testSource.getDataSet();
 		testDataset.setClassIndex(testDataset.numAttributes() - 1);
-		eval.evaluateModel(j48, testDataset);
+		Evaluation eval = new Evaluation(testDataset);
+		eval.evaluateModel(cls, testDataset);
 		Map<String,Object> evaluationResult = new HashMap<String, Object>();
-		evaluationResult.put("AUC", eval.areaUnderROC(1));
-		evaluationResult.put("kappa",eval.kappa() );
-		evaluationResult.put("MAE", eval.meanAbsoluteError());
-		evaluationResult.put("RMSE",eval.meanAbsoluteError() );
-		evaluationResult.put("RAE", eval.relativeAbsoluteError());
-		evaluationResult.put("RRSE", eval.rootRelativeSquaredError());
-		evaluationResult.put("Precision",eval.precision(1) );
-		evaluationResult.put("Recall", eval.recall(1));
-		evaluationResult.put("fMeasure", eval.fMeasure(1));
-		evaluationResult.put("Error Rate", eval.errorRate());
 		evaluationResult.put("Evaluation results", eval.toSummaryString("Evaluation results:\n", false));
 		evaluationResult.put("Confusion Matrix", eval.toMatrixString("=== Overall Confusion Matrix ===\n"));
 		return evaluationResult;

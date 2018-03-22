@@ -34,23 +34,6 @@
                                 <put-attribute name="body"
                                                 value="/WEB-INF/jsp/trainSaveModel.jsp" />
                 </definition>
-                <definition name="testModel" extends="baseLayout">
-                                <put-attribute name="title" value="Test Model" />
-                                <put-attribute name="body"
-                                                value="/WEB-INF/jsp/testModel.jsp" />
-                </definition>
-                
-                <definition name="executeData" extends="baseLayout">
-                                <put-attribute name="title" value="Execute Data" />
-                                <put-attribute name="body"
-                                                value="/WEB-INF/jsp/executeData.jsp" />
-                </definition>
-                
-                <definition name="executeBatchData" extends="baseLayout">
-                                <put-attribute name="title" value="Execute Batch Data" />
-                                <put-attribute name="body"
-                                                value="/WEB-INF/jsp/executeBatchData.jsp" />
-                </definition>
                 
                  <definition name="userTestModel" extends="baseLayout">
                                 <put-attribute name="title" value="User Test Model" />
@@ -58,12 +41,7 @@
                                                 value="/WEB-INF/jsp/userTestModel.jsp" />
                 </definition>
                 
-                <definition name="connectToPython" extends="baseLayout">
-                                <put-attribute name="title" value="Connect To Python" />
-                                <put-attribute name="body"
-                                                value="/WEB-INF/jsp/connectToPython.jsp" />
-                </definition>
-                
+              
 </tiles-definitions>
 
 

@@ -133,6 +133,7 @@ public class TrainSaveModelController {
 		modelFile.setColCount(arffFile.getColCount());
 		modelFile.setRowcount(arffFile.getRowCount());
 		modelFile.setArffId(arffFile.getId());
+		modelFile.setFlag("java");
 		trainModelService.saveModel(modelFile);
 		List<ArffFile> arffFiles = trainModelService.listAllArffs();
 		modelandview.addObject("arffFiles", arffFiles);

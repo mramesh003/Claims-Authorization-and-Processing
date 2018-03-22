@@ -32,6 +32,9 @@ public class ModelFile {
 	
 	@Column(name = "arffId")
 	private Integer arffId;
+	
+	@Column(name = "flag")
+	private String flag;
 
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(insertable=false,updatable=false,name="arffId")
@@ -91,6 +94,14 @@ public class ModelFile {
 
 	public void setArffFile(ArffFile arffFile) {
 		this.arffFile = arffFile;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 	
 	

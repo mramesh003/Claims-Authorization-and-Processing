@@ -48,11 +48,11 @@ public class LoginController {
 			if(password.equals(user.getPassword()))
 			{
 				session.setAttribute("user", user);
-				if (user.getUserName().equals("admin")) {
+				if (user.getRoleId() == 1) {
 					List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
 					modelandview.addObject("excelFiles", excelFiles);
 					modelandview.setViewName("prepareTrainingData");
-				} else if (user.getUserName().equals("user")) {
+				} else if (user.getRoleId() == 2) {
 					modelandview.setViewName("userTestModel");
 				}
 			}

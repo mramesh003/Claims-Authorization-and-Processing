@@ -8,16 +8,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript" src="javascript/buttonDisable.js"></script>
 <title>User Test Model</title>
+
 <script>
 $(document).ready(function(){
        $("#result").hide();
        $("#result1").hide();
     });
-/* $(document).ready(function(){
-    $("#file").click(function(){
-        $("#result").show();
-    });
-}); */
+
 </script>
 <c:if test="${resultpage == 'yes' and isjava == 'yes'}">
 		<script>
@@ -35,7 +32,7 @@ $(document).ready(function(){
 	</c:if>	
 </head>
 <body>
-	<form action="evaluateExcelWithModel.htm" method="post"
+	<form name="evaluate" action="evaluateResults.xls" method="post"
 		enctype="multipart/form-data">
 		<label>Select Excel File :</label> <input id="file" name="file"
 			type="file">

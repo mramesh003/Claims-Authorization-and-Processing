@@ -51,9 +51,10 @@ public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
         return (ModelFile)query.uniqueResult();
  }
 
- public List<ModelFile> listAllModels() {
+ public List<ModelFile> listAllModelsOfJava() {
         Session session = getSession();
-        Query query = session.createQuery("select a from ModelFile a");
+        Query query = session.createQuery("select a from ModelFile a where a.flag=:flag");
+        query.setParameter("flag","java");
         return query.list();
  }
 

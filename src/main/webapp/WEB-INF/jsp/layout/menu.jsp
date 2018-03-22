@@ -40,7 +40,7 @@
 										Save Model</a></td>
 							</tr>
 
-							<tr>
+							<%-- <tr>
 								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
 									href="<c:url value="testModel.htm"/>">&nbsp;Test Model</a></td>
 							</tr>
@@ -54,19 +54,13 @@
 								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
 									href="<c:url value="executeBatchData.htm"/>">&nbsp;Execute
 										Batch Data</a></td>
-							</tr>
+							</tr> --%>
 						</c:if>
 						<tr>
 							<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
 								href="<c:url value="userTestModel.htm"/>">&nbsp;User Test
 									Model</a></td>
 						</tr>
-						<c:if test="${User.roleId == 1}">
-							<tr>
-								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
-									href="<c:url value="python.htm"/>">&nbsp;Connect To Python</a></td>
-							</tr>
-						</c:if>
 					</table>
 				</div>
 			</div>
