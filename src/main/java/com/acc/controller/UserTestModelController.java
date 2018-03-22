@@ -65,12 +65,12 @@ public class UserTestModelController {
 	 * = "redirect:/evaluateExcelWithModel.htm"; if(language.equals("python"))
 	 * redirect = "redirect:/evaluateExcelWithModel.htm"; return redirect; }
 	 */
-	@RequestMapping("evaluateExcelWithModel.htm")
+	@RequestMapping("evaluateResults.xls")
 	public ModelAndView evaluateExcelWithModel(HttpServletRequest request, FileUpload uploadItem,
 			@RequestParam("language") String language) throws IOException {
 		ModelAndView modelandview = new ModelAndView();
 		List<MultipartFile> files = uploadItem.getFile();
-
+		List<String> claimData = new ArrayList<String>();
 		InputStream inputStream = null;
 
 		for (MultipartFile file : files) {
@@ -125,7 +125,7 @@ public class UserTestModelController {
 				arffFile.setCsvId(csvFile.getId());
 				arffFile.setExcelId(csvFile.getExcelId());
 				trainModelService.saveArffFile(arffFile);
-				List<ModelFile> modelfiles = trainModelService.listAllModels();
+				List<ModelFile> modelfiles = trainModelService.listAllModelsOfJava();
 				ModelFile model = new ModelFile();
 				for (ModelFile file1 : modelfiles)
 					model = file1;
@@ -137,17 +137,14 @@ public class UserTestModelController {
 					e.printStackTrace();
 				}
 				Map<String, Object> evaluationResult = new HashMap<String, Object>();
-				ArffFile trainArffFile = trainModelService.getArffFileById(model.getArffId());
 				try {
-					evaluationResult = SupervisedModel.evaluateModel(trainArffFile, arffFile);
+					evaluationResult = SupervisedModel.evaluateModel(model, arffFile);
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				modelandview.addObject("results", results);
+				modelandview.addObject("results",results);
 				modelandview.addObject("evaluationResult", evaluationResult);
-				modelandview.addObject("isjava","yes");
 			}
 			if (language.equals("python"))
 			{
@@ -159,28 +156,20 @@ public class UserTestModelController {
 				String line = null;
 				StringBuilder sb = new StringBuilder();
 				BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-				List<List<String>> ListOfClaims = new ArrayList<List<String>>();
 				while ((line = br.readLine()) != null) {
 					sb.append(line);
 				}
 				String result = sb.toString();
-				String claims[] = result.split(";");
+				String claims[] = result.split(",");
 				for (int i = 0; i < claims.length; i++) {
-					List<String> claimData = new ArrayList<String>();
-					String x = claims[i];
-					String a = x.substring(1, x.length() - 1);
-					String claim[] = a.split(",");
-					for (int j = 0; j < claim.length; j++)
-						claimData.add(claim[j]);
-					ListOfClaims.add(claimData);
+					claimData.add(claims[0]);
 				}
-				modelandview.addObject("ListOfClaims", ListOfClaims);
-				modelandview.addObject("isjava","no");
+				modelandview.addObject("results",claimData);
 			}
 			
+			modelandview.addObject("excelFile",excelFile);
 		}
-		modelandview.addObject("resultpage", "yes");
-		modelandview.setViewName("userTestModel");
+		modelandview.setViewName("modelEvalReport");
 		return modelandview;
 	}
 }

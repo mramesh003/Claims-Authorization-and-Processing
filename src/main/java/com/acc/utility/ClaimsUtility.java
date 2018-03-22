@@ -100,7 +100,7 @@ public class ClaimsUtility {
 						cellValue.append("?" + ",");
 					}
 					if (cell == null && language.equals("python")) {
-						cellValue.append("" + ",");
+						cellValue.append(0 + ",");
 					}
 
 					else {
@@ -118,7 +118,7 @@ public class ClaimsUtility {
 							if (cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("java"))
 								cellValue.append("?" + ",");
 							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("python"))
-								cellValue.append("" + ",");
+								cellValue.append(0 + ",");
 							else
 								cellValue.append(cell.getStringCellValue() + ",");
 							break;
@@ -127,7 +127,7 @@ public class ClaimsUtility {
 							if(language.equals("java"))
 								cellValue.append("?" + ",");
 							if(language.equals("python"))
-								cellValue.append("" + ",");
+								cellValue.append(0 + ",");
 							break;
 
 						default:
@@ -172,8 +172,11 @@ public class ClaimsUtility {
 				row = sheet.getRow(rownum);
 				for (int colnum = 0; colnum < ColumnCount; colnum++) {
 					cell = row.getCell(colnum);
-					if (cell == null) {
-						cellDData.append(" " + ",");
+					if (cell == null && language.equals("java")) {
+						cellDData.append("?" + ",");
+					}
+					if (cell == null && language.equals("python")) {
+						cellDData.append(0 + ",");
 					}
 
 					else {
@@ -191,14 +194,14 @@ public class ClaimsUtility {
 							if (cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("java"))
 								cellDData.append("?" + ",");
 							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("python"))
-								cellDData.append("" + ",");
+								cellDData.append(0 + ",");
 							break;
 
 						case Cell.CELL_TYPE_BLANK:
 							if(language.equals("java"))
 								cellDData.append("?" + ",");
 							if(language.equals("python"))
-								cellDData.append("" + ",");
+								cellDData.append(0 + ",");
 							break;
 
 						default:

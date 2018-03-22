@@ -18,7 +18,7 @@ public interface TrainModelDao {
 
 	public ModelFile getModelById(Integer fileId);
     
-    public List<ModelFile> listAllModels();
+    public List<ModelFile> listAllModelsOfJava();
     
     public ModelFile getModelFileByArffId(Integer id);
 

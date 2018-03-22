@@ -12,8 +12,8 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.unsupervised.attribute.Remove;
 
 public class ModelEvaluate{
-	public static void main(String args[]) throws Exception{
-		/*File trainArffFile = new File("C:\\AISamplefiles\\SampleData\\Mocked_Data_Updated_single.arff");
+	public static void main(String args[]) throws Exception{/*
+		File trainArffFile = new File("C:\\AISamplefiles\\SampleData\\Mocked_Data_Updated_single.arff");
 		//File trainArffFile = new File("C:\\AISamplefiles\\SampleData\\weather.arff");
 		String trainArff = trainArffFile.getAbsolutePath();
 		System.out.println(trainArff);
@@ -28,7 +28,7 @@ public class ModelEvaluate{
 		
 		//create and build the classifier
 		J48 tree = new J48();
-		tree.buildClassifier(dataset);*/
+		tree.buildClassifier(dataset);
 		
 		File inputArffFile = new File("C:\\Users\\ilakkia.shanmugam\\Desktop\\MockedDataTrain.arff");
 	    
@@ -41,7 +41,7 @@ public class ModelEvaluate{
 
 	    FilteredClassifier cls = (FilteredClassifier) weka.core.SerializationHelper.read("C:\\AISamplefiles\\03012018\\MockedDataTrain.model");
 		
-	    /*   
+	       
 	    Remove rm = new Remove();
 	    rm.setAttributeIndices("1");  // remove 1st attribute
 	    // classifier
@@ -53,7 +53,7 @@ public class ModelEvaluate{
 	    fc.setFilter(rm);
 	    fc.setClassifier(j48);
 	    // train and make predictions
-	    fc.buildClassifier(structure);*/
+	    fc.buildClassifier(structure);
 		
 		Evaluation eval = new Evaluation(structure);
 		//Random rand = new Random(1);
@@ -74,7 +74,7 @@ public class ModelEvaluate{
 		//eval.crossValidateModel(tree, testDataset, folds, rand);
 		System.out.println(eval.toSummaryString("Evaluation results:\n", false));
 		
-		/*System.out.println("AUC % = "+eval.areaUnderROC(1));
+		System.out.println("AUC % = "+eval.areaUnderROC(1));
 		System.out.println("kappa % = "+eval.kappa());
 		System.out.println("MAE % = "+eval.meanAbsoluteError());
 		System.out.println("RMSE % = "+eval.rootMeanSquaredError());
@@ -82,10 +82,23 @@ public class ModelEvaluate{
 		System.out.println("RRSE % = "+eval.rootRelativeSquaredError());
 		System.out.println("Precision % = "+eval.precision(1));
 		System.out.println("Recall % = "+eval.recall(1));
-		System.out.println("fMeasure % = "+eval.fMeasure(1));*/
+		System.out.println("fMeasure % = "+eval.fMeasure(1));
 		System.out.println("Error Rate % = "+eval.errorRate());
 		
 		//the confusion matrix
 		System.out.println(eval.toMatrixString("\n=== Overall Confusion Matrix ===\n"));
+	*/
+		FilteredClassifier cls = (FilteredClassifier) weka.core.SerializationHelper.read("C:\\Users\\ilakkia.shanmugam\\Desktop\\MockedDataTrain.model");
+        File testArffFile = new File("C:\\Users\\ilakkia.shanmugam\\Desktop\\MockedDataTest.arff");
+        String testArff = testArffFile.getAbsolutePath();
+        DataSource testSource = new DataSource(testArff);
+        Instances testDataset = testSource.getDataSet();
+        testDataset.setClassIndex(testDataset.numAttributes() - 1);
+        Evaluation eval = new Evaluation(testDataset);
+        eval.evaluateModel(cls, testDataset);
+        System.out.println(eval.toSummaryString("Evaluation results:\n", false));
+        System.out.println("Error Rate % = "+eval.errorRate());
+        System.out.println(eval.toMatrixString("=== Overall Confusion Matrix ===\n"));
+	
 	}
 }

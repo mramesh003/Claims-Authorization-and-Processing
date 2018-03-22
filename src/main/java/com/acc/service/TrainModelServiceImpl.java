@@ -90,8 +90,8 @@ public class TrainModelServiceImpl implements TrainModelService {
     }
 
     @Transactional(readOnly = true)
-    public List<ModelFile> listAllModels() {
-           return trainModelDao.listAllModels();
+    public List<ModelFile> listAllModelsOfJava() {
+           return trainModelDao.listAllModelsOfJava();
     }
 
     @Transactional
