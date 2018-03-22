@@ -160,9 +160,9 @@ public class UserTestModelController {
 					sb.append(line);
 				}
 				String result = sb.toString();
-				String claims[] = result.split(",");
+				String claims[] = result.split(" ");
 				for (int i = 0; i < claims.length; i++) {
-					claimData.add(claims[0]);
+					claimData.add(claims[i]);
 				}
 				modelandview.addObject("results",claimData);
 			}
