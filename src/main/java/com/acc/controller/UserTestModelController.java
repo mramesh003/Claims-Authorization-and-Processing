@@ -35,8 +35,6 @@ import com.acc.utility.ColumnCount;
 import com.acc.utility.RowCount;
 import com.acc.utility.SupervisedModel;
 
-import weka.classifiers.Evaluation;
-
 @Controller
 public class UserTestModelController {
 
@@ -63,7 +61,7 @@ public class UserTestModelController {
 	 * evaluateModel(HttpServletRequest request,@RequestParam("language") String
 	 * language) { String redirect = null; if(language.equals("java")) redirect
 	 * = "redirect:/evaluateExcelWithModel.htm"; if(language.equals("python"))
-	 * redirect = "redirect:/evaluateExcelWithModel.htm"; return redirect; }
+	 * redirect = "redirect:/evaluateExcelWithModel.htm?eme"eme; return redirect; }
 	 */
 	@RequestMapping("evaluateResults.xls")
 	public ModelAndView evaluateExcelWithModel(HttpServletRequest request, FileUpload uploadItem,
@@ -152,6 +150,7 @@ public class UserTestModelController {
 				String completeUrl = baseUrl + csvFile.getId();
 				URL url = new URL(completeUrl);
 				URLConnection urlcon = url.openConnection();
+				Map<String, Object> evaluationResult = new HashMap<String, Object>();
 				InputStream stream = urlcon.getInputStream();
 				String line = null;
 				StringBuilder sb = new StringBuilder();
@@ -160,11 +159,18 @@ public class UserTestModelController {
 					sb.append(line);
 				}
 				String result = sb.toString();
-				String claims[] = result.split(",");
+				int index = result.indexOf("result");
+				String claimsStr = result.substring(0,index-1);
+				String confusionMatrixStr = result.substring(index + 6);
+				String confusionMatrix = confusionMatrixStr.replaceAll(",","\n");
+				evaluationResult.put("Evaluation results", " ");
+				evaluationResult.put("Confusion Matrix", confusionMatrix);
+				String claims[] = claimsStr.split(",");
 				for (int i = 0; i < claims.length; i++) {
 					claimData.add(claims[i]);
 				}
 				modelandview.addObject("results",claimData);
+				modelandview.addObject("evaluationResult", evaluationResult);
 			}
 			
 			modelandview.addObject("excelFile",excelFile);

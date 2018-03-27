@@ -41,7 +41,7 @@ public class SupervisedModel {
 			Instance newInst = testDataset.instance(i);
 			double predNB = cls.classifyInstance(newInst);
 			String predString = testDataset.classAttribute().value((int) predNB);
-			results.add(actual + "," + predString);
+			results.add(predString);
 		}
 		return results;
 	}
@@ -62,7 +62,7 @@ public class SupervisedModel {
 		evaluationResult.put("Evaluation results", eval.toSummaryString("Evaluation results:\n", false));
 		evaluationResult.put("Confusion Matrix", eval.toMatrixString("=== Overall Confusion Matrix ===\n"));
 		return evaluationResult;
-		
+
 	}
 
 }
