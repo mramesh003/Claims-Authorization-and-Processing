@@ -25,29 +25,22 @@ public class ModelEvalReport  extends AbstractExcelView  {
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workBook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ExcelFile excelFile  = (ExcelFile)model.get("excelFile");
-		//List<ExcelFile> excelFiles = (List<ExcelFile>)model.get("excelFile"); 
-		//String filename = ((ExcelFile)data.get("excelFile")).getFileName();
-		/*for(ExcelFile e : excelFiles)
-			excelFile = e;*/
      	List<String> predictionResult = (List<String>)model.get("results");
+     	Map<String,Object> evaluationResult = (Map<String,Object>)model.get("evaluationResult");
      	String fileName = excelFile.getFileName();
      	int position = fileName.lastIndexOf(".");
 		String fileType = fileName.substring(position);
 		
      	if (".xlsx".equals(fileType)) {
-     		xlsxReport(excelFile,predictionResult,workBook);
+     		xlsxReport(excelFile,predictionResult,evaluationResult,workBook);
      	}
      	else if(".xls".equals(fileType)) {
-     		xlsReport(excelFile,predictionResult,workBook);
+     		xlsReport(excelFile,predictionResult,evaluationResult,workBook);
      	}
      	
-     	HSSFSheet evaluationSheet = workBook.createSheet("Evaluation Result");
-     	HSSFRow header1 = evaluationSheet.createRow(0);
-     	header1.createCell(0).setCellValue("testing");
-	      
 	}
 
-	private void xlsxReport(ExcelFile excelFile, List<String> predictionResult, HSSFWorkbook workBook) {
+	private void xlsxReport(ExcelFile excelFile, List<String> predictionResult,Map<String,Object> evaluationResult, HSSFWorkbook workBook) {
 		try {
 			XSSFWorkbook wb = new XSSFWorkbook(new ByteArrayInputStream(excelFile.getFileContent()));
 			XSSFSheet sheet = wb.getSheetAt(0);
@@ -104,12 +97,24 @@ public class ModelEvalReport  extends AbstractExcelView  {
 				predictionRow.createCell(columnCount).setCellValue(predResult);
 				rownum++;
 			}
+			 
+			HSSFSheet predictionSheet1 = workBook.createSheet("Evaluation Result");
+			predictionSheet1.setDefaultColumnWidth(50);
+			predictionSheet1.setDefaultRowHeight((short) 100);
+			 HSSFRow header = predictionSheet1.createRow(1);
+		     header.createCell(0).setCellValue("Summary String");
+		     header.createCell(1).setCellValue("Confusion Matrix");
+		     
+		     HSSFRow result = predictionSheet1.createRow(2);
+		     result.createCell(0).setCellValue(evaluationResult.get("Evaluation results").toString());
+		     result.createCell(1).setCellValue(evaluationResult.get("Confusion Matrix").toString());
+		
 		} catch (Exception e) {
 
 		}
 	}
 
-	private void xlsReport(ExcelFile excelFile, List<String> predictionResult, HSSFWorkbook workBook) {
+	private void xlsReport(ExcelFile excelFile, List<String> predictionResult,Map<String,Object> evaluationResult, HSSFWorkbook workBook) {
 		try {
 			HSSFWorkbook wb = new HSSFWorkbook(new ByteArrayInputStream(excelFile.getFileContent()));
 			HSSFSheet sheet = wb.getSheetAt(0);
@@ -165,6 +170,19 @@ public class ModelEvalReport  extends AbstractExcelView  {
 				predictionRow.createCell(columnCount).setCellValue(predResult);
 				rownum++;
 			}
+			HSSFSheet predictionSheet1 = workBook.createSheet("Evaluation Result");
+			predictionSheet1.setDefaultColumnWidth(50);
+			predictionSheet1.setDefaultRowHeightInPoints(100000);
+			 HSSFRow header = predictionSheet1.createRow(1);
+		     header.createCell(0).setCellValue("Summary String");
+		     header.createCell(1).setCellValue("Confusion Matrix");
+		     
+		     HSSFRow result = predictionSheet1.createRow(2);
+		     result.createCell(0).setCellValue(evaluationResult.get("Evaluation results").toString());
+		     result.createCell(1).setCellValue(evaluationResult.get("Confusion Matrix").toString());
+		     
+		     
+			
 		}catch(Exception e) {
 			
 		}
