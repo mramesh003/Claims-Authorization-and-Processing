@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Prepare Training Model</title>
-<script type="text/javascript" src = "javascript/buttonDisable.js"></script>
+<!-- <script type="text/javascript" src = "javascript/buttonDisable.js"></script> -->
 <script type="text/javascript" src = "javascript/csvFileExtensionValidation.js"></script>
 <c:if test="${message == 'successUpload'}">
 	<script>
@@ -28,19 +28,20 @@
 		alert("Cannot delete CSV..");
 	</script>
 </c:if>
+
+</head>
+<body>
 <script>
 	$(document).ready(function() {
 		$('#csvTable').DataTable();
 	});
 </script>
-</head>
-<body>
 	<h1>Prepare Training Model</h1><br>
 	<!-- <form action="uploadCsv.htm" method="post" enctype="multipart/form-data">
 		<label>Select CSV file:</label><input id = "file" name="file" type="file"> <br> <br> 
 		<input id = "submit" type="submit" value="Upload CSV" disabled>
-	</form>
-	<br> -->
+	</form> -->
+	<br>
 	<table class="display jqueryDataTable" id="csvTable">
 		<thead>
 			<tr>

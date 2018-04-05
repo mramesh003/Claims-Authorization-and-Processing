@@ -8,7 +8,7 @@
 <title>Save Model</title>
 <script language="javascript" type="text/javascript" >
 </script>
-<script  type="text/javascript" src = "javascript/buttonDisable.js"></script>
+<!-- <script  type="text/javascript" src = "javascript/buttonDisable.js"></script> -->
 <script  type="text/javascript" src = "javascript/arffextensionvalidation.js"></script>
 
 <script>

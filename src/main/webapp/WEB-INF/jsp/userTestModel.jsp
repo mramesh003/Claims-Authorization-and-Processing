@@ -73,7 +73,7 @@ $(document).ready(function(){
 		</div>
 	</div>
 	
-	<div><img src="data:image/png;base64,${imagefile}"></div>
+	
 	
 	<div id="result1">
 		<div style="float: left; width: 20%">
