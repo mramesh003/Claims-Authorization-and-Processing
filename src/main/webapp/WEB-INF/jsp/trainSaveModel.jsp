@@ -23,7 +23,7 @@
 
 
 	<h1>Train And Save Model</h1><br>
-   <form action="uploadArff.htm" method="post" enctype="multipart/form-data" >
+  <%--  <form action="uploadArff.htm" method="post" enctype="multipart/form-data" >
    <c:if test="${message == 'successUpload'}">
 <div style="color:#556B2F" ><b> ARFF FILE SAVED SUCCESSFULLY</b>
 </div>
@@ -39,7 +39,7 @@
 		
 		<input id = "submit" type="submit" value="save ARFF"  disabled>
 	</form>
-	<br>
+	<br> --%>
 	<div>
 	Java
 	<table class="display jqueryDataTable" id="arffTable">
