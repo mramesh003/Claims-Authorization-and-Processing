@@ -101,7 +101,6 @@
 				</td> 
 				<td>
 				<select  id="select_${loop.count}">
-					  <option value="" selected>Select Language</option>
 					  <option value="python">Python</option>
 					  <option value="java">Java</option>
 				</select>

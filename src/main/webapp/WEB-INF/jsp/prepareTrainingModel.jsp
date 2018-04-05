@@ -36,11 +36,11 @@
 </head>
 <body>
 	<h1>Prepare Training Model</h1><br>
-	<form action="uploadCsv.htm" method="post" enctype="multipart/form-data">
+	<!-- <form action="uploadCsv.htm" method="post" enctype="multipart/form-data">
 		<label>Select CSV file:</label><input id = "file" name="file" type="file"> <br> <br> 
 		<input id = "submit" type="submit" value="Upload CSV" disabled>
 	</form>
-	<br>
+	<br> -->
 	<table class="display jqueryDataTable" id="csvTable">
 		<thead>
 			<tr>

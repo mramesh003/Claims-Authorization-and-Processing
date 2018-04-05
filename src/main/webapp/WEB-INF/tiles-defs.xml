@@ -40,6 +40,11 @@
                                 <put-attribute name="body"
                                                 value="/WEB-INF/jsp/userTestModel.jsp" />
                 </definition>
+                 <definition name="evaluationResults" extends="baseLayout">
+                                <put-attribute name="title" value="Evaluation Results" />
+                                <put-attribute name="body"
+                                                value="/WEB-INF/jsp/evaluationResults.jsp" />
+                </definition>
                 
               
 </tiles-definitions>

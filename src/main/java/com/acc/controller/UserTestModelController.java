@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,24 +55,22 @@ public class UserTestModelController {
 		modelandview.setViewName("userTestModel");
 		return modelandview;
 	}
+	@RequestMapping("generateReport.xls")
+	public ModelAndView redirect(HttpServletRequest request) {
+		ModelAndView modelandview = new ModelAndView();
+		modelandview.setViewName("modelEvalReport");
+		return modelandview;
+	}
 
-	// "redirect:/yourDestinationControllerPath"
-
-	/*
-	 * @RequestMapping("evaluateModel.htm") public String
-	 * evaluateModel(HttpServletRequest request,@RequestParam("language") String
-	 * language) { String redirect = null; if(language.equals("java")) redirect
-	 * = "redirect:/evaluateExcelWithModel.htm"; if(language.equals("python"))
-	 * redirect = "redirect:/evaluateExcelWithModel.htm?eme"eme; return redirect; }
-	 */
 	@RequestMapping("evaluateResults.xls")
 	public ModelAndView evaluateExcelWithModel(HttpServletRequest request, FileUpload uploadItem,
 			@RequestParam("language") String language) throws IOException {
 		ModelAndView modelandview = new ModelAndView();
+		
 		List<MultipartFile> files = uploadItem.getFile();
 		List<String> claimData = new ArrayList<String>();
 		InputStream inputStream = null;
-
+		HttpSession session = request.getSession(); 
 		for (MultipartFile file : files) {
 			String fileName = file.getOriginalFilename();
 			inputStream = file.getInputStream();
@@ -141,8 +141,10 @@ public class UserTestModelController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				modelandview.addObject("results",results);
-				modelandview.addObject("evaluationResult", evaluationResult);
+				session.setAttribute("excelFile",excelFile);
+				session.setAttribute("results",results);
+				session.setAttribute("evaluationResult", evaluationResult);
+				modelandview.setViewName("modelEvalReport");
 			}
 			if (language.equals("python"))
 			{
@@ -151,7 +153,7 @@ public class UserTestModelController {
 				URL url = new URL(completeUrl);
 				URLConnection urlcon = url.openConnection();
 				Map<String, Object> evaluationResult = new HashMap<String, Object>();
-				InputStream stream = urlcon.getInputStream();
+				InputStream stream = urlcon.getInputStream();				
 				String line = null;
 				StringBuilder sb = new StringBuilder();
 				BufferedReader br = new BufferedReader(new InputStreamReader(stream));
@@ -168,14 +170,30 @@ public class UserTestModelController {
 				String claims[] = claimsStr.split(",");
 				for (int i = 0; i < claims.length; i++) {
 					claimData.add(claims[i]);
-				}
-				modelandview.addObject("results",claimData);
-				modelandview.addObject("evaluationResult", evaluationResult);
+				}			
+				
+				
+				
+				session.setAttribute("results",claimData);
+				session.setAttribute("evaluationResult", evaluationResult);
+				session.setAttribute("excelFile",excelFile);
+				String baseUrl1 = "http://localhost:5000/getmatrix";
+				URL url1 = new URL(baseUrl1);
+				URLConnection urlcon1 = url1.openConnection();
+				InputStream stream1 = urlcon1.getInputStream();	
+				byte[] imageFile = IOUtils.toByteArray(stream1);
+				byte[] encodeBase64 = Base64.encode(imageFile);
+				String base64Encoded = new String(encodeBase64,"UTF-8");
+				modelandview.addObject("imagefile", base64Encoded);
+				modelandview.addObject("flag","yes");
+				modelandview.setViewName("evaluationResults");
+				
 			}
 			
-			modelandview.addObject("excelFile",excelFile);
+			
 		}
-		modelandview.setViewName("modelEvalReport");
+		//modelandview.setViewName("modelEvalReport");
+		//modelandview.setViewName("userTestModel");
 		return modelandview;
 	}
 }

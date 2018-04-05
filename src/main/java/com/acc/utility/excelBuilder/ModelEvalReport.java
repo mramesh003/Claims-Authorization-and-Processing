@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -24,9 +25,13 @@ public class ModelEvalReport  extends AbstractExcelView  {
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workBook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		ExcelFile excelFile  = (ExcelFile)model.get("excelFile");
+		/*ExcelFile excelFile  = (ExcelFile)model.get("excelFile");
      	List<String> predictionResult = (List<String>)model.get("results");
-     	Map<String,Object> evaluationResult = (Map<String,Object>)model.get("evaluationResult");
+     	Map<String,Object> evaluationResult = (Map<String,Object>)model.get("evaluationResult");*/
+     	HttpSession session = request.getSession();
+     	ExcelFile excelFile = (ExcelFile)session.getAttribute("excelFile");
+     	List<String> predictionResult = (List<String>)session.getAttribute("results");
+     	Map<String,Object> evaluationResult = (Map<String,Object>)session.getAttribute("evaluationResult");
      	String fileName = excelFile.getFileName();
      	int position = fileName.lastIndexOf(".");
 		String fileType = fileName.substring(position);
