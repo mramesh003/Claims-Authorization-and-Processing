@@ -12,8 +12,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from io import BytesIO
-import com.accenture.MLengine.database.db_connection as db
+import com.accenture.MLengine.database.dao as dao_layer
 import com.accenture.MLengine.graph.matrix as Plot
+
 
 class claim_adjudication:
 
@@ -43,8 +44,6 @@ class claim_adjudication:
 
         return X_Dataset,Y_Dataset;
 
-
-
     def multi_algo_result(self,X_train, Y_train):
         models = []
         models.append(('Linear Discriminant', LinearDiscriminantAnalysis()))
@@ -69,17 +68,10 @@ class claim_adjudication:
 
     def savemodel(self,dtc,csv_list):
         modelcontent = pickle.dumps(dtc)
-        connection =db_conn.dbconnection()
-        cursor = connection.cursor()
-        cursor.execute("insert into modelfiles(filename,filecontent,datacount,colcount,flag) values(%s,%s,%s,%s,%s)",(csv_list[0],modelcontent,csv_list[2],csv_list[1],"python"))
-        connection.commit()
+        dao_obj.save_Model(csv_list,modelcontent)
 
     def loadModel(self):
-            connection = db_conn.dbconnection()
-            cursor = connection.cursor()
-            query1 = ("SELECT filecontent from modelfiles where flag=%s order by id DESC limit 1")
-            cursor.execute(query1,('python',))
-            data = cursor.fetchone()
+            data = dao_obj.load_Model()
             model = pickle.loads(data[0])
             return model;
 
@@ -114,11 +106,7 @@ class claim_adjudication:
         return;
 
     def csvretrival(self,fileid):
-        connection =db_conn.dbconnection()
-        cursor = connection.cursor()
-        query1 = ("SELECT * from csvfiles where id = %s")
-        cursor.execute(query1,(fileid,))
-        data = cursor.fetchone()
+        data = dao_obj.csv_Retrival(fileid)
         filename = str(data[1])
         modelfile = filename.strip(".csv")
         modelname = modelfile + ".mdl"
@@ -181,7 +169,7 @@ class claim_adjudication:
 validation_size = 0.10
 
 #Object creation
-db_conn = db.db_Connection()
+dao_obj= dao_layer.daoClass()
 matrix_obj = Plot.plot()
 
 
