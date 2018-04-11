@@ -184,7 +184,7 @@ public class UserTestModelController {
 				}
 				String result = sb.toString();
 				int index = result.indexOf("result");
-				String claimsStr = result.substring(0,index-1);
+				String claimsStr = result.substring(0,index);
 				String confusionMatrixStr = result.substring(index + 6);
 				String confusionMatrix = confusionMatrixStr.replaceAll(",","\n");
 				evaluationResult.put("Evaluation results", " ");
@@ -209,14 +209,14 @@ public class UserTestModelController {
 				session.setAttribute("results",claimData);
 				session.setAttribute("evaluationResult", evaluationResult);
 				session.setAttribute("excelFile",excelFile);
-				String baseUrl1 = "http://localhost:5000/getmatrix";
+			/*	String baseUrl1 = "http://localhost:5000/getmatrix";
 				URL url1 = new URL(baseUrl1);
 				URLConnection urlcon1 = url1.openConnection();
 				InputStream stream1 = urlcon1.getInputStream();	
 				byte[] imageFile = IOUtils.toByteArray(stream1);
 				byte[] encodeBase64 = Base64.encode(imageFile);
 				String base64Encoded = new String(encodeBase64,"UTF-8");
-				/*modelandview.addObject("imagefile", base64Encoded);
+				modelandview.addObject("imagefile", base64Encoded);
 				modelandview.addObject("flag","yes");*/
 				modelandview.addObject("numberOfTestClaims",numberOfTestClaims );
 				modelandview.addObject("acceptCount", acceptCount);
