@@ -36,7 +36,7 @@
 			<td width="33%" style="vertical-align: middle;"><img height="60"
 				src="css/images/accenture-blue.jpg" id="logo" /></td>
 			<td width="33%" align="center" style="font-size: 24px"><b>Claims
-					Authorization And Processing</b></td>
+					AI Prediction Engine</b></td>
 			<!-- <td width="33%" align="right">
 				<table>
 					<tr>

@@ -135,7 +135,7 @@ a {
 <body>
 	<div class="container">
 <div id="title" >
-		  <h1 align="center">Claims Authorization and Processing</h1>
+		  <h1 align="center">Claims AI Prediction Engine</h1>
 		</div> 
  
 

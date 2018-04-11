@@ -15,7 +15,7 @@ class plot:
         plt.yticks(tick_marks, class_names)
         plot.plot_box_iteration(matrix, False)
         plt.tight_layout()
-        plt.ylabel('True label')
+        plt.ylabel('Expected label')
         plt.xlabel('Predicted label')
         plt.savefig('Results.png')
         plt.show()
