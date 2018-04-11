@@ -18,7 +18,7 @@ class plot:
         plt.ylabel('Expected label')
         plt.xlabel('Predicted label')
         plt.savefig('Results.png')
-        plt.show()
+        #plt.show()
 
     def plot_box_iteration(matrix, normalize=False):
         fmt = '.2f' if normalize else 'd'
