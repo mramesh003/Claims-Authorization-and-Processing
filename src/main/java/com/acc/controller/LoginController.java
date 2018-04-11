@@ -27,7 +27,7 @@ public class LoginController {
 	PrepareTrainDataService prepareTrainDataService;
 
 	static Logger log = Logger.getLogger(LoginController.class.getName());
-	@RequestMapping("Login-redirect.htm")
+	@RequestMapping("login-redirect.htm")
 	public ModelAndView loginRedirect(HttpServletRequest request, HttpServletResponse response )
 	{  
 		return new ModelAndView("login");

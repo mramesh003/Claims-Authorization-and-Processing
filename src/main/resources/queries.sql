@@ -42,3 +42,12 @@ insert into roles values(2,'user');
 -- User
 insert into user values(1, 'user','user',2);
 insert into user values(2, 'admin','admin',1);
+
+--Alter query for Blob to LongBlob
+
+alter table  excelfiles modify column filecontent LONGBLOB;
+alter table  csvfiles modify column filecontent LONGBLOB;
+alter table arfffiles modify column filecontent LONGBLOB;
+alter table  modelfiles modify column filecontent LONGBLOB; 
+ 
+

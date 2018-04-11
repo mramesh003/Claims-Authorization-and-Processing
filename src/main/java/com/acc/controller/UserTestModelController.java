@@ -71,6 +71,10 @@ public class UserTestModelController {
 		List<String> claimData = new ArrayList<String>();
 		InputStream inputStream = null;
 		HttpSession session = request.getSession(); 
+		int numberOfTestClaims = 0;
+		int acceptCount = 0;
+		int pendCount = 0;
+		int rejectCount = 0;
 		for (MultipartFile file : files) {
 			String fileName = file.getOriginalFilename();
 			inputStream = file.getInputStream();
@@ -87,14 +91,16 @@ public class UserTestModelController {
 				csvData = ClaimsUtility.XLSX2CSV(inputStream, language);
 				inputStream = file.getInputStream();
 				excelFile.setRowcount(RowCount.xlsxRowCount(inputStream));
+				numberOfTestClaims = RowCount.xlsxRowCount(file.getInputStream());
 				excelFile.setColCount(ColumnCount.xlsxColumnCount(file.getInputStream()));
 			} else if (".xls".equals(fileType)) {
 				csvData = ClaimsUtility.XLS2CSV(inputStream, language);
 				inputStream = file.getInputStream();
 				excelFile.setRowcount(RowCount.xlsRowCount(inputStream));
+				numberOfTestClaims = RowCount.xlsRowCount(file.getInputStream());
 				excelFile.setColCount(ColumnCount.xlsColumnCount(file.getInputStream()));
 			}
-
+			
 			prepareTrainDataService.saveExcelFile(excelFile);
 
 			CsvFile csvFile = new CsvFile();
@@ -141,10 +147,26 @@ public class UserTestModelController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				numberOfTestClaims = results.size();
+				for(String res : results)
+				{
+					if(res.equalsIgnoreCase("accept"))
+						acceptCount++;
+					if(res.equalsIgnoreCase("pend"))
+						pendCount++;
+					if(res.equalsIgnoreCase("reject"))
+						rejectCount++;
+					
+				}
 				session.setAttribute("excelFile",excelFile);
 				session.setAttribute("results",results);
 				session.setAttribute("evaluationResult", evaluationResult);
-				modelandview.setViewName("modelEvalReport");
+				modelandview.addObject("numberOfTestClaims",numberOfTestClaims );
+				modelandview.addObject("acceptCount", acceptCount);
+				modelandview.addObject("pendCount",pendCount );
+				modelandview.addObject("rejectCount", rejectCount);
+				modelandview.setViewName("evalResultDisplay");
+				//modelandview.setViewName("modelEvalReport");
 			}
 			if (language.equals("python"))
 			{
@@ -168,8 +190,18 @@ public class UserTestModelController {
 				evaluationResult.put("Evaluation results", " ");
 				evaluationResult.put("Confusion Matrix", confusionMatrix);
 				String claims[] = claimsStr.split(",");
+				numberOfTestClaims = claims.length;
+				acceptCount = 0;
+				pendCount = 0;
+				rejectCount = 0;
 				for (int i = 0; i < claims.length; i++) {
 					claimData.add(claims[i]);
+					if(claims[i].equalsIgnoreCase("accept"))
+						acceptCount++;
+					if(claims[i].equalsIgnoreCase("pend"))
+						pendCount++;
+					if(claims[i].equalsIgnoreCase("reject"))
+						rejectCount++;
 				}			
 				
 				
@@ -184,9 +216,13 @@ public class UserTestModelController {
 				byte[] imageFile = IOUtils.toByteArray(stream1);
 				byte[] encodeBase64 = Base64.encode(imageFile);
 				String base64Encoded = new String(encodeBase64,"UTF-8");
-				modelandview.addObject("imagefile", base64Encoded);
-				modelandview.addObject("flag","yes");
-				modelandview.setViewName("evaluationResults");
+				/*modelandview.addObject("imagefile", base64Encoded);
+				modelandview.addObject("flag","yes");*/
+				modelandview.addObject("numberOfTestClaims",numberOfTestClaims );
+				modelandview.addObject("acceptCount", acceptCount);
+				modelandview.addObject("pendCount",pendCount );
+				modelandview.addObject("rejectCount", rejectCount);
+				modelandview.setViewName("evalResultDisplay");
 				
 			}
 			

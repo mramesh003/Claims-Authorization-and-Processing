@@ -95,11 +95,11 @@ public class ModelEvalReport  extends AbstractExcelView  {
 
 			}
 			HSSFRow predictionHeader = predictionSheet.getRow(0);
-			predictionHeader.createCell(columnCount).setCellValue("Predicted Result");
+			predictionHeader.createCell(columnCount - 1).setCellValue("Predicted Result");
 			int rownum = 1;
 			for (String predResult : predictionResult) {
 				HSSFRow predictionRow = predictionSheet.getRow(rownum);
-				predictionRow.createCell(columnCount).setCellValue(predResult);
+				predictionRow.createCell(columnCount - 1).setCellValue(predResult);
 				rownum++;
 			}
 			 
@@ -168,11 +168,11 @@ public class ModelEvalReport  extends AbstractExcelView  {
 				}
 			}
 			HSSFRow predictionHeader = predictionSheet.getRow(0);
-			predictionHeader.createCell(columnCount).setCellValue("Predicted Result");
+			predictionHeader.createCell(columnCount - 1).setCellValue("Predicted Result");
 			int rownum = 1;
 			for (String predResult : predictionResult) {
 				HSSFRow predictionRow = predictionSheet.getRow(rownum);
-				predictionRow.createCell(columnCount).setCellValue(predResult);
+				predictionRow.createCell(columnCount - 1).setCellValue(predResult);
 				rownum++;
 			}
 			HSSFSheet predictionSheet1 = workBook.createSheet("Evaluation Result");
