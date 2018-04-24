@@ -30,10 +30,10 @@ class claim_adjudication:
 
         # Split-out validation dataset
         array = dataset.values
-        X_Dataset= array[:,0:25]
-        Y_Dataset = array[:,25]
+        X_Dataset= array[:,0:22]
+        Y_Dataset = array[:,22]
 
-        str_val = [2,4,6,8,11,12,13,18,19,20,21,23]
+        str_val = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 
         warnings.simplefilter("ignore", UserWarning)
 
@@ -117,12 +117,10 @@ class claim_adjudication:
         csv_bytecontent = bytes(csv_filecontent, 'utf-8')
         csv_buffercontent = BytesIO(csv_bytecontent)
 
-        names = ['Billing National Provider Identification Number',
-             'Insured Policy Number for Subscriber',
+        names = ['Insured Policy Number for Subscriber',
              'Subscriber State',
              'Subscriber Postal Code',
              'Subscriber Birth Date',
-             'Payer Identification',
              'Patient State',
              'Patient Zip Code',
              'Patientâ€™s Birth Date',
@@ -132,7 +130,6 @@ class claim_adjudication:
              'Principal Diagnosis Code',
              'Admitting Diagnosis Code',
              'Attending Provider NPI',
-             'Rendering Provider NPI',
              'Reffering provider NPI',
              'Revenue Code',
              'CPT Procedure Code',
