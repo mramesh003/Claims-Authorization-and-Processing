@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
+import com.acc.dto.ModelFile;
 
 @Repository
 public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrainDataDao{
@@ -99,6 +100,15 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		Query query = session.createQuery("select e from CsvFile e where e.isJava=:isJava");
 		query.setParameter("isJava",false);
 		return query.list();
+	}
+	
+	public List<ModelFile> getModelFileByCsvId(Integer csvId){
+		Session session = getSession();
+		ModelFile modelFile = new ModelFile();
+		Query query = session.createQuery("select e from ModelFile e where e.csvId=:csvId");
+		query.setParameter("csvId", csvId);
+		List<ModelFile> modelFileList = query.list();
+		return modelFileList;
 	}
 
 }

@@ -16,8 +16,18 @@
 	$('#arffTable').DataTable();
 	$('#csvTable').DataTable();
  });
- </script>
 
+ </script>
+ <c:if test="${delete == 'error'}">
+	<script>
+		alert("Model file is saved to DB.,so cannot delete ARFF..");
+	</script>
+</c:if>
+ <c:if test="${deleteCsv == 'error'}">
+	<script>
+		alert("Model file is saved to DB.,so cannot delete CSV..");
+	</script>
+</c:if>
 </head>
 <body>
 

@@ -13,7 +13,7 @@ class daoClass:
     def save_Model(self,csv_list,modelcontent):
         connection = db_conn.dbconnection()
         cursor = connection.cursor()
-        cursor.execute("insert into modelfiles(filename,filecontent,datacount,colcount,flag) values(%s,%s,%s,%s,%s)",(csv_list[0], modelcontent, csv_list[2], csv_list[1], "python"))
+        cursor.execute("insert into modelfiles(filename,filecontent,datacount,colcount,csvId,flag) values(%s,%s,%s,%s,%s,%s)",(csv_list[1], modelcontent, csv_list[3], csv_list[2],csv_list[0],"python"))
         connection.commit()
 
     def csv_Retrival(self,fileid):

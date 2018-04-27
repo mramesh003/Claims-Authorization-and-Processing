@@ -75,7 +75,7 @@ class claim_adjudication:
             model = pickle.loads(data[0])
             return model;
 
-    def executeModel(self,result, X_validationset,  Y_validationset):
+    def executeModelWithConfMatrix(self,result, X_validationset,  Y_validationset):
         predictions = result.predict(X_validationset)
         print("                           ")
         print("===========================")
@@ -95,6 +95,15 @@ class claim_adjudication:
         print(classification_report(Y_validationset, predictions))
         return predictions,cnf_matrix;
 
+    def executeModel(self, result, X_validationset, Y_validationset):
+        predictions = result.predict(X_validationset)
+        print(predictions)
+        print("                           ")
+        print("===========================")
+        print("Model Prediction End Result")
+        print("===========================")
+
+        return predictions, "";
 
     def generatePlot(self,results, names):
         fig = plt.figure()
@@ -113,7 +122,7 @@ class claim_adjudication:
         columncount = data[4]
         datacount = data[5]
         csv_filecontent = str(data[2], 'ISO-8859-1')
-        csv_list = [modelname,datacount,columncount]
+        csv_list = [fileid,modelname,datacount,columncount]
         csv_bytecontent = bytes(csv_filecontent, 'utf-8')
         csv_buffercontent = BytesIO(csv_bytecontent)
 
