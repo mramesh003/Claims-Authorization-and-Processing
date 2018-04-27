@@ -49,5 +49,12 @@ alter table  excelfiles modify column filecontent LONGBLOB;
 alter table  csvfiles modify column filecontent LONGBLOB;
 alter table arfffiles modify column filecontent LONGBLOB;
 alter table  modelfiles modify column filecontent LONGBLOB; 
+
+
+ALTER TABLE modelfiles ADD COLUMN csvId INT (10);
+
+ALTER TABLE modelfiles ADD FOREIGN KEY (csvId) REFERENCES csvfiles(id); 
+ 
+
  
 

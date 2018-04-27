@@ -6,6 +6,7 @@ import java.util.List;
 import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
+import com.acc.dto.ModelFile;
 
 public interface PrepareTrainDataService {
 	
@@ -32,5 +33,7 @@ public interface PrepareTrainDataService {
 	public List<ArffFile> getArffByCsvId(Integer csvId);
 
 	public List<CsvFile> listAllPythonCsv();
+	
+	public List<ModelFile> getModelFileByCsvId(Integer csvId);
 
 }

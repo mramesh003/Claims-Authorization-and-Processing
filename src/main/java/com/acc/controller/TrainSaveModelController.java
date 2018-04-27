@@ -107,7 +107,14 @@ public class TrainSaveModelController {
 			ModelAndView modelandview = new ModelAndView();
 			Integer id = Integer.valueOf(request.getParameter("id"));
 			ArffFile arffFile = trainModelService.getArffFileById(id);
-			trainModelService.deleteArff(arffFile);		 
+			ModelFile modelfile = trainModelService.getModelFileByArffId(id);
+			if(modelfile != null){
+				modelandview.addObject("delete","error"); 
+			}
+			else {
+				trainModelService.deleteArff(arffFile);		
+			}
+			
 			modelandview.setViewName("trainSaveModel");
 			List<ArffFile> arffFiles = trainModelService.listAllArffs();
 			modelandview.addObject("arffFiles", arffFiles);

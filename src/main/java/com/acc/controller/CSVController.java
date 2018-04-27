@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
+import com.acc.dto.ModelFile;
 import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
 import com.acc.service.TrainModelService;
@@ -104,8 +105,13 @@ public class CSVController {
 	 {
 		 ModelAndView modelandview = new ModelAndView();
 		 List<ArffFile> arffFileList = prepareTrainDataService.getArffByCsvId(Integer.valueOf(id));
-		 if(arffFileList.size() != 0)
+		 List<ModelFile> modelfileList= prepareTrainDataService.getModelFileByCsvId(Integer.valueOf(id));
+		 if(arffFileList.size() != 0 ) {
 			 modelandview.addObject("delete","error");
+		 }
+		 else if(modelfileList.size() != 0) {
+			 modelandview.addObject("deleteCsv","error");
+		 }
 		 else
 		 {			 
 			 CsvFile csvFile = prepareTrainDataService.getCsvFileById(Integer.valueOf(id));

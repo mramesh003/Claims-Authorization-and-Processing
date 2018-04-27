@@ -11,6 +11,7 @@ import com.acc.dao.PrepareTrainDataDao;
 import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
+import com.acc.dto.ModelFile;
 import com.acc.service.PrepareTrainDataService;
 
 @Service
@@ -78,5 +79,11 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 	public List<CsvFile> listAllPythonCsv() {
 		return prepareTrainDataDao.listAllPythonCsv();
 	}
+	
+	@Transactional
+	public List<ModelFile> getModelFileByCsvId(Integer csvId) {
+		return prepareTrainDataDao.getModelFileByCsvId(csvId);
+	}
+	
 
 }

@@ -33,12 +33,20 @@ public class ModelFile {
 	@Column(name = "arffId")
 	private Integer arffId;
 	
+	@Column(name="csvId")
+	private Integer csvId;
+	
 	@Column(name = "flag")
 	private String flag;
 
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(insertable=false,updatable=false,name="arffId")
 	private ArffFile arffFile;
+
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(insertable=false,updatable=false,name="csvId")
+	private CsvFile csvFile;
+	
 
 	public Integer getId() {
 		return id;
@@ -103,8 +111,22 @@ public class ModelFile {
 	public void setFlag(String flag) {
 		this.flag = flag;
 	}
-	
-	
+
+	public Integer getCsvId() {
+		return csvId;
+	}
+
+	public void setCsvId(Integer csvId) {
+		this.csvId = csvId;
+	}
+
+	public CsvFile getCsvFile() {
+		return csvFile;
+	}
+
+	public void setCsvFile(CsvFile csvFile) {
+		this.csvFile = csvFile;
+	}
 	
 
 }
