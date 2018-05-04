@@ -2,6 +2,7 @@ import com.accenture.MLengine.database.db_connection as db
 
 class daoClass:
 
+
     def load_Model(self):
         connection = db_conn.dbconnection()
         cursor = connection.cursor()
@@ -21,6 +22,14 @@ class daoClass:
      cursor = connection.cursor()
      query1 = ("SELECT * from csvfiles where id = %s")
      cursor.execute(query1, (fileid,))
+     data = cursor.fetchone()
+     return data;
+
+    def csv_LatestRetrival(self):
+     connection = db_conn.dbconnection()
+     cursor = connection.cursor()
+     query1 = ("SELECT * from csvfiles order by id DESC limit 1")
+     cursor.execute(query1)
      data = cursor.fetchone()
      return data;
 

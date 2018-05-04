@@ -1,4 +1,4 @@
-import pandas
+﻿import pandas
 import pickle
 import warnings
 import matplotlib.pyplot as plt
@@ -14,7 +14,6 @@ from sklearn.naive_bayes import GaussianNB
 from io import BytesIO
 import com.accenture.MLengine.database.dao as dao_layer
 import com.accenture.MLengine.graph.matrix as Plot
-
 
 class claim_adjudication:
 
@@ -171,6 +170,7 @@ class claim_adjudication:
         predictions,cnfmatrix = self.executeModel(result, X, Y)
         predictions_confmatrix = ','.join(str(e) for e in predictions) + "result" + ','.join(str(e) for e in cnfmatrix) +"result"
         return predictions_confmatrix;
+
 #-----------------------------------------------------------------------------------
 validation_size = 0.10
 
