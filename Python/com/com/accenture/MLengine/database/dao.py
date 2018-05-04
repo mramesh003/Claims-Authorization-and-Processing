@@ -24,5 +24,13 @@ class daoClass:
      data = cursor.fetchone()
      return data;
 
+    def csv_LatestRetrival(self):
+     connection = db_conn.dbconnection()
+     cursor = connection.cursor()
+     query1 = ("SELECT * from csvfiles order by id DESC limit 1")
+     cursor.execute(query1)
+     data = cursor.fetchone()
+     return data;
+
 #Object creation
 db_conn = db.db_Connection()
