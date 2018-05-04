@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class plot:
-
     def plot_confusion_matrix(self,matrix):
         class_names = ['Accept', 'Pend', 'Reject']
         confusion_matrix = plt.cm.Blues

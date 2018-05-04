@@ -1,4 +1,4 @@
-import pandas
+﻿import pandas
 import pickle
 import warnings
 import matplotlib.pyplot as plt
@@ -14,7 +14,6 @@ from sklearn.naive_bayes import GaussianNB
 from io import BytesIO
 import com.accenture.MLengine.database.dao as dao_layer
 import com.accenture.MLengine.graph.matrix as Plot
-
 
 class claim_adjudication:
 

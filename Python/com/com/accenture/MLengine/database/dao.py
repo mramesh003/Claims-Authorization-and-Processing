@@ -2,6 +2,7 @@ import com.accenture.MLengine.database.db_connection as db
 
 class daoClass:
 
+
     def load_Model(self):
         connection = db_conn.dbconnection()
         cursor = connection.cursor()
