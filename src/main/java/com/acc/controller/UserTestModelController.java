@@ -2,7 +2,6 @@ package com.acc.controller;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +32,7 @@ import com.acc.service.TestModelService;
 import com.acc.service.TrainModelService;
 import com.acc.utility.ClaimsUtility;
 import com.acc.utility.ColumnCount;
+import com.acc.utility.ExcelUtility;
 import com.acc.utility.RowCount;
 import com.acc.utility.SupervisedModel;
 
@@ -64,9 +63,9 @@ public class UserTestModelController {
 
 	@RequestMapping("evaluateResults.xls")
 	public ModelAndView evaluateExcelWithModel(HttpServletRequest request, FileUpload uploadItem,
-			@RequestParam("language") String language) throws IOException {
+			@RequestParam("language") String language) throws Exception {
 		ModelAndView modelandview = new ModelAndView();
-		
+
 		List<MultipartFile> files = uploadItem.getFile();
 		List<String> claimData = new ArrayList<String>();
 		InputStream inputStream = null;
@@ -82,6 +81,7 @@ public class UserTestModelController {
 			String fileType = fileName.substring(position);
 			byte[] excelData = null;
 			excelData = IOUtils.toByteArray(inputStream);
+			session.setAttribute("sourcefile", excelData);
 			ExcelFile excelFile = new ExcelFile();
 			excelFile.setFileName(fileName);
 			excelFile.setFileContent(excelData);
@@ -100,9 +100,7 @@ public class UserTestModelController {
 				numberOfTestClaims = RowCount.xlsRowCount(file.getInputStream());
 				excelFile.setColCount(ColumnCount.xlsColumnCount(file.getInputStream()));
 			}
-			
 			prepareTrainDataService.saveExcelFile(excelFile);
-
 			CsvFile csvFile = new CsvFile();
 			String csvName = excelFile.getFileName().substring(0, position) + ".csv";
 			csvFile.setFileName(csvName);
@@ -115,7 +113,6 @@ public class UserTestModelController {
 			if (language.equals("python"))
 				csvFile.setIsJava(false);
 			prepareTrainDataService.saveCsvFile(csvFile);
-
 			if (language.equals("java")) {
 
 				byte[] arffData = null;
@@ -156,7 +153,7 @@ public class UserTestModelController {
 						pendCount++;
 					if(res.equalsIgnoreCase("reject"))
 						rejectCount++;
-					
+
 				}
 				session.setAttribute("excelFile",excelFile);
 				session.setAttribute("results",results);
@@ -203,13 +200,10 @@ public class UserTestModelController {
 					if(claims[i].equalsIgnoreCase("reject"))
 						rejectCount++;
 				}			
-				
-				
-				
 				session.setAttribute("results",claimData);
 				session.setAttribute("evaluationResult", evaluationResult);
 				session.setAttribute("excelFile",excelFile);
-			/*	String baseUrl1 = "http://localhost:5000/getmatrix";
+				/*	String baseUrl1 = "http://localhost:5000/getmatrix";
 				URL url1 = new URL(baseUrl1);
 				URLConnection urlcon1 = url1.openConnection();
 				InputStream stream1 = urlcon1.getInputStream();	
@@ -223,13 +217,76 @@ public class UserTestModelController {
 				modelandview.addObject("pendCount",pendCount );
 				modelandview.addObject("rejectCount", rejectCount);
 				modelandview.setViewName("evalResultDisplay");
-				
 			}
-			
-			
 		}
-		//modelandview.setViewName("modelEvalReport");
-		//modelandview.setViewName("userTestModel");
+		
+		ExcelFile destinationExcelFile = new ExcelFile();
+		destinationExcelFile = trainModelService.getExcelFilebyModel(language);
+		byte [] destFile = destinationExcelFile.getFileContent();
+		byte [] srcFile = (byte[]) session.getAttribute("sourcefile");
+		byte [] resultExcelContent =  ExcelUtility.xlsxDataAppend(new ByteArrayInputStream(srcFile) , new ByteArrayInputStream(destFile) );
+		ExcelFile resultExcel = new ExcelFile();
+		resultExcel.setFileName(destinationExcelFile.getFileName());
+		resultExcel.setFileContent(resultExcelContent);
+		resultExcel.setRowcount(RowCount.xlsxRowCount(new ByteArrayInputStream(resultExcelContent)));
+		resultExcel.setColCount(destinationExcelFile.getColCount());
+		prepareTrainDataService.saveExcelFile(resultExcel);
+		ExcelFile appendFile = new ExcelFile();
+		appendFile= trainModelService.getLatestExcelFile();
+		int position = appendFile.getFileName().lastIndexOf(".");
+		String fileType = appendFile.getFileName().substring(position);
+		byte[] csvData = null;
+		if (".xlsx".equals(fileType)) {
+			csvData = ClaimsUtility.XLSX2CSV(new ByteArrayInputStream(appendFile.getFileContent()),language);
+		}
+		else if (".xls".equals(fileType)) {
+			csvData = ClaimsUtility.XLS2CSV(new ByteArrayInputStream(appendFile.getFileContent()),language);
+		}
+		String csvName = appendFile.getFileName().substring(0, position) + ".csv";
+		CsvFile csvFile = new CsvFile();
+		csvFile.setFileName(csvName);
+		csvFile.setFileContent(csvData);
+		csvFile.setExcelId(appendFile.getId());
+		csvFile.setRowCount(appendFile.getRowcount());
+		csvFile.setColumnCount(appendFile.getColCount());
+		if(language.equals("java"))
+			csvFile.setIsJava(true);
+		else
+			csvFile.setIsJava(false);
+		prepareTrainDataService.saveCsvFile(csvFile);
+	
+		if(language.equalsIgnoreCase("java"))
+		{
+			CsvFile csvfile = new CsvFile();
+			csvfile= trainModelService.getLatestCSVFile();
+			int id = csvfile.getId();
+			boolean flag = trainModelService.convertToArffFilebyCsvId(Integer.valueOf(id));
+			ArffFile arfffile = new ArffFile();
+			arfffile= trainModelService.getLatestArffFile();
+			int position4 = arfffile.getFileName().lastIndexOf(".");
+			String modelName = arfffile.getFileName().substring(0, position4) + ".model";
+			InputStream inputStream4 = new ByteArrayInputStream(arfffile.getFileContent());
+			byte[] modelContent = ClaimsUtility.ARFF2Model(inputStream4);
+			ModelFile modelFile = new ModelFile();
+			modelFile.setFileContent(modelContent);
+			modelFile.setFileName(modelName);
+			modelFile.setColCount(arfffile.getColCount());
+			modelFile.setRowcount(arfffile.getRowCount());
+			modelFile.setArffId(arfffile.getId());
+			modelFile.setFlag("java");
+			trainModelService.saveModel(modelFile);
+
+		}
+		else if(language.equalsIgnoreCase("python"))
+		{
+			String baseUrll= "http://localhost:5000/saveModell";
+			URL urll = new URL(baseUrll);
+			URLConnection urlconn = urll.openConnection();
+			InputStream streaminput = urlconn.getInputStream();
+			System.out.println(streaminput);
+		}
 		return modelandview;
 	}
 }
+
+

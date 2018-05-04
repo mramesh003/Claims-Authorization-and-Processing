@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -55,12 +57,15 @@ public class ExcelUtility {
 							break;
 
 						case Cell.CELL_TYPE_NUMERIC:
-							newRowData.createCell(colnum).setCellValue(sourceRow.getCell(colnum).getNumericCellValue());
+							if (HSSFDateUtil.isCellDateFormatted(sourceRow.getCell(colnum)))
+								newRowData.createCell(colnum).setCellValue(sourceRow.getCell(colnum).getDateCellValue());
+							else
+								newRowData.createCell(colnum).setCellValue(sourceRow.getCell(colnum).getNumericCellValue());
 							break;
 
 						case Cell.CELL_TYPE_STRING:
 							if (sourceRow.getCell(colnum).getStringCellValue().equalsIgnoreCase("null"))
-								newRowData.createCell(colnum).setCellValue("");
+								newRowData.createCell(colnum).setCellValue("NULL");
 							else
 								newRowData.createCell(colnum)
 										.setCellValue(sourceRow.getCell(colnum).getStringCellValue());
@@ -69,6 +74,13 @@ public class ExcelUtility {
 						case Cell.CELL_TYPE_BLANK:
 							newRowData.createCell(colnum).setCellValue("");
 							break;
+							
+						case Cell.CELL_TYPE_ERROR:
+							if (DateUtil.isCellDateFormatted(sourceRow.getCell(colnum)))
+							newRowData.createCell(colnum).setCellValue(sourceRow.getCell(colnum).getDateCellValue());
+							break;
+							
+
 
 						}
 					}

@@ -3,7 +3,9 @@ package com.acc.dao;
 import java.util.List;
 
 import com.acc.dto.ArffFile;
+import com.acc.dto.ExcelFile;
 import com.acc.dto.ModelFile;
+import com.acc.dto.CsvFile;
 
 public interface TrainModelDao {
 	public void saveArffFile(ArffFile arffFile);
@@ -21,5 +23,13 @@ public interface TrainModelDao {
     public List<ModelFile> listAllModelsOfJava();
     
     public ModelFile getModelFileByArffId(Integer id);
+    
+    public ExcelFile getExcelFilebyModel(String language);
+    
+    public ExcelFile getLatestExcelFile();
+    
+    public CsvFile getLatestCSVFile();
+    
+    public ArffFile getLatestArffFile();
 
 }

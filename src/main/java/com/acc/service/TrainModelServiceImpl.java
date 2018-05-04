@@ -12,6 +12,7 @@ import com.acc.dao.PrepareTrainDataDao;
 import com.acc.dao.TrainModelDao;
 import com.acc.dto.ArffFile;
 import com.acc.dto.CsvFile;
+import com.acc.dto.ExcelFile;
 import com.acc.dto.ModelFile;
 
 import weka.core.Instances;
@@ -98,6 +99,26 @@ public class TrainModelServiceImpl implements TrainModelService {
 	public ModelFile getModelFileByArffId(Integer id) {
 		return trainModelDao.getModelFileByArffId(id);
 	}
-
+    
+    @Transactional
+	public ExcelFile getExcelFilebyModel(String language) {
+		// TODO Auto-generated method stub
+		return trainModelDao.getExcelFilebyModel(language);
+	}
+    @Transactional
+    public ExcelFile getLatestExcelFile()
+    {
+    	return trainModelDao.getLatestExcelFile();
+    }
+    @Transactional
+    public CsvFile getLatestCSVFile()
+    {
+    	return trainModelDao.getLatestCSVFile();
+    }
+    @Transactional
+    public ArffFile getLatestArffFile()
+    {
+    	return trainModelDao.getLatestArffFile();
+    }
 
 }
