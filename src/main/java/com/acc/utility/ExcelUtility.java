@@ -13,6 +13,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -22,7 +23,7 @@ public class ExcelUtility {
 	public static byte[] xlsxDataAppend(InputStream sourceFile, InputStream destFile) {
 		byte[] resultExcelContent = null;
 		try {
-			
+
 			XSSFWorkbook sourceWorkBook = new XSSFWorkbook(sourceFile);
 			XSSFSheet sourceSheet = sourceWorkBook.getSheetAt(0);
 
@@ -68,42 +69,42 @@ public class ExcelUtility {
 								newRowData.createCell(colnum).setCellValue("NULL");
 							else
 								newRowData.createCell(colnum)
-										.setCellValue(sourceRow.getCell(colnum).getStringCellValue());
+								.setCellValue(sourceRow.getCell(colnum).getStringCellValue());
 							break;
 
 						case Cell.CELL_TYPE_BLANK:
 							newRowData.createCell(colnum).setCellValue("");
 							break;
-							
+
 						case Cell.CELL_TYPE_ERROR:
 							if (DateUtil.isCellDateFormatted(sourceRow.getCell(colnum)))
-							newRowData.createCell(colnum).setCellValue(sourceRow.getCell(colnum).getDateCellValue());
+								newRowData.createCell(colnum).setCellValue(sourceRow.getCell(colnum).getDateCellValue());
 							break;
-							
+
 
 
 						}
 					}
 				}
 			}
-		
+
 			String filePath = System.getProperty("java.io.tmpdir") + File.separator + "tempFile.xlsx";
 			FileOutputStream stream = new FileOutputStream(filePath);
 			destWorkBook.write(stream);
 			stream.close();
-			
+
 			File file = new File(filePath);
 			resultExcelContent = new byte[(int) file.length()];
 			resultExcelContent = FileUtils.readFileToByteArray(file);
 			file.delete();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return resultExcelContent;
 	}
-	
+
 	public static byte[] xlsDataAppend(InputStream sourceFile, InputStream destFile) {
 		byte[] resultExcelContent = null;
 		try {
@@ -146,7 +147,7 @@ public class ExcelUtility {
 								newRowData.createCell(colnum).setCellValue("");
 							else
 								newRowData.createCell(colnum)
-										.setCellValue(sourceRow.getCell(colnum).getStringCellValue());
+								.setCellValue(sourceRow.getCell(colnum).getStringCellValue());
 							break;
 
 						case Cell.CELL_TYPE_BLANK:
@@ -157,12 +158,12 @@ public class ExcelUtility {
 					}
 				}
 			}
-			
+
 			String filePath = System.getProperty("java.io.tmpdir") + File.separator + "tempFile.xlsx";
 			FileOutputStream stream = new FileOutputStream(filePath);
 			destWorkBook.write(stream);
 			stream.close();
-			
+
 			File file = new File(filePath);
 			resultExcelContent = new byte[(int) file.length()];
 			resultExcelContent = FileUtils.readFileToByteArray(file);
@@ -172,4 +173,83 @@ public class ExcelUtility {
 		}
 		return resultExcelContent;
 	}
+
+	public static byte[] xlsxUnmerge(InputStream sourceFile) {
+		byte[] resultExcelContent = null;
+		try {
+
+			XSSFWorkbook sourceWorkBook = new XSSFWorkbook(sourceFile);
+			XSSFSheet sourceSheet = sourceWorkBook.getSheetAt(0);
+			int nbrMergedRegions = sourceSheet.getNumMergedRegions();
+
+			System.out.println("found a total of merged regions of: "
+					+ String.valueOf( nbrMergedRegions ));
+			System.out.println("syso merged"+sourceSheet.getMergedRegion(1));
+			for (int i = 0; i < nbrMergedRegions; i++)
+			{
+				CellRangeAddress mergedRegion = sourceSheet.getMergedRegion(0);
+				System.out.println("Number of Merged Regions"+String.valueOf(mergedRegion));
+				System.out.println("Merged Regions"+String.valueOf(mergedRegion.getFirstRow())+String.valueOf(mergedRegion.getLastRow())+String.valueOf(mergedRegion.getFirstColumn())+String.valueOf(mergedRegion.getLastColumn()));
+				int firstrow = mergedRegion.getFirstRow();
+				int lastrow = mergedRegion.getLastRow();
+				int firstcol = mergedRegion.getFirstColumn();
+				int lastcol = mergedRegion.getLastColumn();
+				System.out.println("merged regions altered"+firstrow+lastrow+firstcol+lastcol);
+				Cell cell = sourceSheet.getRow(firstrow).getCell(firstcol);
+				switch(cell.getCellType())
+				{	
+				case Cell.CELL_TYPE_NUMERIC:
+					double value = sourceSheet.getRow(firstrow).getCell(firstcol).getNumericCellValue();
+					sourceSheet.removeMergedRegion(0);
+					for(int j = firstrow;j <= lastrow;j++)
+					{
+						for(int k= firstcol; k <= lastcol;k++)
+						{
+							sourceSheet.getRow(j).getCell(k).setCellValue(value);
+						}
+					}
+
+					break;
+
+				case Cell.CELL_TYPE_STRING:
+					String value2 = sourceSheet.getRow(firstrow).getCell(firstcol).getStringCellValue();
+					sourceSheet.removeMergedRegion(i);
+					for(int j = firstrow;j <= lastrow;j++)
+					{
+						for(int k= firstcol; k <= lastcol;k++)
+						{
+							sourceSheet.getRow(j).getCell(k).setCellValue(value2);
+						}
+					}
+
+					break;
+
+				}
+
+				//double value = sourceSheet.getRow(firstrow).getCell(firstcol).getNumericCellValue();
+
+			}
+
+			String filePath = System.getProperty("java.io.tmpdir") + File.separator + "temFile.xlsx";
+			FileOutputStream stream = new FileOutputStream(filePath);
+			sourceWorkBook.write(stream);
+			stream.close();
+
+			File file = new File(filePath);
+			resultExcelContent = new byte[(int) file.length()];
+			resultExcelContent = FileUtils.readFileToByteArray(file);
+			file.delete();
+
+
+
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return resultExcelContent;
+
+	}
+
+
 }

@@ -62,6 +62,8 @@ public class PrepareTrainDataController {
 				inputStream = file.getInputStream();
 				inputStream1 = file.getInputStream();
 				inputStream2 = file.getInputStream();
+				byte[] unmergedExcel = ExcelUtility.xlsxUnmerge(file.getInputStream());
+				InputStream inputStream6 = new ByteArrayInputStream(unmergedExcel);
 				ExcelFile excelFile = new ExcelFile();
 				int position = fileName.lastIndexOf(".");
 				String fileType = fileName.substring(position);
@@ -96,7 +98,7 @@ public class PrepareTrainDataController {
 						excelFile.setColCount(ColumnCount.xlsColumnCount(file.getInputStream()));
 
 					}
-					byte[] excelfileData = IOUtils.toByteArray(file.getInputStream());
+					byte[] excelfileData = IOUtils.toByteArray(inputStream6/*file.getInputStream()*/);
 					excelFile.setFileName(fileName);
 					excelFile.setFileContent(excelfileData);
 					prepareTrainDataService.saveExcelFile(excelFile);
