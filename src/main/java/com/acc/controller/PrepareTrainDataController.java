@@ -90,7 +90,7 @@ public class PrepareTrainDataController {
 					}
 				} else {
 					if (".xlsx".equals(fileType)) {
-						excelFile.setRowcount(RowCount.xlsxRowCount(file.getInputStream()));
+						excelFile.setRowcount(RowCount.xlsxRowCount(file.getInputStream())); 
 						excelFile.setColCount(ColumnCount.xlsxColumnCount(file.getInputStream()));
 
 					} else if (".xls".equals(fileType)) {

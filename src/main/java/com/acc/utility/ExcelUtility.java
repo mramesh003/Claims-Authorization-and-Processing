@@ -182,19 +182,14 @@ public class ExcelUtility {
 			XSSFSheet sourceSheet = sourceWorkBook.getSheetAt(0);
 			int nbrMergedRegions = sourceSheet.getNumMergedRegions();
 
-			System.out.println("found a total of merged regions of: "
-					+ String.valueOf( nbrMergedRegions ));
-			System.out.println("syso merged"+sourceSheet.getMergedRegion(1));
 			for (int i = 0; i < nbrMergedRegions; i++)
 			{
 				CellRangeAddress mergedRegion = sourceSheet.getMergedRegion(0);
-				System.out.println("Number of Merged Regions"+String.valueOf(mergedRegion));
-				System.out.println("Merged Regions"+String.valueOf(mergedRegion.getFirstRow())+String.valueOf(mergedRegion.getLastRow())+String.valueOf(mergedRegion.getFirstColumn())+String.valueOf(mergedRegion.getLastColumn()));
+				
 				int firstrow = mergedRegion.getFirstRow();
 				int lastrow = mergedRegion.getLastRow();
 				int firstcol = mergedRegion.getFirstColumn();
 				int lastcol = mergedRegion.getLastColumn();
-				System.out.println("merged regions altered"+firstrow+lastrow+firstcol+lastcol);
 				Cell cell = sourceSheet.getRow(firstrow).getCell(firstcol);
 				switch(cell.getCellType())
 				{	
