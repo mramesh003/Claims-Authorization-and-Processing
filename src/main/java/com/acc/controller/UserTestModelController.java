@@ -74,6 +74,8 @@ public class UserTestModelController {
 		int acceptCount = 0;
 		int pendCount = 0;
 		int rejectCount = 0;
+		try
+		{
 		for (MultipartFile file : files) {
 			String fileName = file.getOriginalFilename();
 			inputStream = file.getInputStream();
@@ -284,6 +286,12 @@ public class UserTestModelController {
 			URLConnection urlconn = urll.openConnection();
 			InputStream streaminput = urlconn.getInputStream();
 			System.out.println(streaminput);
+		}
+		}
+		catch(Exception e)
+		{
+			modelandview.addObject("error", e.getMessage());
+			modelandview.setViewName("errorPage");
 		}
 		return modelandview;
 	}

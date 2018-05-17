@@ -35,7 +35,7 @@ public class LoginController {
 	
 	@RequestMapping(value= {"login.htm"}, method = RequestMethod.POST)
 	
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response )
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response ) throws Exception
 	{
 		HttpSession session = request.getSession();
 		ModelAndView modelandview = new ModelAndView();

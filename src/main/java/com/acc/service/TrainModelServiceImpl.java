@@ -28,27 +28,27 @@ public class TrainModelServiceImpl implements TrainModelService {
 	PrepareTrainDataDao prepareTrainDataDao;
 
 	@Transactional
-	public void saveArffFile(ArffFile arffFile) {
+	public void saveArffFile(ArffFile arffFile) throws Exception{
 		trainModelDao.saveArffFile(arffFile);
 	}
 
 	@Transactional(readOnly = true)
-	public List<ArffFile> listAllArffs() {
+	public List<ArffFile> listAllArffs() throws Exception{
 		return trainModelDao.listAllArffs();
 	}
 
 	@Transactional(readOnly = true)
-	public ArffFile getArffFileById(Integer fileId) {
+	public ArffFile getArffFileById(Integer fileId)throws Exception {
 		return trainModelDao.getArffFileById(fileId);
 	}
 
 	@Transactional
-	public void deleteArff(ArffFile arffFile) {
+	public void deleteArff(ArffFile arffFile)throws Exception {
 		trainModelDao.deleteArff(arffFile);
 	}
 
 	@Transactional
-	public boolean convertToArffFilebyCsvId(Integer csvId) {
+	public boolean convertToArffFilebyCsvId(Integer csvId) throws Exception{
 		boolean flag = false;
 		CsvFile csvfile = prepareTrainDataDao.getCsvFileById(csvId);
 		InputStream inputStream = new ByteArrayInputStream(csvfile.getFileContent());
@@ -80,43 +80,43 @@ public class TrainModelServiceImpl implements TrainModelService {
 	}
 	
 	@Transactional
-	public void saveModel(ModelFile modelFile) {
+	public void saveModel(ModelFile modelFile)throws Exception {
 		trainModelDao.saveModel(modelFile);
 		
 	}
 	
 	@Transactional(readOnly = true)
-    public ModelFile getModelById(Integer fileId) {
+    public ModelFile getModelById(Integer fileId) throws Exception{
            return trainModelDao.getModelById(fileId);
     }
 
     @Transactional(readOnly = true)
-    public List<ModelFile> listAllModelsOfJava() {
+    public List<ModelFile> listAllModelsOfJava() throws Exception{
            return trainModelDao.listAllModelsOfJava();
     }
 
     @Transactional
-	public ModelFile getModelFileByArffId(Integer id) {
+	public ModelFile getModelFileByArffId(Integer id) throws Exception{
 		return trainModelDao.getModelFileByArffId(id);
 	}
     
     @Transactional
-	public ExcelFile getExcelFilebyModel(String language) {
+	public ExcelFile getExcelFilebyModel(String language)throws Exception {
 		// TODO Auto-generated method stub
 		return trainModelDao.getExcelFilebyModel(language);
 	}
     @Transactional
-    public ExcelFile getLatestExcelFile()
+    public ExcelFile getLatestExcelFile()throws Exception
     {
     	return trainModelDao.getLatestExcelFile();
     }
     @Transactional
-    public CsvFile getLatestCSVFile()
+    public CsvFile getLatestCSVFile()throws Exception
     {
     	return trainModelDao.getLatestCSVFile();
     }
     @Transactional
-    public ArffFile getLatestArffFile()
+    public ArffFile getLatestArffFile()throws Exception
     {
     	return trainModelDao.getLatestArffFile();
     }
