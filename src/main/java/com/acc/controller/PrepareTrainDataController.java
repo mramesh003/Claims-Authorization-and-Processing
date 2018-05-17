@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,8 +67,15 @@ public class PrepareTrainDataController {
 				inputStream = file.getInputStream();
 				inputStream1 = file.getInputStream();
 				inputStream2 = file.getInputStream();
+				InputStream inputStream6=null;
+				XSSFWorkbook sourceWorkBook = new XSSFWorkbook(file.getInputStream());
+				XSSFSheet sourceSheet = sourceWorkBook.getSheetAt(0);
+				int nbrMergedRegions = sourceSheet.getNumMergedRegions();
+				
+				if(nbrMergedRegions >0){
 				byte[] unmergedExcel = ExcelUtility.xlsxUnmerge(file.getInputStream());
-				InputStream inputStream6 = new ByteArrayInputStream(unmergedExcel);
+				inputStream6 = new ByteArrayInputStream(unmergedExcel);
+				}
 				ExcelFile excelFile = new ExcelFile();
 				int position = fileName.lastIndexOf(".");
 				String fileType = fileName.substring(position);
@@ -101,10 +110,19 @@ public class PrepareTrainDataController {
 						excelFile.setColCount(ColumnCount.xlsColumnCount(file.getInputStream()));
 
 					}
+					if(inputStream6 == null){
+						byte[] excelfileData = IOUtils.toByteArray(file.getInputStream());
+						excelFile.setFileName(fileName);
+						excelFile.setFileContent(excelfileData);
+						prepareTrainDataService.saveExcelFile(excelFile);
+					}
+					else{
 					byte[] excelfileData = IOUtils.toByteArray(inputStream6/*file.getInputStream()*/);
 					excelFile.setFileName(fileName);
 					excelFile.setFileContent(excelfileData);
 					prepareTrainDataService.saveExcelFile(excelFile);
+					}
+					
 				}
 
 			}
