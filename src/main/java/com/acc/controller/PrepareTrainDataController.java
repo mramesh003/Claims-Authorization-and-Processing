@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.NestedServletException;
 
 import com.acc.dto.CsvFile;
 import com.acc.dto.ExcelFile;
@@ -41,7 +42,7 @@ public class PrepareTrainDataController {
 	 static Logger log = Logger.getLogger(PrepareTrainDataController.class.getName());
 	 
 	 @RequestMapping("prepareTrainData.htm")
-     public ModelAndView trainSaveModel(HttpServletRequest request, HttpServletResponse response )
+     public ModelAndView trainSaveModel(HttpServletRequest request, HttpServletResponse response ) throws Exception
      {
                      ModelAndView modelandview = new ModelAndView();
                      List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
@@ -51,12 +52,14 @@ public class PrepareTrainDataController {
      }
 	 
 	 @RequestMapping("uploadExcel.htm")
-	 public ModelAndView uploadExcel(HttpServletRequest request, FileUpload uploadItem) throws IOException {
+	 public ModelAndView uploadExcel(HttpServletRequest request, FileUpload uploadItem) throws NestedServletException,NoClassDefFoundError,  Exception {
 			ModelAndView modelandview = new ModelAndView();
-			List<MultipartFile> files = uploadItem.getFile();
 			InputStream inputStream = null;
 			InputStream inputStream1 = null;
 			InputStream inputStream2 = null;
+			try
+			{
+			List<MultipartFile> files = uploadItem.getFile();
 			for (MultipartFile file : files) {
 				String fileName = file.getOriginalFilename();
 				inputStream = file.getInputStream();
@@ -109,15 +112,33 @@ public class PrepareTrainDataController {
 			modelandview.addObject("excelFiles", excelFiles);
 			modelandview.addObject("message", "successUpload");
 			modelandview.setViewName("prepareTrainingData");
+			}
+			catch(NestedServletException e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
+			catch(NoClassDefFoundError e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
+			catch(Exception e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
 			return modelandview;
 		}
 	 
 	 @RequestMapping("downloadExcel.htm")
-	 public void downloadExcel(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws IOException {
+	 public void downloadExcel(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws Exception {
 		ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id));
 
 		ByteArrayInputStream in = new ByteArrayInputStream(excelFile.getFileContent());
 		OutputStream outStream = response.getOutputStream();
+		try
+		{
 		String fileName = URLEncoder.encode(excelFile.getFileName(), "UTF-8");
 		fileName = URLDecoder.decode(fileName, "ISO8859_1");
 		response.setContentType("application/x-msdownload");
@@ -128,11 +149,20 @@ public class PrepareTrainDataController {
 		while ((bytesRead = in.read(buffer)) != -1) {
 			outStream.write(buffer, 0, bytesRead);
 		}
+		}
+		catch(Exception e)
+		{
+			ModelAndView modelandview = new ModelAndView();
+			modelandview.addObject("error", e.getMessage());
+			modelandview.setViewName("errorPage");
+		}
 	 }
 
 	 @RequestMapping(value={"convertToCsv.htm"},method = RequestMethod.POST)
-	 public String convertToCsv(HttpServletRequest request, @RequestParam("excelId") String id,@RequestParam("language") String language) throws IOException {
+	 public String convertToCsv(HttpServletRequest request, @RequestParam("excelId") String id,@RequestParam("language") String language) throws Exception {
 		ModelAndView modelandview = new ModelAndView();
+		try
+		{
 		ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id));
 		int position = excelFile.getFileName().lastIndexOf(".");
 		String fileType = excelFile.getFileName().substring(position);
@@ -157,11 +187,19 @@ public class PrepareTrainDataController {
 		else
 			csvFile.setIsJava(false);
 		prepareTrainDataService.saveCsvFile(csvFile);
+		}
+		catch(Exception e)
+		{
+			modelandview.addObject("error", e.getMessage());
+			modelandview.setViewName("errorPage");
+		}
 		return "success";
 	 }
 	 @RequestMapping("deleteExcel.htm")
-	 public ModelAndView deleteExcel(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
+	 public ModelAndView deleteExcel(HttpServletRequest request, @RequestParam("id") String id) throws Exception {
 			ModelAndView modelandview = new ModelAndView();
+			try
+			{
 			CsvFile csvFile = prepareTrainDataService.getCsvFileByExcelId(Integer.valueOf(id));
 			ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id));
 			if (csvFile.getExcelId() != null){
@@ -174,6 +212,12 @@ public class PrepareTrainDataController {
 			List<ExcelFile> excelFiles = prepareTrainDataService.listAllExcels();
 			modelandview.addObject("excelFiles", excelFiles);
 			modelandview.setViewName("prepareTrainingData");
+			}
+			catch(Exception e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
 			return modelandview;
 		 }
 

@@ -40,7 +40,7 @@ public class TrainSaveModelController {
 	PrepareTrainDataService prepareTrainDataService;
 	
 	 @RequestMapping("trainSaveModel.htm")
-     public ModelAndView trainSaveModel(HttpServletRequest request)
+     public ModelAndView trainSaveModel(HttpServletRequest request) throws Exception
      {
 		ModelAndView modelandview = new ModelAndView();
 		List<ArffFile> arffFiles = trainModelService.listAllArffs();
@@ -52,10 +52,12 @@ public class TrainSaveModelController {
      }
 	 
 	 @RequestMapping("uploadArff.htm")
-		public ModelAndView uploadArff(HttpServletRequest request, FileUpload uploadItem) throws IOException {
+		public ModelAndView uploadArff(HttpServletRequest request, FileUpload uploadItem) throws Exception {
 			ModelAndView modelandview = new ModelAndView();
 			List<MultipartFile> files = uploadItem.getFile();
 			InputStream inputStream = null;		 
+			try
+			{
 			for(MultipartFile file : files)
 			{
 				String fileName = file.getOriginalFilename();
@@ -78,16 +80,24 @@ public class TrainSaveModelController {
 			modelandview.addObject("csvFiles", csvFiles);
 			modelandview.addObject("message", "successUpload");
 			modelandview.setViewName("trainSaveModel");
+			}
+			catch(Exception e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
 			return modelandview;
 
 		}
 
 	 @RequestMapping("downloadArff.htm")
-		public void downloadArff(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws IOException {
+		public void downloadArff(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws Exception {
 			ArffFile arffFile = trainModelService.getArffFileById(Integer.valueOf(id));
 
 			ByteArrayInputStream in = new ByteArrayInputStream(arffFile.getFileContent());
 			OutputStream outStream = response.getOutputStream();
+			try
+			{
 			String fileName = URLEncoder.encode(arffFile.getFileName(), "UTF-8");
 			fileName = URLDecoder.decode(fileName, "ISO8859_1");
 			int fileContentSize=arffFile.getFileContent().length;
@@ -99,6 +109,13 @@ public class TrainSaveModelController {
 			while ((bytesRead = in.read(buffer)) != -1) {
 				outStream.write(buffer, 0, bytesRead);
 			}
+			}
+			catch(Exception e)
+			{
+				ModelAndView modelandview = new ModelAndView();
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
 		}
 
 		@RequestMapping("deleteArff.htm")
@@ -106,6 +123,8 @@ public class TrainSaveModelController {
 		{
 			ModelAndView modelandview = new ModelAndView();
 			Integer id = Integer.valueOf(request.getParameter("id"));
+			try
+			{
 			ArffFile arffFile = trainModelService.getArffFileById(id);
 			ModelFile modelfile = trainModelService.getModelFileByArffId(id);
 			if(modelfile != null){
@@ -121,6 +140,13 @@ public class TrainSaveModelController {
 			List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
 			modelandview.addObject("csvFiles", csvFiles);
 			modelandview.addObject("message", "Deleted");
+			}
+			catch(Exception e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
+			
 			return modelandview;
 		}
 	 
@@ -129,6 +155,8 @@ public class TrainSaveModelController {
      {
 		ModelAndView modelandview = new ModelAndView();
 		Integer fileId = Integer.valueOf(id);
+		try
+		{
 		ArffFile arffFile = trainModelService.getArffFileById(fileId);
 		int position = arffFile.getFileName().lastIndexOf(".");
 		String modelName = arffFile.getFileName().substring(0, position) + ".model";
@@ -147,6 +175,12 @@ public class TrainSaveModelController {
 		List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
 		modelandview.addObject("csvFiles", csvFiles);
 		modelandview.setViewName("trainSaveModel");
+		}
+		catch(Exception e)
+		{
+			modelandview.addObject("error", e.getMessage());
+			modelandview.setViewName("errorPage");
+		}
 		return modelandview;
      }
 	 
@@ -156,14 +190,22 @@ public class TrainSaveModelController {
 			String baseUrl = "http://localhost:5000/saveModel/";
 			String completeUrl = baseUrl + id;
 			URL url = new URL(completeUrl);
+			ModelAndView modelandview = new ModelAndView();
+			try
+			{
 			URLConnection urlcon = url.openConnection();
 			InputStream stream = urlcon.getInputStream();
-			ModelAndView modelandview = new ModelAndView();
 			List<ArffFile> arffFiles = trainModelService.listAllArffs();
 			modelandview.addObject("arffFiles", arffFiles);
 			List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
 			modelandview.addObject("csvFiles", csvFiles);		
 			modelandview.setViewName("trainSaveModel");
+			}
+			catch(Exception e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
 			return modelandview;
 		}
 

@@ -43,9 +43,18 @@ public class CSVController {
 	public ModelAndView testModel(HttpServletRequest request, HttpServletResponse response)
 	{
 		ModelAndView modelandview = new ModelAndView();
+		try
+		{
 		List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
 		modelandview.addObject("csvFiles", csvFiles);
 		modelandview.setViewName("prepareTrainingModel");
+		
+	}
+	catch(Exception e)
+	{
+		modelandview.addObject("error", e.getMessage());
+		modelandview.setViewName("errorPage");
+	}
 		return modelandview;
 	}
 	
@@ -57,6 +66,8 @@ public class CSVController {
 		 OutputStream outputstream = null;
 		 Integer rowcount = null;
 		 Integer columnCount = null;
+		 try
+			{
 		 for(MultipartFile file : files)
 		 {
 			String fileName = file.getOriginalFilename();
@@ -80,15 +91,23 @@ public class CSVController {
          modelandview.addObject("csvFiles", csvFiles);
 		 modelandview.addObject("message", "successUpload");
 		 modelandview.setViewName("prepareTrainingModel");
+			}
+		 catch(Exception e)
+			{
+			 modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
          return modelandview;
 	 }
 	 
 	 @RequestMapping("downloadCsv.htm")
-	 public void downloadCsv(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws IOException {
+	 public void downloadCsv(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") String id) throws Exception {
 		CsvFile csvFile = prepareTrainDataService.getCsvFileById(Integer.valueOf(id));
 
 		ByteArrayInputStream in = new ByteArrayInputStream(csvFile.getFileContent());
 		OutputStream outStream = response.getOutputStream();
+		 try
+			{
 		String fileName = URLEncoder.encode(csvFile.getFileName(), "UTF-8");
 		fileName = URLDecoder.decode(fileName, "ISO8859_1");
 		response.setContentType("application/x-msdownload");
@@ -98,12 +117,21 @@ public class CSVController {
 		while ((bytesRead = in.read(buffer)) != -1) {
 			outStream.write(buffer, 0, bytesRead);
 		}
+			}
+		 catch(Exception e)
+			{
+			 ModelAndView modelandview = new ModelAndView();
+			 modelandview.addObject("error", e.getMessage());
+			modelandview.setViewName("errorPage");
+			}
 	 }
 	 
 	 @RequestMapping("deletecsv.htm")
 	 public ModelAndView deleteCsv(HttpServletRequest request,@RequestParam("id") String id,@RequestParam("page") String page)
 	 {
 		 ModelAndView modelandview = new ModelAndView();
+		 try
+			{
 		 List<ArffFile> arffFileList = prepareTrainDataService.getArffByCsvId(Integer.valueOf(id));
 		 List<ModelFile> modelfileList= prepareTrainDataService.getModelFileByCsvId(Integer.valueOf(id));
 		 if(arffFileList.size() != 0 ) {
@@ -133,17 +161,33 @@ public class CSVController {
 		 
          
          modelandview.setViewName(page);
+			}
+		 catch(Exception e)
+			{
+			 modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
+		 
 		 return modelandview;
 	 }
 	 
 	 @RequestMapping("csvToArff.htm")
-		public ModelAndView convertToArff(HttpServletRequest request, @RequestParam("id") String id) throws IOException {
+		public ModelAndView convertToArff(HttpServletRequest request, @RequestParam("id") String id) throws Exception {
 			ModelAndView modelandview = new ModelAndView();
+			try
+			{
 			boolean flag = trainModelService.convertToArffFilebyCsvId(Integer.valueOf(id));
 			List<CsvFile> csvFiles = prepareTrainDataService.listAllCsvs();
 			modelandview.addObject("flag", flag);
 			modelandview.addObject("csvFiles", csvFiles);
 			modelandview.setViewName("prepareTrainingModel");
+			} catch(Exception e)
+			{
+				modelandview.addObject("error", e.getMessage());
+				modelandview.setViewName("errorPage");
+			}
+		 
+			
 			return modelandview;
 		}
 	 
