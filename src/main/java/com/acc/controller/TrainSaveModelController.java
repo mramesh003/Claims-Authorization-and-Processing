@@ -174,6 +174,7 @@ public class TrainSaveModelController {
 		modelandview.addObject("arffFiles", arffFiles);
 		List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
 		modelandview.addObject("csvFiles", csvFiles);
+		modelandview.addObject("message", "SuccessTrain");
 		modelandview.setViewName("trainSaveModel");
 		}
 		catch(Exception e)
@@ -198,7 +199,8 @@ public class TrainSaveModelController {
 			List<ArffFile> arffFiles = trainModelService.listAllArffs();
 			modelandview.addObject("arffFiles", arffFiles);
 			List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
-			modelandview.addObject("csvFiles", csvFiles);		
+			modelandview.addObject("csvFiles", csvFiles);
+			modelandview.addObject("message", "SuccessTrain");
 			modelandview.setViewName("trainSaveModel");
 			}
 			catch(Exception e)

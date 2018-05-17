@@ -28,6 +28,12 @@
 		alert("Model file is saved to DB.,so cannot delete CSV..");
 	</script>
 </c:if>
+ <c:if test="${message == 'SuccessTrain'}">
+	<script>
+		alert("Model File trained and Saved Successfully");
+	</script>
+</c:if>
+
 </head>
 <body>
 

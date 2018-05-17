@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,7 @@ import com.acc.utility.ColumnCount;
 import com.acc.utility.ExcelUtility;
 import com.acc.utility.RowCount;
 import com.acc.utility.SupervisedModel;
+import com.acc.utility.excelBuilder.ModelEvalReport;
 
 @Controller
 public class UserTestModelController {
@@ -133,9 +136,8 @@ public class UserTestModelController {
 				for (ModelFile file1 : modelfiles)
 					model = file1;
 
-				List<String> results = new ArrayList<String>();
 				try {
-					results = testModelService.testModel(model, arffFile);
+					claimData = testModelService.testModel(model, arffFile);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -146,8 +148,8 @@ public class UserTestModelController {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				numberOfTestClaims = results.size();
-				for(String res : results)
+				numberOfTestClaims = claimData.size();
+				for(String res : claimData)
 				{
 					if(res.equalsIgnoreCase("accept"))
 						acceptCount++;
@@ -158,7 +160,7 @@ public class UserTestModelController {
 
 				}
 				session.setAttribute("excelFile",excelFile);
-				session.setAttribute("results",results);
+				session.setAttribute("results",claimData);
 				session.setAttribute("evaluationResult", evaluationResult);
 				modelandview.addObject("numberOfTestClaims",numberOfTestClaims );
 				modelandview.addObject("acceptCount", acceptCount);
@@ -220,13 +222,13 @@ public class UserTestModelController {
 				modelandview.addObject("rejectCount", rejectCount);
 				modelandview.setViewName("evalResultDisplay");
 			}
-		}
-		
 		ExcelFile destinationExcelFile = new ExcelFile();
 		destinationExcelFile = trainModelService.getExcelFilebyModel(language);
 		byte [] destFile = destinationExcelFile.getFileContent();
 		byte [] srcFile = (byte[]) session.getAttribute("sourcefile");
-		byte [] resultExcelContent =  ExcelUtility.xlsxDataAppend(new ByteArrayInputStream(srcFile) , new ByteArrayInputStream(destFile) );
+		XSSFWorkbook workBook = new XSSFWorkbook(); 
+		byte[] resultContent = ExcelUtility.finalColAppend(excelFile, claimData, workBook);
+		byte [] resultExcelContent =  ExcelUtility.xlsxDataAppend(new ByteArrayInputStream(resultContent) , new ByteArrayInputStream(destFile) );
 		ExcelFile resultExcel = new ExcelFile();
 		resultExcel.setFileName(destinationExcelFile.getFileName());
 		resultExcel.setFileContent(resultExcelContent);
@@ -235,17 +237,17 @@ public class UserTestModelController {
 		prepareTrainDataService.saveExcelFile(resultExcel);
 		ExcelFile appendFile = new ExcelFile();
 		appendFile= trainModelService.getLatestExcelFile();
-		int position = appendFile.getFileName().lastIndexOf(".");
-		String fileType = appendFile.getFileName().substring(position);
-		byte[] csvData = null;
+		position = appendFile.getFileName().lastIndexOf(".");
+		fileType = appendFile.getFileName().substring(position);
+		csvData = null;
 		if (".xlsx".equals(fileType)) {
 			csvData = ClaimsUtility.XLSX2CSV(new ByteArrayInputStream(appendFile.getFileContent()),language);
 		}
 		else if (".xls".equals(fileType)) {
 			csvData = ClaimsUtility.XLS2CSV(new ByteArrayInputStream(appendFile.getFileContent()),language);
 		}
-		String csvName = appendFile.getFileName().substring(0, position) + ".csv";
-		CsvFile csvFile = new CsvFile();
+		csvName = appendFile.getFileName().substring(0, position) + ".csv";
+		csvFile = new CsvFile();
 		csvFile.setFileName(csvName);
 		csvFile.setFileContent(csvData);
 		csvFile.setExcelId(appendFile.getId());
@@ -285,14 +287,20 @@ public class UserTestModelController {
 			URL urll = new URL(baseUrll);
 			URLConnection urlconn = urll.openConnection();
 			InputStream streaminput = urlconn.getInputStream();
-			System.out.println(streaminput);
 		}
+		}
+		}
+		catch(NoClassDefFoundError e)
+		{
+			modelandview.addObject("error", e.getMessage());
+			modelandview.setViewName("errorPage");
 		}
 		catch(Exception e)
 		{
 			modelandview.addObject("error", e.getMessage());
 			modelandview.setViewName("errorPage");
 		}
+		
 		return modelandview;
 	}
 }

@@ -1,5 +1,6 @@
 package com.acc.utility;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +18,12 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.acc.dto.ExcelFile;
 
 public class ExcelUtility {
 
@@ -159,7 +166,7 @@ public class ExcelUtility {
 				}
 			}
 
-			String filePath = System.getProperty("java.io.tmpdir") + File.separator + "tempFile.xlsx";
+			String filePath = System.getProperty("java.io.tmpdir") + File.separator + "tempFile.xls";
 			FileOutputStream stream = new FileOutputStream(filePath);
 			destWorkBook.write(stream);
 			stream.close();
@@ -246,5 +253,83 @@ public class ExcelUtility {
 
 	}
 
+	public static byte[] finalColAppend(ExcelFile excelFile, List<String> predictionResult, XSSFWorkbook workBook) {
+		byte[]  resultExcelContent = null;
+		try {
+			XSSFWorkbook wb = new XSSFWorkbook(new ByteArrayInputStream(excelFile.getFileContent()));
+			XSSFSheet sheet = wb.getSheetAt(0);
+
+			XSSFSheet predictionSheet = workBook.createSheet("Prediction Result");
+			Row row;
+			Cell cell;
+			row = sheet.getRow(0);
+			int columnCount = row.getLastCellNum();
+			int rowCount = sheet.getLastRowNum();
+
+			for (int rownum = 0; rownum <= rowCount; rownum++) {
+				XSSFRow predictionRow = predictionSheet.createRow(rownum);
+				row = sheet.getRow(rownum);
+				for (int colnum = 0; colnum < columnCount; colnum++) {
+					cell = row.getCell(colnum);
+					if (cell == null) {
+						predictionRow.createCell(colnum).setCellValue("");
+					} else {
+						switch (cell.getCellType()) {
+
+						case Cell.CELL_TYPE_BOOLEAN:
+							predictionRow.createCell(colnum).setCellValue(cell.getBooleanCellValue());
+							break;
+
+						case Cell.CELL_TYPE_NUMERIC:
+							predictionRow.createCell(colnum).setCellValue(cell.getNumericCellValue());
+							break;
+
+						case Cell.CELL_TYPE_STRING:
+							predictionRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+							break;
+
+						case Cell.CELL_TYPE_BLANK:
+							predictionRow.createCell(colnum).setCellValue("");
+							break;
+
+						default:
+							predictionRow.createCell(colnum).setCellValue("");
+							break;
+
+						}
+
+					}
+
+				}
+
+			}
+			XSSFRow predictionHeader = predictionSheet.getRow(0);
+			predictionHeader.createCell(columnCount - 1).setCellValue("Claim Status");
+			int rownum = 1;
+			for (String predResult : predictionResult) {
+				XSSFRow predictionRow = predictionSheet.getRow(rownum);
+				predictionRow.createCell(columnCount - 1).setCellValue(predResult);
+				rownum++;
+			}
+			 
+			String filePath = System.getProperty("java.io.tmpdir") + File.separator + "tempFile.xlsx";
+			FileOutputStream stream = new FileOutputStream(filePath);
+			workBook.write(stream);
+			stream.close();
+
+			File file = new File(filePath);
+			resultExcelContent = new byte[(int) file.length()];
+			resultExcelContent = FileUtils.readFileToByteArray(file);
+			//file.delete();
+		
+		} catch (Exception e) {
+
+		}
+		
+		return resultExcelContent;
+	
+	
+	
+}
 
 }
