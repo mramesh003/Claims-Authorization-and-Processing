@@ -1,4 +1,4 @@
-﻿import pandas
+import pandas
 import pickle
 import warnings
 import matplotlib.pyplot as plt
@@ -15,28 +15,30 @@ from io import BytesIO
 import com.accenture.MLengine.database.dao as dao_layer
 import com.accenture.MLengine.graph.matrix as Plot
 
+
 class claim_adjudication:
 
-    def form_dataset(self,csv_buffercontent, names):
-        dataset = pandas.read_csv(csv_buffercontent, names=names, skiprows=1)
+    def form_dataset(self,csv_buffercontent,names):
+        dataset = pandas.read_csv(csv_buffercontent, names=names,skiprows=1)
 
         print(dataset.shape)
         # class distribution
         print("==============================")
-        print("Data set Group By")
-        print(dataset.groupby('Claim Status').size())
+        # print("Data set Group By")
+        # print(dataset.groupby('Claim Status').size())
         print("==============================")
-
         # Split-out validation dataset
         array = dataset.values
-        X_Dataset= array[:,0:22]
-        Y_Dataset = array[:,22]
 
-        str_val = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
+        header_length = dataset.shape[1]
+        X_Dataset= array[:,0:header_length-1]
+        Y_Dataset = array[:,header_length-1]
+
+        # str_val = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 
         warnings.simplefilter("ignore", UserWarning)
 
-        for val in str_val:
+        for val in range(header_length-1) :
             enc = preprocessing.LabelEncoder()
             enc.fit(X_Dataset[:,val])
             X_Dataset[:,val] = enc.transform(X_Dataset[:,val])
@@ -121,6 +123,7 @@ class claim_adjudication:
         columncount = data[4]
         datacount = data[5]
         csv_filecontent = str(data[2], 'ISO-8859-1')
+        print(columncount)
         csv_list = [fileid,modelname,datacount,columncount]
         csv_bytecontent = bytes(csv_filecontent, 'utf-8')
         csv_buffercontent = BytesIO(csv_bytecontent)
@@ -148,7 +151,8 @@ class claim_adjudication:
              'Service Date',
              'Service Facility Provider ID',
              'Claim Status']
-        return csv_buffercontent,names,csv_list;
+
+        return csv_buffercontent,csv_list,names;
 
     def Loadimage(self):
         with open("Results.png", "rb")as imageFile:
@@ -157,20 +161,19 @@ class claim_adjudication:
             return Image_Bytes;
 
     def train_model(self,fileid):
-        csv_buffercontent,names1,csv_list =self.csvretrival(fileid)
-        X, Y = self.form_dataset(csv_buffercontent,names1)
+        csv_buffercontent,csv_list,names =self.csvretrival(fileid)
+        X, Y = self.form_dataset(csv_buffercontent,names)
         dtc = self.fit_and_train_Model(X, Y)
         self.savemodel(dtc,csv_list)
         return 'success';
 
     def execute_model(self,testfileId):
-        csv_buffercontent, names1,csv_list = self.csvretrival(testfileId)
-        X, Y = self.form_dataset(csv_buffercontent, names1)
+        csv_buffercontent,csv_list,names = self.csvretrival(testfileId)
+        X, Y = self.form_dataset(csv_buffercontent,names)
         result = self.loadModel()
         predictions,cnfmatrix = self.executeModel(result, X, Y)
         predictions_confmatrix = ','.join(str(e) for e in predictions) + "result" + ','.join(str(e) for e in cnfmatrix) +"result"
         return predictions_confmatrix;
-
 #-----------------------------------------------------------------------------------
 validation_size = 0.10
 
