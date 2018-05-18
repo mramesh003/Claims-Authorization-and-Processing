@@ -14,6 +14,8 @@ public interface PrepareTrainDataService {
 	
 	public void saveCsvFile(CsvFile csvFile)throws Exception;
 	
+	public void updateExcelStatusToFalse(Integer id) throws Exception;
+	
 	public List<ExcelFile> listAllExcels()throws Exception;
 	
 	public List<CsvFile> listAllCsvs()throws Exception;

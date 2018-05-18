@@ -12,6 +12,8 @@ public interface PrepareTrainDataDao {
 	
 	public void saveCsvFile(CsvFile csvFile);
 	
+	public void updateExcelStatusToFalse(Integer id);
+	
 	public List<ExcelFile> listAllExcels();
 	
 	public ExcelFile getExcelFileById(Integer fileId);

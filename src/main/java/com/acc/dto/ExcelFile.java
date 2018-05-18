@@ -29,6 +29,8 @@ public class ExcelFile {
 	@Column(name = "colcount")
 	private Integer colCount;
 	
+	@Column(name = "activestatus")
+	private Boolean activeStatus;
 	
 	public Integer getRowcount() {
 		return rowcount;
@@ -63,6 +65,12 @@ public class ExcelFile {
 	}
 	public void setColCount(Integer colCount) {
 		this.colCount = colCount;
+	}
+	public Boolean getActiveStatus() {
+		return activeStatus;
+	}
+	public void setActiveStatus(Boolean activeStatus) {
+		this.activeStatus = activeStatus;
 	}
 	
 	
