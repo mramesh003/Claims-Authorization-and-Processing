@@ -34,29 +34,27 @@
        $(document).ready(function(){
     	   
     	   $('#excelTable').DataTable();
-         $(".convert").click(function(){
-           butId = $(this).attr('id');
-           var lastChar = butId.substr(7);
-           var selectId = "select_"+lastChar;
-           var language = $("#"+selectId).val();
-           var id= $("#"+butId).val();
-           $.ajax({
-               type: "POST",
-               url: "convertToCsv.htm",
-              dataType: 'text',
-   			   data:{excelId:id,
-   				language : language
-   			},
-               success: function (result) {
-                   alert("file conversion successfull");
-               },
-               error: function (result) {
-            	   alert("file conversion successfull");
-               }
-           });
-
-       }); 
-      
+    	   $('#excelTable').on('click', '.convert', function(){
+    		   butId = $(this).attr('id');
+               var lastChar = butId.substr(7);
+               var selectId = "select_"+lastChar;
+               var language = $("#"+selectId).val();
+               var id= $("#"+butId).val();
+               $.ajax({
+                   type: "POST",
+                   url: "convertToCsv.htm",
+                  dataType: 'text',
+       			   data:{excelId:id,
+       				language : language
+       			},
+                   success: function (result) {
+                       alert("file conversion successfull");
+                   },
+                   error: function (result) {
+                	   alert("file conversion successfull");
+                   }
+               });
+    		});
 });
        
 </script>

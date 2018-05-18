@@ -84,6 +84,11 @@ public class PrepareTrainDataServiceImpl implements PrepareTrainDataService {
 	public List<ModelFile> getModelFileByCsvId(Integer csvId)throws Exception {
 		return prepareTrainDataDao.getModelFileByCsvId(csvId);
 	}
+
+	@Transactional
+	public void updateExcelStatusToFalse(Integer id) throws Exception {
+		prepareTrainDataDao.updateExcelStatusToFalse(id);		
+	}
 	
 
 }

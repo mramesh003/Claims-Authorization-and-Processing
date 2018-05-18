@@ -20,7 +20,7 @@ public class TrainModelDaoImpl extends AbstractDao implements TrainModelDao {
 
 	public List<ArffFile> listAllArffs(){
 		Session session = getSession();
-		Query query = session.createQuery("from ArffFile");
+		Query query = session.createQuery("select a from ArffFile a where a.excelId in (select m.id from ExcelFile m where m.activeStatus is not null)");
 		return query.list();
 	}
 

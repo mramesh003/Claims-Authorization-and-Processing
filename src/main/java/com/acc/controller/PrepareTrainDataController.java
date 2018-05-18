@@ -89,7 +89,9 @@ public class PrepareTrainDataController {
 						appendFile.setFileContent(appendContent);
 						appendFile.setRowcount(RowCount.xlsxRowCount(new ByteArrayInputStream(appendContent)));
 						appendFile.setColCount(dupeExcel.getColCount());
+						appendFile.setActiveStatus(true);
 						prepareTrainDataService.saveExcelFile(appendFile);
+						prepareTrainDataService.updateExcelStatusToFalse(dupeExcel.getId());
 					} else if (".xls".equals(fileType)) {
 						ExcelFile appendFile = new ExcelFile();
 						byte[] appendContent = ExcelUtility.xlsDataAppend(file.getInputStream(),
@@ -98,7 +100,9 @@ public class PrepareTrainDataController {
 						appendFile.setFileContent(appendContent);
 						appendFile.setRowcount(RowCount.xlsRowCount(new ByteArrayInputStream(appendContent)));
 						appendFile.setColCount(dupeExcel.getColCount());
+						appendFile.setActiveStatus(true);
 						prepareTrainDataService.saveExcelFile(appendFile);
+						prepareTrainDataService.updateExcelStatusToFalse(dupeExcel.getId());
 					}
 				} else {
 					if (".xlsx".equals(fileType)) {
@@ -114,12 +118,14 @@ public class PrepareTrainDataController {
 						byte[] excelfileData = IOUtils.toByteArray(file.getInputStream());
 						excelFile.setFileName(fileName);
 						excelFile.setFileContent(excelfileData);
+						excelFile.setActiveStatus(true);
 						prepareTrainDataService.saveExcelFile(excelFile);
 					}
 					else{
-					byte[] excelfileData = IOUtils.toByteArray(inputStream6/*file.getInputStream()*/);
+					byte[] excelfileData = IOUtils.toByteArray(inputStream6);
 					excelFile.setFileName(fileName);
 					excelFile.setFileContent(excelfileData);
+					excelFile.setActiveStatus(true);
 					prepareTrainDataService.saveExcelFile(excelFile);
 					}
 					

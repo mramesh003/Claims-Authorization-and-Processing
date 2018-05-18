@@ -19,6 +19,14 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 		session.save(excelFile);
 	}
 	
+	public void updateExcelStatusToFalse(Integer id) {
+		Session session = getSession();
+		Query query = session.createQuery("Update ExcelFile e set e.activeStatus=:activeStatus where e.id=:id");
+		query.setParameter("activeStatus", false);
+		query.setParameter("id", id);
+		query.executeUpdate();
+	}
+	
 	public void saveCsvFile(CsvFile csvFile) {
 		Session session = getSession();
 		session.save(csvFile);
@@ -26,14 +34,15 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 	
 	public List<ExcelFile> listAllExcels(){
 		Session session = getSession();
-		Query query = session.createQuery("from ExcelFile");
+		Query query = session.createQuery("select e from ExcelFile e where e.activeStatus=:activeStatus");
+		query.setParameter("activeStatus", true);
 		return query.list();
 	}
 	
 	public ExcelFile getExcelFileById(Integer excelId){
 		Session session = getSession();
 		ExcelFile excelFile = new ExcelFile();
-		Query query = session.createQuery("select e from ExcelFile e where e.id=:excelId ");
+		Query query = session.createQuery("select e from ExcelFile e where e.id=:excelId");
 		query.setParameter("excelId", excelId);
 		List<ExcelFile> excelList = query.list();
 		for (ExcelFile file : excelList) {
@@ -44,8 +53,10 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 	
 	public ExcelFile getExcelFileByName(String fileName) {
 		Session session = getSession();
-		Query query = session.createQuery("select e from ExcelFile e where e.fileName=:fileName ");
+		Query query = session.createQuery("select e from ExcelFile e where e.fileName=:fileName and e.activeStatus=:activeStatus");
+		query.setParameter("activeStatus", true);
 		query.setParameter("fileName", fileName);
+		
 		return (ExcelFile)query.uniqueResult();
 	}
 	
@@ -71,7 +82,7 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 
 	public List<CsvFile> listAllCsvs() {
 		Session session = getSession();
-		Query query = session.createQuery("select e from CsvFile e where e.isJava=:isJava");
+		Query query = session.createQuery("select e from CsvFile e where e.isJava=:isJava and e.excelId in (select m.id from ExcelFile m where m.activeStatus is not null)");
 		query.setParameter("isJava",true);
 		return query.list();
 	}
@@ -97,7 +108,7 @@ public class PrepareTrainDataDaoImpl extends AbstractDao implements PrepareTrain
 
 	public List<CsvFile> listAllPythonCsv() {
 		Session session = getSession();
-		Query query = session.createQuery("select e from CsvFile e where e.isJava=:isJava");
+		Query query = session.createQuery("select e from CsvFile e where e.isJava=:isJava and e.excelId in (select m.id from ExcelFile m where m.activeStatus is not null)");
 		query.setParameter("isJava",false);
 		return query.list();
 	}
