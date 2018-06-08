@@ -9,7 +9,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Evaluation Results</title>
-
 <style>
  #headerContainer {
 	-moz-box-shadow: inset 0px 1px 0px 0px #97c4fe;
@@ -43,6 +42,22 @@
 	text-shadow: 0px 1px 0px #1570cd;
 	margin: 0px;
 } 
+body, html {
+    height: 100%;
+}
+#bg
+{
+/* The image used */
+    background-image:  url(images/robotichand1.jpg);
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 </style>
 </head>
 <body >
@@ -79,29 +94,56 @@
 	</table>
 
 </div>
-<div class="box" style=" position: absolute;width: 1000px;height: 580px;background-image: url(images/robotichand1.jpg);width:99%;-webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;">
+<div id="bg">
 	<br>
-	<h3>Final Result</h3>
-	<table class="table table-condensed" style="color:black;">
+	<h3 align="center"><b>Final Result</b></h3>
+<br>
+	<div >
+	<table width="100%" align="center"  cellpadding="2px">
+	<tr>
+		<td width="4%"></td>
+	<td><table width="50%" align="center" class="table table-condensed">
 		<tr class="active">
-			<td>Total Number of claims tested</td>
-			<td>${numberOfTestClaims}</td>
+			<td width="25%">Total Number of claims tested</td>
+			<td width="15%">${numberOfTestClaims}</td>
+			
 		<tr class="success">
-			<td>Number of claims Accepted</td>
-			<td>${acceptCount}</td>
+			<td >Number of claims Accepted</td>
+			<td >${acceptCount}</td>
 		<tr class="warning">
-			<td>Number of claims Pended</td>
+			<td >Number of claims Pended</td>
 			<td>${pendCount}</td>
 		<tr class="danger">
 			<td>Number of claims Rejected</td>
 			<td>${rejectCount}</td>
 		</tr>
+		<tr class="active">
+			<td>Accuracy</td>
+			<td>${accScore}</td>
+		</tr>
+		
+		<tr>
+		<br>
+		<td align="center" colspan="2">
+		<a style="background-color:white;color:black;text-decoration: none;" href="generateReport.xls"> ViewReport </a>
+		</td></tr>
+	</table></td>
+	
+	<td><table width="50%" align="center">
+	<tr>
+		<td align="center"><img style="opacity: 0.9" src="data:image/png;base64,${imagefile}" height="400px" width="500px"  /></td>
+	</tr>
 	</table>
-
-	<a href="generateReport.xls"> ViewReport </a>
+	</td>
+	</tr>
+	
+	</table>
+	
+	
 	</div>
+	
+	
+	
+</div>
 </body>
 </html>

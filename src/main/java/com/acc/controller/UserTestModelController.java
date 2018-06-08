@@ -18,6 +18,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -185,11 +186,13 @@ public class UserTestModelController {
 				}
 				String result = sb.toString();
 				int index = result.indexOf("result");
+				//int index1 = result.indexOf("acc");
 				String claimsStr = result.substring(0,index);
-				String confusionMatrixStr = result.substring(index + 6);
-				String confusionMatrix = confusionMatrixStr.replaceAll(",","\n");
+				String accScore = result.substring(index + 6);
+				//String confusionMatrix = confusionMatrixStr.replaceAll(",","\n");
+				//String accScore = result.substring(index1+3);
 				evaluationResult.put("Evaluation results", " ");
-				evaluationResult.put("Confusion Matrix", confusionMatrix);
+				//evaluationResult.put("Confusion Matrix", confusionMatrix);
 				String claims[] = claimsStr.split(",");
 				numberOfTestClaims = claims.length;
 				acceptCount = 0;
@@ -207,7 +210,7 @@ public class UserTestModelController {
 				session.setAttribute("results",claimData);
 				session.setAttribute("evaluationResult", evaluationResult);
 				session.setAttribute("excelFile",excelFile);
-				/*	String baseUrl1 = "http://localhost:5000/getmatrix";
+				String baseUrl1 = "http://localhost:5000/getmatrix";
 				URL url1 = new URL(baseUrl1);
 				URLConnection urlcon1 = url1.openConnection();
 				InputStream stream1 = urlcon1.getInputStream();	
@@ -215,11 +218,12 @@ public class UserTestModelController {
 				byte[] encodeBase64 = Base64.encode(imageFile);
 				String base64Encoded = new String(encodeBase64,"UTF-8");
 				modelandview.addObject("imagefile", base64Encoded);
-				modelandview.addObject("flag","yes");*/
+				modelandview.addObject("flag","yes");
 				modelandview.addObject("numberOfTestClaims",numberOfTestClaims );
 				modelandview.addObject("acceptCount", acceptCount);
 				modelandview.addObject("pendCount",pendCount );
 				modelandview.addObject("rejectCount", rejectCount);
+				modelandview.addObject("accScore", accScore);
 				modelandview.setViewName("evalResultDisplay");
 			}
 		ExcelFile destinationExcelFile = new ExcelFile();
