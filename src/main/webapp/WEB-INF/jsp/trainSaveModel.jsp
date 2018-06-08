@@ -30,7 +30,7 @@
 </c:if>
  <c:if test="${message == 'SuccessTrain'}">
 	<script>
-		alert("Model File trained and Saved Successfully");
+		alert("Model is trained and Saved Successfully for the file");
 	</script>
 </c:if>
 
@@ -70,7 +70,7 @@
 				<th>Delete</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody style="color:black;">
 			<c:forEach items="${arffFiles}" var = "arffFiles" varStatus = "loop">
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
@@ -111,7 +111,7 @@
 				<th>Delete</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody style="color:black;">
 			<c:forEach items="${csvFiles}" var = "csvFiles" varStatus = "loop">
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>

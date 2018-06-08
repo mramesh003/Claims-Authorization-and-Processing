@@ -54,7 +54,7 @@
 				<th>Delete</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody style="color:black">
 			<c:forEach items="${csvFiles}" var = "csvFiles" varStatus = "loop">
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>

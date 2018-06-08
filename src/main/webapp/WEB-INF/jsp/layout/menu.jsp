@@ -6,12 +6,12 @@
 <head>
 <meta charset="ISO-8859-1">
 </head>
-<body>
+<body >
 	<div class="panel-group" id="accordion">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+		<div class="panel panel-default" style = "background-image:url(images/blue.jpg);color:white;">
+			<div class="panel-heading" style = "background-image:url(images/blue.jpg);color:white;">
 				<h4 class="panel-title">
-					<span class="glyphicon glyphicon-folder-close"> </span> Menus
+					<span class="glyphicon glyphicon-folder-close"> </span> <b>Menus</b>
 
 				</h4>
 			</div>
@@ -23,19 +23,19 @@
 						<c:set var="User" value="${user}" />
 						<c:if test="${User.roleId == 1}">
 							<tr>
-								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
+								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a style="color:white"
 									href="<c:url value="prepareTrainData.htm"/>">&nbsp;Prepare
 										Training Data</a></td>
 							</tr>
 
 							<tr>
-								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
+								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a style="color:white"
 									href="<c:url value="prepareTrainingModel.htm"/>">&nbsp;Prepare
 										Training Model</a></td>
 							</tr>
 
 							<tr>
-								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
+								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a style="color:white"
 									href="<c:url value="trainSaveModel.htm"/>">&nbsp;Train &
 										Save Model</a></td>
 							</tr>
@@ -56,11 +56,11 @@
 										Batch Data</a></td>
 							</tr> --%>
 						</c:if>
-						<tr>
-							<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
+						<%-- <tr>
+							<td><span class="glyphicon glyphicon-pencil text-primary"></span><a style="color:white"
 								href="<c:url value="userTestModel.htm"/>">&nbsp;User Test
 									Model</a></td>
-						</tr>
+						</tr> --%>
 					</table>
 				</div>
 			</div>

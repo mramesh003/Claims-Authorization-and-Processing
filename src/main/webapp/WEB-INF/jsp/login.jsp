@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="css/animate.css">
 <title>Login</title>
 <style type="text/css">
-body {
+/* body {
+	
 	background: no-repeat center center fixed;
 	background-size: cover;
 	font-size: 16px;
@@ -16,7 +17,7 @@ body {
 	font-weight: 300;
 	margin: 0;
 	color: #222295;
-}
+} */
 
 h2 {
 	text-transform: uppercase;
@@ -53,7 +54,7 @@ a {
 }
 
 .login-box {
-	background-color: white;
+	/* background-color: white; */
 	max-width: 340px;
 	margin: 0 auto;
 	position: relative;
@@ -65,7 +66,7 @@ a {
 }
 
 .login-box .box-header {
-	background-color: #064d81;
+	background-color: black;
 	margin-top: 0;
 	border-radius: 10px 10px 0 0;
 }
@@ -104,7 +105,7 @@ a {
 	font-weight: 400;
 	font-size: 0.7em;
 	letter-spacing: 1px;
-	background-color: #dee1e2;
+	background-color: black;
 	cursor: pointer;
 	outline: none;
 }
@@ -132,22 +133,22 @@ a {
 </style>
 
 </head>
-<body>
+<body style="background-image: url(images/handshake.jpg); background-repeat: no-repeat; background-size: 1400px 720px">
 	<div class="container">
 <div id="title" >
-		  <h1 align="center">Claims AI Prediction Engine</h1>
+		  <h1 align="center" style="color:white;font-family: sans-serif;">CLAIMS AI PREDICTION ENGINE</h1>
 		</div> 
  
 
 		<div class="login-box animated fadeInUp">
-			<div class="box-header">
+			<div class="box-header" >
 				<h2>Log In</h2>
-			</div>
-			<form action="login.htm" method="post">
+			</div><strong>
+			<form action="login.htm" method="post" style ="color: black;">
 				User Name : <input type="text" name="Username" required /><br>
-				<br> Password : <input type="password" name="pw" required /><br>
-				<br> <input class="button" type="submit" value="Login" />
-			</form>
+				<br>Password : <input type="password" name="pw" required /><br>
+				<br> <input class="button" style ="color: white;"type="submit" value="Login" />
+			</form></strong>
 		</div>
 	</div>
 </body>

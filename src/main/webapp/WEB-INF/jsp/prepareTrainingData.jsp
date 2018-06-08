@@ -32,7 +32,24 @@
 
 <script>
        $(document).ready(function(){
-    	   
+    	   document.getElementById("submit").style.color = "black";
+    		//document.getElementById("submit").style.background = "#000";
+    		document.getElementById("submit").style.background = null;
+    		document.getElementById("submit").style.opacity = ".5";
+    		$('#file').change(function() {
+    			if ($("#file").val() != '') {
+    				$('#submit').attr('disabled', false);
+    				document.getElementById("submit").style.color = "black";
+    				document.getElementById("submit").style.background = null;
+    				document.getElementById("submit").style.opacity = null;
+    			} else {
+    				$('#submit').attr('disabled', true);
+    				document.getElementById("submit").style.color = "black";
+    				//document.getElementById("submit").style.background = "#000";
+    				document.getElementById("submit").style.background = null;
+    				//document.getElementById("submit").style.opacity = ".4";
+    			}
+    		});
     	   $('#excelTable').DataTable();
     	   $('#excelTable').on('click', '.convert', function(){
     		   butId = $(this).attr('id');
@@ -60,7 +77,7 @@
 </script>
  
 </head>	
-<body>
+<body >
 <h1>Prepare Training Data</h1><br>
 	<form action="uploadExcel.htm" method="post" enctype="multipart/form-data">
 		<label>Select Excel File :</label>
@@ -85,7 +102,7 @@
 				<th>Delete</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody style="color: Black">
 			<c:forEach items="${excelFiles}" var = "excelFiles" varStatus = "loop">
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>
