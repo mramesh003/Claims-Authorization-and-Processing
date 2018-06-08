@@ -60,7 +60,7 @@
 </script>
  
 </head>	
-<body>
+<body >
 <h1>Prepare Training Data</h1><br>
 	<form action="uploadExcel.htm" method="post" enctype="multipart/form-data">
 		<label>Select Excel File :</label>
@@ -85,7 +85,7 @@
 				<th>Delete</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody style="color: Black">
 			<c:forEach items="${excelFiles}" var = "excelFiles" varStatus = "loop">
 			<tr>
 				<td scope="row"><c:out value = "${loop.count }"></c:out></td>

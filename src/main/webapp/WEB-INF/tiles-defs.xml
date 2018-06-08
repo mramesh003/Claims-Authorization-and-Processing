@@ -35,12 +35,12 @@
                                                 value="/WEB-INF/jsp/trainSaveModel.jsp" />
                 </definition>
                 
-                 <definition name="userTestModel" extends="baseLayout">
+                 <!-- <definition name="userTestModel" extends="baseLayout">
                                 <put-attribute name="title" value="User Test Model" />
                                 <put-attribute name="body"
                                                 value="/WEB-INF/jsp/userTestModel.jsp" />
-                </definition>
-                 <definition name="evaluationResults" extends="baseLayout">
+                </definition> -->
+                <!--  <definition name="evaluationResults" extends="baseLayout">
                                 <put-attribute name="title" value="Evaluation Results" />
                                 <put-attribute name="body"
                                                 value="/WEB-INF/jsp/evaluationResults.jsp" />
@@ -50,7 +50,7 @@
                                 <put-attribute name="title" value="Evaluation Results Display" />
                                 <put-attribute name="body"
                                                 value="/WEB-INF/jsp/evalResultDisplay.jsp" />
-                </definition>
+                </definition> -->
                 
               
 </tiles-definitions>

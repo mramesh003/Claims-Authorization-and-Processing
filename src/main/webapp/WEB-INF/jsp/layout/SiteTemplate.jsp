@@ -38,7 +38,7 @@
 	} 
 </style>
 </head>
-<body>
+<body style = "background-image:url(images/blue.jpg);color:white;">
 	<div class="container-fluid">
 		<div>
 			<tiles:insertAttribute name="header" />
