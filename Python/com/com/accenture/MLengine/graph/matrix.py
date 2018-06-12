@@ -17,6 +17,7 @@ class plot:
         plt.ylabel('Expected label')
         plt.xlabel('Predicted label')
         plt.savefig('Results.png')
+        plt.gcf().clf()
         #plt.show()
 
     def plot_box_iteration(matrix, normalize=False):

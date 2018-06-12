@@ -12,16 +12,14 @@ def save_model(fileid):
 @app.route('/evaluate/<fileid>')
 def evaluate_model(fileid):
    Claim_adjudication = claim_process_engine.claim_adjudication()
-   prediction = Claim_adjudication.execute_model(fileid)
+   prediction,cnfmatrix,accScore = Claim_adjudication.execute_model(fileid)
    #prediction = ','.join(str(e) for e in dtc1)
-   return prediction
+   predictions_confmatrix = ','.join(str(e) for e in prediction) + "result" + accScore
+   return predictions_confmatrix
 @app.route('/getmatrix')
 def display_matrix():
    Claim_adjudication = claim_process_engine.claim_adjudication()
-   Dao = dao.daoClass()
-   data = Dao.csv_LatestRetrival()
-   fileid = data[0]
-   result = Claim_adjudication.train_model(fileid)
+   result=Claim_adjudication.Loadimage()
    print(result)
    return result;
 @app.route('/saveModell')
