@@ -226,7 +226,9 @@ public class UserTestModelController {
 				modelandview.addObject("accScore", accScore);
 				modelandview.setViewName("evalResultDisplay");
 			}
-		ExcelFile destinationExcelFile = new ExcelFile();
+		}
+		}
+		/*ExcelFile destinationExcelFile = new ExcelFile();
 		destinationExcelFile = trainModelService.getExcelFilebyModel(language);
 		byte [] destFile = destinationExcelFile.getFileContent();
 		byte [] srcFile = (byte[]) session.getAttribute("sourcefile");
@@ -293,7 +295,7 @@ public class UserTestModelController {
 			InputStream streaminput = urlconn.getInputStream();
 		}
 		}
-		}
+		}*/
 		catch(NoClassDefFoundError e)
 		{
 			modelandview.addObject("error", e.getMessage());
@@ -305,8 +307,9 @@ public class UserTestModelController {
 			modelandview.setViewName("errorPage");
 		}
 		
+		
 		return modelandview;
-	}
-}
+	}}
+
 
 

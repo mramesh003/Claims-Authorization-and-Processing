@@ -83,6 +83,9 @@ class claim_adjudication:
         print("Model Prediction End Result")
         print("===========================")
         acc_score = accuracy_score(Y_validationset, predictions)
+        acc_score=acc_score*100
+        print(acc_score)
+        acc_score = str(acc_score)
         print(acc_score)
         print("                           ")
         print("===========================")
@@ -94,7 +97,7 @@ class claim_adjudication:
         print("Model Classification Report")
         print("===========================")
         print(classification_report(Y_validationset, predictions))
-        return predictions,cnf_matrix;
+        return predictions,cnf_matrix,acc_score;
 
     def executeModel(self, result, X_validationset, Y_validationset):
         predictions = result.predict(X_validationset)
@@ -127,6 +130,7 @@ class claim_adjudication:
         csv_list = [fileid,modelname,datacount,columncount]
         csv_bytecontent = bytes(csv_filecontent, 'utf-8')
         csv_buffercontent = BytesIO(csv_bytecontent)
+        print("csv_buffercontent", csv_buffercontent)
 
         names = ['Insured Policy Number for Subscriber',
              'Subscriber State',
@@ -162,6 +166,7 @@ class claim_adjudication:
 
     def train_model(self,fileid):
         csv_buffercontent,csv_list,names =self.csvretrival(fileid)
+        print("csv_buffercontent",csv_buffercontent)
         X, Y = self.form_dataset(csv_buffercontent,names)
         dtc = self.fit_and_train_Model(X, Y)
         self.savemodel(dtc,csv_list)
@@ -171,9 +176,11 @@ class claim_adjudication:
         csv_buffercontent,csv_list,names = self.csvretrival(testfileId)
         X, Y = self.form_dataset(csv_buffercontent,names)
         result = self.loadModel()
-        predictions,cnfmatrix = self.executeModel(result, X, Y)
-        predictions_confmatrix = ','.join(str(e) for e in predictions) + "result" + ','.join(str(e) for e in cnfmatrix) +"result"
-        return predictions_confmatrix;
+        predictions,cnfmatrix,accScore = self.executeModelWithConfMatrix(result, X, Y)
+        #predictions_confmatrix = ','.join(str(e) for e in predictions) + "result" + ','.join(str(e) for e in cnfmatrix) +"acc"+accScore
+        #print(predictions_confmatrix)
+        print("predictions",predictions)
+        return predictions,cnfmatrix,accScore;
 #-----------------------------------------------------------------------------------
 validation_size = 0.10
 
