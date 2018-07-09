@@ -18,8 +18,8 @@ import com.accenture.MLengine.graph.matrix as Plot
 
 class claim_adjudication:
 
-    def form_dataset(self,csv_buffercontent,names):
-        dataset = pandas.read_csv(csv_buffercontent, names=names,skiprows=1)
+    def form_dataset(self,csv_buffercontent):
+        dataset = pandas.read_csv(csv_buffercontent,skiprows=0)
 
         print(dataset.shape)
         # class distribution
@@ -131,8 +131,44 @@ class claim_adjudication:
         csv_bytecontent = bytes(csv_filecontent, 'utf-8')
         csv_buffercontent = BytesIO(csv_bytecontent)
         print("csv_buffercontent", csv_buffercontent)
+        return csv_buffercontent, csv_list;
 
-        names = ['Insured Policy Number for Subscriber',
+
+
+
+    def Loadimage(self):
+        with open("Results.png", "rb")as imageFile:
+            image = imageFile.read()
+            Image_Bytes = bytearray(image)
+            return Image_Bytes;
+
+    def train_model(self,fileid):
+        csv_buffercontent,csv_list =self.csvretrival(fileid)
+        print("csv_buffercontent",csv_buffercontent)
+        X, Y = self.form_dataset(csv_buffercontent)
+        dtc = self.fit_and_train_Model(X, Y)
+        self.savemodel(dtc,csv_list)
+        return 'success';
+
+    def execute_model(self,testfileId):
+        csv_buffercontent,csv_list = self.csvretrival(testfileId)
+        X, Y = self.form_dataset(csv_buffercontent)
+        result = self.loadModel()
+        predictions,cnfmatrix,accScore = self.executeModelWithConfMatrix(result, X, Y)
+        #predictions_confmatrix = ','.join(str(e) for e in predictions) + "result" + ','.join(str(e) for e in cnfmatrix) +"acc"+accScore
+        #print(predictions_confmatrix)
+        print("predictions",predictions)
+        return predictions,cnfmatrix,accScore;
+#-----------------------------------------------------------------------------------
+validation_size = 0.10
+
+#Object creation
+dao_obj= dao_layer.daoClass()
+matrix_obj = Plot.plot()
+
+
+
+'''  names = ['Insured Policy Number for Subscriber',
              'Subscriber State',
              'Subscriber Postal Code',
              'Subscriber Birth Date',
@@ -154,39 +190,4 @@ class claim_adjudication:
              'Service Unit Count',
              'Service Date',
              'Service Facility Provider ID',
-             'Claim Status']
-
-        return csv_buffercontent,csv_list,names;
-
-    def Loadimage(self):
-        with open("Results.png", "rb")as imageFile:
-            image = imageFile.read()
-            Image_Bytes = bytearray(image)
-            return Image_Bytes;
-
-    def train_model(self,fileid):
-        csv_buffercontent,csv_list,names =self.csvretrival(fileid)
-        print("csv_buffercontent",csv_buffercontent)
-        X, Y = self.form_dataset(csv_buffercontent,names)
-        dtc = self.fit_and_train_Model(X, Y)
-        self.savemodel(dtc,csv_list)
-        return 'success';
-
-    def execute_model(self,testfileId):
-        csv_buffercontent,csv_list,names = self.csvretrival(testfileId)
-        X, Y = self.form_dataset(csv_buffercontent,names)
-        result = self.loadModel()
-        predictions,cnfmatrix,accScore = self.executeModelWithConfMatrix(result, X, Y)
-        #predictions_confmatrix = ','.join(str(e) for e in predictions) + "result" + ','.join(str(e) for e in cnfmatrix) +"acc"+accScore
-        #print(predictions_confmatrix)
-        print("predictions",predictions)
-        return predictions,cnfmatrix,accScore;
-#-----------------------------------------------------------------------------------
-validation_size = 0.10
-
-#Object creation
-dao_obj= dao_layer.daoClass()
-matrix_obj = Plot.plot()
-
-
-
+             'Claim Status]'''
