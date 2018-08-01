@@ -35,10 +35,11 @@ public class LoginController {
 	
 	@RequestMapping(value= {"login.htm"}, method = RequestMethod.POST)
 	
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response ) throws Exception
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response ) 
 	{
-		HttpSession session = request.getSession();
 		ModelAndView modelandview = new ModelAndView();
+		try {
+		HttpSession session = request.getSession();
 		String username = request.getParameter("Username");
 		String password = request.getParameter("pw");
 		User user=LoginService.checkUser(username);
@@ -61,7 +62,12 @@ public class LoginController {
 		{
 			modelandview.setViewName("login");
 
-		}
+		}}
+	catch(Exception e)
+	{
+		modelandview.addObject("error", e.getMessage());
+		modelandview.setViewName("errorPage");
+	}
 		return modelandview;
 	}
 	@RequestMapping("logout.htm")

@@ -72,6 +72,8 @@
                    }
                });
     		});
+    	   
+    	   
 });
        
 </script>
@@ -83,9 +85,11 @@
 		<label>Select Excel File :</label>
 	
 		<input id = "file" name="file" type="file"> <br> <br> 
-	
+		<input type="radio" name="modeltype" value="General"> Main Model<br>
+			<input type="radio" name="modeltype" value="Pend"> Pend Model<br>
+               <input type="radio" name="modeltype" value="Reject"> Reject Model<br>
 		<input id = "submit" type="submit" value="Upload File" disabled>
-		
+
 	</form>
 	<br>
 	<br>

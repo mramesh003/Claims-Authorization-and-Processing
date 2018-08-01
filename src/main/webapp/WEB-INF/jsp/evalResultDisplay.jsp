@@ -127,8 +127,13 @@ body, html {
 		<td align="center" colspan="2">
 		<a style="background-color:white;color:black;text-decoration: none;" href="generateReport.xls"> ViewReport </a>
 		</td></tr>
+		
+		<tr>
+		<td align="center" colspan="2">
+		<a style="background-color:white;color:black;text-decoration: none;" href="reasoncodepredict.htm" > Reason Code </a>
+		</td>
+		</tr>
 	</table></td>
-	
 	<td><table width="50%" align="center">
 	<tr>
 		<td align="center"><img style="opacity: 0.9" src="data:image/png;base64,${imagefile}" height="400px" width="500px"  /></td>

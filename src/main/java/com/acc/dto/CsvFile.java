@@ -39,6 +39,17 @@ public class CsvFile {
 	@Column(name = "isjava")
 	private Boolean isJava;
 	
+	@Column(name = "modeltype")
+	private String modeltype;
+	
+	public String getModeltype() {
+		return modeltype;
+	}
+
+	public void setModeltype(String modeltype) {
+		this.modeltype = modeltype;
+	}
+
 	public Integer getId() {
 		return id;
 	}

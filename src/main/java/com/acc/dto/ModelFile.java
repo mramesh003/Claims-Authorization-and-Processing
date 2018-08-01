@@ -38,6 +38,17 @@ public class ModelFile {
 	
 	@Column(name = "flag")
 	private String flag;
+	
+	@Column(name = "modeltype")
+	private String modeltype;
+
+	public String getModeltype() {
+		return modeltype;
+	}
+
+	public void setModeltype(String modeltype) {
+		this.modeltype = modeltype;
+	}
 
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(insertable=false,updatable=false,name="arffId")
