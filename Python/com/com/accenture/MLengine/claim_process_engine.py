@@ -83,11 +83,11 @@ class claim_adjudication:
         print("===========================")
         print("Model Prediction End Result")
         print("===========================")
-        acc_score = accuracy_score(Y_validationset, predictions)
-        acc_score=acc_score*100
-        print(acc_score)
-        acc_score = str(acc_score)
-        print(acc_score)
+        #acc_score = accuracy_score(Y_validationset, predictions)
+        #acc_score=acc_score*100
+        #print(acc_score)
+        #acc_score = str(acc_score)
+        #print(acc_score)
         print("                           ")
         print("===========================")
         print("Model Confusion Matrix")
@@ -98,7 +98,7 @@ class claim_adjudication:
         print("Model Classification Report")
         print("===========================")
         print(classification_report(Y_validationset, predictions))
-        return predictions,cnf_matrix,acc_score;
+        return predictions,cnf_matrix;
 
     def executeModel(self, result, X_validationset, Y_validationset):
         predictions = result.predict(X_validationset)

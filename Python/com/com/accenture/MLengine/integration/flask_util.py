@@ -12,9 +12,9 @@ def save_model(fileid):
 @app.route('/evaluate/<fileid>')
 def evaluate_model(fileid):
    Claim_adjudication = claim_process_engine.claim_adjudication()
-   prediction,cnfmatrix,accScore = Claim_adjudication.execute_model(fileid)
+   prediction,cnfmatrix = Claim_adjudication.execute_model(fileid)
    #prediction = ','.join(str(e) for e in dtc1)
-   predictions_confmatrix = ','.join(str(e) for e in prediction) + "result" + accScore
+   predictions_confmatrix = ','.join(str(e) for e in prediction) + "result"
    return predictions_confmatrix
 @app.route('/getmatrix')
 def display_matrix():

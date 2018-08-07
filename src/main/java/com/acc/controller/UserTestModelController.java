@@ -2,9 +2,11 @@ package com.acc.controller;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -19,7 +21,20 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.udf.UDFFinder;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Name;
+import org.apache.poi.ss.usermodel.PictureData;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -223,6 +238,7 @@ public class UserTestModelController {
 				session.setAttribute("results",claimData);
 				session.setAttribute("evaluationResult", evaluationResult);
 				session.setAttribute("excelFile",excelFile);
+				session.setAttribute("numberOfTestClaims",numberOfTestClaims);
 				String baseUrl1 = "http://localhost:5000/getmatrix";
 				URL url1 = new URL(baseUrl1);
 				URLConnection urlcon1 = url1.openConnection();
@@ -325,8 +341,11 @@ public class UserTestModelController {
 	}
 	
     @RequestMapping("reasoncodepredict.htm")
-	public ModelAndView getreasonCode(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		ModelAndView modelandview = new ModelAndView();
+	public void getreasonCode(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    	
+    	
+    	
+
 		HttpSession session = request.getSession();
 		Workbook workBook = new XSSFWorkbook();
 		ModelEvalReport evalreport = new ModelEvalReport();
@@ -334,14 +353,14 @@ public class UserTestModelController {
 		List<String> predictionResult = (List<String>) session.getAttribute("results");
 		Map<String, Object> evaluationResult = (Map<String, Object>) session.getAttribute("evaluationResult");
 		evalreport.xlsxReport(session, excelFile, predictionResult, evaluationResult, workBook);
-		try {
+		
 			List<byte[]> list = new ArrayList<byte[]>();
 		XSSFWorkbook workbook = (XSSFWorkbook) session.getAttribute("workbook");
-		list = ExcelUtility.splitExcel(workbook);
+		list = ExcelUtility.splitExcel(workbook, request);
 		byte[] pendarray = list.get(0);
 		byte[] rejectarray = list.get(1);
 		ExcelFile excelfile  =new ExcelFile();
-		excelfile.setActiveStatus(true);
+		excelfile.setActiveStatus(false);
 		excelfile.setFileName("pend.xlsx");
 		excelfile.setFileContent(pendarray);
 		excelfile.setColCount(ColumnCount.xlsxColumnCount(new ByteArrayInputStream(pendarray)));
@@ -349,7 +368,7 @@ public class UserTestModelController {
 		excelfile.setModeltype("pend");
 		
 		ExcelFile excelfile1  =new ExcelFile();
-		excelfile1.setActiveStatus(true);
+		excelfile1.setActiveStatus(false);
 		excelfile1.setFileName("reject.xlsx");
 		excelfile1.setFileContent(rejectarray);
 		excelfile1.setColCount(ColumnCount.xlsxColumnCount(new ByteArrayInputStream(rejectarray)));
@@ -388,52 +407,64 @@ public class UserTestModelController {
 		System.out.println("===========**********============"+csvFile1.getId());
 		String resultPend = null;
 		String resultReject = null;
+		String[] claims = null;
+		String[] claims1 = null;
+		
 		if(excelFile.getRowcount() >0)
 			resultPend = getReasonCodeFromAI(csvFile.getId().toString());
+		if(resultPend!=null) {
+			
+		
+		List<String> penddata = new ArrayList<String>();
+ 		int index = resultPend.indexOf("result");
+		String claimsStr1 = resultPend.substring(0,index);
+		 claims = claimsStr1.split(",");
+	
+		
+		for (int i = 0; i < claims.length; i++) {
+			penddata.add(claims[i]);
+			
+		}
+	
+		}
+		
 		if(excelfile1.getRowcount() >0)
 			resultReject = getReasonCodeFromAI(csvFile1.getId().toString());
-		/*String baseUrl = "http://localhost:6000/evaluate/";
-		String completeUrl = baseUrl + csvFile.getId();
-		URL url = new URL(completeUrl);
-		URLConnection urlcon = url.openConnection();
-		InputStream stream = urlcon.getInputStream();				
-		String line = null;
-		StringBuilder sb = new StringBuilder();
-		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-		while ((line = br.readLine()) != null) {
-			sb.append(line);
+		
+		if(resultReject!=null) {
+			
+		
+		List<String> rejectdata = new ArrayList<String>();
+ 		int index1 = resultReject.indexOf("result");
+		String claimsStr2 = resultReject.substring(0,index1);
+		 claims1 = claimsStr2.split(",");
+	
+		
+		for (int i = 0; i < claims1.length; i++) {
+			rejectdata.add(claims1[i]);
+			
+		}	
+
 		}
-		String result = sb.toString();
-		//String prediction[] = result.split(",");
-		System.out.println("==================================");
-		System.out.println(result);
+		
+	
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-Disposition", "attachment; filename=GeneratedReport.xlsx");
+		
+		XSSFWorkbook reportFinal=(XSSFWorkbook) session.getAttribute("workbook");
+		int claimscount=(Integer) session.getAttribute("numberOfTestClaims");
+		XSSFWorkbook finalexcel = ExcelUtility.finalColAppend(reportFinal,claims,claims1,claimscount);
+		
+		  
+		
+			finalexcel.write(response.getOutputStream());
+		
+
+
+		
+	
 		
 		
-		completeUrl = baseUrl +  csvFile1.getId();
-		url = new URL(completeUrl);
-		urlcon = url.openConnection();
-		InputStream stream1 = urlcon.getInputStream();				
-		 line = null;
-		 sb = new StringBuilder();
-		 br = new BufferedReader(new InputStreamReader(stream1));
-		while ((line = br.readLine()) != null) {
-			sb.append(line);
-		}
-		result = sb.toString();
-		//String prediction[] = result.split(",");
-		System.out.println("==================================");
-		System.out.println(result);*/
-		
-		
-		
-		
-		modelandview.setViewName("reasonCodePrediction");
-		}
-		catch(Exception e) {
-			modelandview.addObject("error", e.getMessage());
-			modelandview.setViewName("errorPage");
-		}
-		return modelandview;
 	}
 
     public String getReasonCodeFromAI(String fileId) throws IOException
