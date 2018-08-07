@@ -99,7 +99,7 @@ body, html {
 	<h3 align="center"><b>Final Result</b></h3>
 <br>
 	<div >
-	<table width="100%" align="center"  cellpadding="2px">
+	<table width="80%" align="center"  cellpadding="2px">
 	<tr>
 		<td width="4%"></td>
 	<td><table width="50%" align="center" class="table table-condensed">
@@ -117,24 +117,29 @@ body, html {
 			<td>Number of claims Rejected</td>
 			<td>${rejectCount}</td>
 		</tr>
-		<tr class="active">
+		<%-- <tr class="active">
 			<td>Accuracy</td>
 			<td>${accScore}</td>
-		</tr>
+		</tr> --%>
 		
-		<tr>
+		<!-- <tr>
 		<br>
 		<td align="center" colspan="2">
 		<a style="background-color:white;color:black;text-decoration: none;" href="generateReport.xls"> ViewReport </a>
-		</td></tr>
+		</td></tr> -->
+		
+		<tr>
+		<td align="center" colspan="2">
+		<a style="background-color:white;color:black;text-decoration: none;" href="reasoncodepredict.htm" > View Report </a>
+		</td>
+		</tr>
 	</table></td>
-	
-	<td><table width="50%" align="center">
+	<%-- <td><table width="50%" align="center">
 	<tr>
 		<td align="center"><img style="opacity: 0.9" src="data:image/png;base64,${imagefile}" height="400px" width="500px"  /></td>
 	</tr>
 	</table>
-	</td>
+	</td> --%>
 	</tr>
 	
 	</table>

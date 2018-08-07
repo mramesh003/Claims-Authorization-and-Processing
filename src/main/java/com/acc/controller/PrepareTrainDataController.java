@@ -59,6 +59,8 @@ public class PrepareTrainDataController {
 			InputStream inputStream = null;
 			InputStream inputStream1 = null;
 			InputStream inputStream2 = null;
+			String modelType = request.getParameter("modeltype");
+		
 			try
 			{
 			List<MultipartFile> files = uploadItem.getFile();
@@ -119,6 +121,7 @@ public class PrepareTrainDataController {
 						excelFile.setFileName(fileName);
 						excelFile.setFileContent(excelfileData);
 						excelFile.setActiveStatus(true);
+						excelFile.setModeltype(modelType);
 						prepareTrainDataService.saveExcelFile(excelFile);
 					}
 					else{
@@ -126,6 +129,7 @@ public class PrepareTrainDataController {
 					excelFile.setFileName(fileName);
 					excelFile.setFileContent(excelfileData);
 					excelFile.setActiveStatus(true);
+					excelFile.setModeltype(modelType);
 					prepareTrainDataService.saveExcelFile(excelFile);
 					}
 					
@@ -206,10 +210,12 @@ public class PrepareTrainDataController {
 		csvFile.setExcelId(excelFile.getId());
 		csvFile.setRowCount(excelFile.getRowcount());
 		csvFile.setColumnCount(excelFile.getColCount());
+		csvFile.setModeltype(excelFile.getModeltype());
 		if(language.equals("java"))
 			csvFile.setIsJava(true);
 		else
 			csvFile.setIsJava(false);
+		
 		prepareTrainDataService.saveCsvFile(csvFile);
 		}
 		catch(Exception e)

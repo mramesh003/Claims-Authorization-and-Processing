@@ -59,6 +59,7 @@ class claim_adjudication:
             results.append(cv_results)
             names.append(name)
             msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+            print("5564874568")
             print(msg)
         return results, names;
 
@@ -71,8 +72,8 @@ class claim_adjudication:
         modelcontent = pickle.dumps(dtc)
         dao_obj.save_Model(csv_list,modelcontent)
 
-    def loadModel(self):
-            data = dao_obj.load_Model()
+    def loadModel(self,modeltype):
+            data = dao_obj.load_Model(modeltype)
             model = pickle.loads(data[0])
             return model;
 
@@ -82,11 +83,11 @@ class claim_adjudication:
         print("===========================")
         print("Model Prediction End Result")
         print("===========================")
-        acc_score = accuracy_score(Y_validationset, predictions)
-        acc_score=acc_score*100
-        print(acc_score)
-        acc_score = str(acc_score)
-        print(acc_score)
+        #acc_score = accuracy_score(Y_validationset, predictions)
+        #acc_score=acc_score*100
+        #print(acc_score)
+        #acc_score = str(acc_score)
+        #print(acc_score)
         print("                           ")
         print("===========================")
         print("Model Confusion Matrix")
@@ -97,7 +98,7 @@ class claim_adjudication:
         print("Model Classification Report")
         print("===========================")
         print(classification_report(Y_validationset, predictions))
-        return predictions,cnf_matrix,acc_score;
+        return predictions,cnf_matrix;
 
     def executeModel(self, result, X_validationset, Y_validationset):
         predictions = result.predict(X_validationset)
@@ -120,14 +121,19 @@ class claim_adjudication:
 
     def csvretrival(self,fileid):
         data = dao_obj.csv_Retrival(fileid)
+        for i in range(len(data)):
+            print(data[i])
+
         filename = str(data[1])
         modelfile = filename.strip(".csv")
         modelname = modelfile + ".mdl"
         columncount = data[4]
         datacount = data[5]
+        modeltype = data[7]
+        print(modeltype )
         csv_filecontent = str(data[2], 'ISO-8859-1')
         print(columncount)
-        csv_list = [fileid,modelname,datacount,columncount]
+        csv_list = [fileid,modelname,datacount,columncount,modeltype]
         csv_bytecontent = bytes(csv_filecontent, 'utf-8')
         csv_buffercontent = BytesIO(csv_bytecontent)
         print("csv_buffercontent", csv_buffercontent)
@@ -153,12 +159,12 @@ class claim_adjudication:
     def execute_model(self,testfileId):
         csv_buffercontent,csv_list = self.csvretrival(testfileId)
         X, Y = self.form_dataset(csv_buffercontent)
-        result = self.loadModel()
-        predictions,cnfmatrix,accScore = self.executeModelWithConfMatrix(result, X, Y)
+        result = self.loadModel(csv_list[4])
+        predictions,cnfmatrix = self.executeModel(result, X, Y)
         #predictions_confmatrix = ','.join(str(e) for e in predictions) + "result" + ','.join(str(e) for e in cnfmatrix) +"acc"+accScore
         #print(predictions_confmatrix)
         print("predictions",predictions)
-        return predictions,cnfmatrix,accScore;
+        return predictions,cnfmatrix;
 #-----------------------------------------------------------------------------------
 validation_size = 0.10
 

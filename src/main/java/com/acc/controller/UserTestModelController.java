@@ -2,8 +2,12 @@ package com.acc.controller;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -12,12 +16,28 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.udf.UDFFinder;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Name;
+import org.apache.poi.ss.usermodel.PictureData;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +81,16 @@ public class UserTestModelController {
 	@RequestMapping("generateReport.xls")
 	public ModelAndView redirect(HttpServletRequest request) {
 		ModelAndView modelandview = new ModelAndView();
+		try {
 		modelandview.setViewName("modelEvalReport");
+		HttpSession session = request.getSession();
+		HSSFWorkbook workbook = (HSSFWorkbook) session.getAttribute("workbook");
+		System.out.println(workbook);
+		}
+		catch(Exception e) {
+			modelandview.addObject("error", e.getMessage());
+			modelandview.setViewName("errorPage");
+		}
 		return modelandview;
 	}
 
@@ -118,6 +147,7 @@ public class UserTestModelController {
 				csvFile.setIsJava(true);
 			if (language.equals("python"))
 				csvFile.setIsJava(false);
+			csvFile.setModeltype(excelFile.getModeltype());
 			prepareTrainDataService.saveCsvFile(csvFile);
 			if (language.equals("java")) {
 
@@ -188,9 +218,7 @@ public class UserTestModelController {
 				int index = result.indexOf("result");
 				//int index1 = result.indexOf("acc");
 				String claimsStr = result.substring(0,index);
-				String accScore = result.substring(index + 6);
-				//String confusionMatrix = confusionMatrixStr.replaceAll(",","\n");
-				//String accScore = result.substring(index1+3);
+				//String accScore = result.substring(index + 6);
 				evaluationResult.put("Evaluation results", " ");
 				//evaluationResult.put("Confusion Matrix", confusionMatrix);
 				String claims[] = claimsStr.split(",");
@@ -210,6 +238,7 @@ public class UserTestModelController {
 				session.setAttribute("results",claimData);
 				session.setAttribute("evaluationResult", evaluationResult);
 				session.setAttribute("excelFile",excelFile);
+				session.setAttribute("numberOfTestClaims",numberOfTestClaims);
 				String baseUrl1 = "http://localhost:5000/getmatrix";
 				URL url1 = new URL(baseUrl1);
 				URLConnection urlcon1 = url1.openConnection();
@@ -223,7 +252,7 @@ public class UserTestModelController {
 				modelandview.addObject("acceptCount", acceptCount);
 				modelandview.addObject("pendCount",pendCount );
 				modelandview.addObject("rejectCount", rejectCount);
-				modelandview.addObject("accScore", accScore);
+				//modelandview.addObject("accScore", accScore);
 				modelandview.setViewName("evalResultDisplay");
 			}
 		}
@@ -309,7 +338,157 @@ public class UserTestModelController {
 		
 		
 		return modelandview;
-	}}
+	}
+	
+    @RequestMapping("reasoncodepredict.htm")
+	public void getreasonCode(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    	
+    	
+    	
+
+		HttpSession session = request.getSession();
+		Workbook workBook = new XSSFWorkbook();
+		ModelEvalReport evalreport = new ModelEvalReport();
+		ExcelFile excelFile = (ExcelFile) session.getAttribute("excelFile");
+		List<String> predictionResult = (List<String>) session.getAttribute("results");
+		Map<String, Object> evaluationResult = (Map<String, Object>) session.getAttribute("evaluationResult");
+		evalreport.xlsxReport(session, excelFile, predictionResult, evaluationResult, workBook);
+		
+			List<byte[]> list = new ArrayList<byte[]>();
+		XSSFWorkbook workbook = (XSSFWorkbook) session.getAttribute("workbook");
+		list = ExcelUtility.splitExcel(workbook, request);
+		byte[] pendarray = list.get(0);
+		byte[] rejectarray = list.get(1);
+		ExcelFile excelfile  =new ExcelFile();
+		excelfile.setActiveStatus(false);
+		excelfile.setFileName("pend.xlsx");
+		excelfile.setFileContent(pendarray);
+		excelfile.setColCount(ColumnCount.xlsxColumnCount(new ByteArrayInputStream(pendarray)));
+		excelfile.setRowcount(RowCount.xlsxRowCount(new ByteArrayInputStream(pendarray)));
+		excelfile.setModeltype("pend");
+		
+		ExcelFile excelfile1  =new ExcelFile();
+		excelfile1.setActiveStatus(false);
+		excelfile1.setFileName("reject.xlsx");
+		excelfile1.setFileContent(rejectarray);
+		excelfile1.setColCount(ColumnCount.xlsxColumnCount(new ByteArrayInputStream(rejectarray)));
+		excelfile1.setRowcount(RowCount.xlsxRowCount(new ByteArrayInputStream(rejectarray)));
+		excelfile1.setModeltype("reject");
+		
+		
+		prepareTrainDataService.saveExcelFile(excelfile1);
+		System.out.println("****************************"+workbook);
+		prepareTrainDataService.saveExcelFile(excelfile);
+		
+		InputStream pendstream = new ByteArrayInputStream(pendarray);
+		byte[] pendcsvarray = ClaimsUtility.XLSX2CSV(pendstream, "python");
+		CsvFile csvFile = new CsvFile();
+		csvFile.setFileName("pend.csv");
+		csvFile.setFileContent(pendcsvarray);
+		csvFile.setIsJava(false);
+		csvFile.setColumnCount(excelFile.getColCount());
+		csvFile.setRowCount(excelFile.getRowcount());
+		csvFile.setExcelId(excelFile.getId());
+		csvFile.setModeltype("pend");
+		prepareTrainDataService.saveCsvFile(csvFile);
+		
+		InputStream rejectstream = new ByteArrayInputStream(rejectarray);
+		byte[] rejectcsvarray = ClaimsUtility.XLSX2CSV(rejectstream, "python");
+		CsvFile csvFile1 = new CsvFile();
+		csvFile1.setFileName("reject.csv");
+		csvFile1.setFileContent(rejectcsvarray);
+		csvFile1.setIsJava(false);
+		csvFile1.setColumnCount(excelfile1.getColCount());
+		csvFile1.setRowCount(excelfile1.getRowcount());
+		csvFile1.setExcelId(excelfile1.getId());
+		csvFile1.setModeltype("reject");
+		prepareTrainDataService.saveCsvFile(csvFile1);
+		
+		System.out.println("===========**********============"+csvFile1.getId());
+		String resultPend = null;
+		String resultReject = null;
+		String[] claims = null;
+		String[] claims1 = null;
+		
+		if(excelFile.getRowcount() >0)
+			resultPend = getReasonCodeFromAI(csvFile.getId().toString());
+		if(resultPend!=null) {
+			
+		
+		List<String> penddata = new ArrayList<String>();
+ 		int index = resultPend.indexOf("result");
+		String claimsStr1 = resultPend.substring(0,index);
+		 claims = claimsStr1.split(",");
+	
+		
+		for (int i = 0; i < claims.length; i++) {
+			penddata.add(claims[i]);
+			
+		}
+	
+		}
+		
+		if(excelfile1.getRowcount() >0)
+			resultReject = getReasonCodeFromAI(csvFile1.getId().toString());
+		
+		if(resultReject!=null) {
+			
+		
+		List<String> rejectdata = new ArrayList<String>();
+ 		int index1 = resultReject.indexOf("result");
+		String claimsStr2 = resultReject.substring(0,index1);
+		 claims1 = claimsStr2.split(",");
+	
+		
+		for (int i = 0; i < claims1.length; i++) {
+			rejectdata.add(claims1[i]);
+			
+		}	
+
+		}
+		
+	
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-Disposition", "attachment; filename=GeneratedReport.xlsx");
+		
+		XSSFWorkbook reportFinal=(XSSFWorkbook) session.getAttribute("workbook");
+		int claimscount=(Integer) session.getAttribute("numberOfTestClaims");
+		XSSFWorkbook finalexcel = ExcelUtility.finalColAppend(reportFinal,claims,claims1,claimscount);
+		
+		  
+		
+			finalexcel.write(response.getOutputStream());
+		
+
+
+		
+	
+		
+		
+	}
+
+    public String getReasonCodeFromAI(String fileId) throws IOException
+    {
+    	String baseUrl = "http://localhost:5000/evaluate/";
+		String completeUrl = baseUrl + fileId;
+		URL url = new URL(completeUrl);
+		URLConnection urlcon = url.openConnection();
+		InputStream stream = urlcon.getInputStream();				
+		String line = null;
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		while ((line = br.readLine()) != null) {
+			sb.append(line);
+		}
+		String result = sb.toString();
+		//String prediction[] = result.split(",");
+		System.out.println("==================================");
+		System.out.println(result);
+		return result;
+    	
+    }
+
+}
 
 
 
