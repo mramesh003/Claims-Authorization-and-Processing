@@ -96,9 +96,9 @@ public class UserTestModelController {
 
 	@RequestMapping("evaluateResults.xls")
 	public ModelAndView evaluateExcelWithModel(HttpServletRequest request, FileUpload uploadItem,
-			@RequestParam("language") String language) throws Exception {
+			 String language) throws Exception {
 		ModelAndView modelandview = new ModelAndView();
-
+		language = "python";//change this for language selection
 		List<MultipartFile> files = uploadItem.getFile();
 		List<String> claimData = new ArrayList<String>();
 		InputStream inputStream = null;

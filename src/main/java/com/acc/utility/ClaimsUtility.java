@@ -89,7 +89,7 @@ public class ClaimsUtility {
 			Row row;
 			Cell cell;
 			row = sheet.getRow(0);
-			int ColumnCount = row.getLastCellNum();
+ 			int ColumnCount = row.getLastCellNum();
 			int rowCount = sheet.getLastRowNum();
 
 			for (int rownum = 0; rownum <= rowCount; rownum++) {
@@ -99,7 +99,7 @@ public class ClaimsUtility {
 					if (cell == null && language.equals("java")) {
 						cellValue.append("?" + ",");
 					}
-					if (cell == null && language.equals("python")) {
+					if (cell == null && language.equalsIgnoreCase("python")) {
 						cellValue.append(0 + ",");
 					}
 
@@ -117,7 +117,7 @@ public class ClaimsUtility {
 						case Cell.CELL_TYPE_STRING:
 							if (cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("java"))
 								cellValue.append("?" + ",");
-							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("python"))
+							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equalsIgnoreCase("python"))
 								cellValue.append(0 + ",");
 							else
 								cellValue.append(cell.getStringCellValue() + ",");
@@ -147,6 +147,7 @@ public class ClaimsUtility {
 		} catch (Exception e) {
 			System.err.println("Exception :" + e.getMessage());
 		}
+		
 		return csvData;
 	}
 
@@ -175,7 +176,7 @@ public class ClaimsUtility {
 					if (cell == null && language.equals("java")) {
 						cellDData.append("?" + ",");
 					}
-					if (cell == null && language.equals("python")) {
+					if (cell == null && language.equalsIgnoreCase("python")) {
 						cellDData.append(0 + ",");
 					}
 
@@ -193,7 +194,7 @@ public class ClaimsUtility {
 						case Cell.CELL_TYPE_STRING:
 							if (cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("java"))
 								cellDData.append("?" + ",");
-							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equals("python"))
+							else if(cell.getStringCellValue().equalsIgnoreCase("null") && language.equalsIgnoreCase("python"))
 								cellDData.append(0 + ",");
 							break;
 

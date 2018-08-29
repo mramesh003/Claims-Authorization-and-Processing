@@ -166,7 +166,6 @@
   					</a>
 				</td> 
 				<td>
-				Python
 				<%-- <select  id="select_${loop.count}">
 				      <option>Select Language</option>
 					  <option value="python">Python</option>

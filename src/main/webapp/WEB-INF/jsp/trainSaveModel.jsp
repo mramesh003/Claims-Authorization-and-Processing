@@ -12,6 +12,7 @@
 <script  type="text/javascript" src = "javascript/arffextensionvalidation.js"></script>
 
 <script>
+
 	$(document).ready(function(){
 	$('#arffTable').DataTable();
 	$('#csvTable').DataTable();
@@ -24,7 +25,7 @@
 				init.push($(inputs[i]).val());
 			}
 			var id = JSON.stringify(init);
-			alert(id);
+			//alert(id);
 			window.location.href = 'executeeModel.htm?id='+ id+ '';
 	 });
 	
@@ -53,6 +54,10 @@
 
 
 	<h1>Train And Save Model</h1><br>
+	<div>
+<center><img src="images/ajax-loader (1).gif" id="loading-indicator" style="display:none" /></center>
+
+</div> 
   <%--  <form action="uploadArff.htm" method="post" enctype="multipart/form-data" >
    <c:if test="${message == 'successUpload'}">
 <div style="color:#556B2F" ><b> ARFF FILE SAVED SUCCESSFULLY</b>
@@ -112,7 +117,7 @@
 	</table>
 	</div> --%>
 	<div>
-	Python
+
 	<table class="display jqueryDataTable" id="csvTable">
 		<thead>
 			<tr>

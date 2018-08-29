@@ -113,8 +113,8 @@ $(document).ready(function(){
 		<br><br> <input id="file" name="file"
 			type="file">
 			 <br> </br></strong>
-			 <label><b>Language</b> : </label><input type="radio" name="language" value="python" checked> Python
-  										<input type="radio" name="language" value="java"> Java<br><br>
+			<!--  <label><b>Language</b> : </label><input type="radio" name="language" value="python" checked> Python
+  										<input type="radio" name="language" value="java"> Java<br><br> -->
 			  <input id="submit"
 			type="submit" value="Test" >
 
