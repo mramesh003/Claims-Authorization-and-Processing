@@ -28,12 +28,12 @@
 										Training Data</a></td>
 							</tr>
 
-							<tr>
+							<%-- <tr>
 								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a style="color:white"
 									href="<c:url value="prepareTrainingModel.htm"/>">&nbsp;Prepare
 										Training Model</a></td>
 							</tr>
-
+ --%>
 							<tr>
 								<td><span class="glyphicon glyphicon-pencil text-primary"></span><a style="color:white"
 									href="<c:url value="trainSaveModel.htm"/>">&nbsp;Train &

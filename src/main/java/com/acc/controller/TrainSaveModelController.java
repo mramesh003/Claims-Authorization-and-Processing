@@ -27,6 +27,7 @@ import com.acc.entity.FileUpload;
 import com.acc.service.PrepareTrainDataService;
 import com.acc.service.TrainModelService;
 import com.acc.utility.ClaimsUtility;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
@@ -188,12 +189,20 @@ public class TrainSaveModelController {
 	 @RequestMapping("executeeModel.htm")
 		public ModelAndView executeModel(HttpServletRequest request, HttpServletResponse response,
 				@RequestParam("id") String id) throws Exception {
-			String baseUrl = "http://localhost:5000/saveModel/";
-			String completeUrl = baseUrl + id;
-			URL url = new URL(completeUrl);
-			ModelAndView modelandview = new ModelAndView();
+		 ObjectMapper mapper = new ObjectMapper();
+		 ModelAndView modelandview = new ModelAndView();
+		 String[] array =mapper.readValue(id, String[].class);
+		 for(String ary : array) {
+			 
+		 
+			
+			
 			try
 			{
+				String baseUrl = "http://localhost:5000/saveModel/";
+				String completeUrl = baseUrl + ary;
+				URL url = new URL(completeUrl);
+		
 			URLConnection urlcon = url.openConnection();
 			InputStream stream = urlcon.getInputStream();
 			List<ArffFile> arffFiles = trainModelService.listAllArffs();
@@ -202,13 +211,18 @@ public class TrainSaveModelController {
 			modelandview.addObject("csvFiles", csvFiles);
 			modelandview.addObject("message", "SuccessTrain");
 			modelandview.setViewName("trainSaveModel");
+		
 			}
+		 
 			catch(Exception e)
 			{
 				modelandview.addObject("error", e.getMessage());
 				modelandview.setViewName("errorPage");
+				
 			}
+		 
+		
+	 }
 			return modelandview;
-		}
-
+}
 }

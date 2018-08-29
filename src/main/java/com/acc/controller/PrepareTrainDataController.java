@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,7 @@ import com.acc.utility.ClaimsUtility;
 import com.acc.utility.ColumnCount;
 import com.acc.utility.ExcelUtility;
 import com.acc.utility.RowCount;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -59,19 +63,37 @@ public class PrepareTrainDataController {
 			InputStream inputStream = null;
 			InputStream inputStream1 = null;
 			InputStream inputStream2 = null;
-			String modelType = request.getParameter("modeltype");
+			String modelType = "";
 		
+			
 			try
 			{
 			List<MultipartFile> files = uploadItem.getFile();
 			for (MultipartFile file : files) {
+			System.err.println("----------------------" +file.getOriginalFilename());
+			}
+			for (MultipartFile file : files) {
 				String fileName = file.getOriginalFilename();
+			
 				inputStream = file.getInputStream();
 				inputStream1 = file.getInputStream();
 				inputStream2 = file.getInputStream();
 				InputStream inputStream6=null;
 				XSSFWorkbook sourceWorkBook = new XSSFWorkbook(file.getInputStream());
 				XSSFSheet sourceSheet = sourceWorkBook.getSheetAt(0);
+				Row row = sourceSheet.getRow(0);
+				int lastcolumnnum = row.getLastCellNum();
+				String columnvalue=	row.getCell(lastcolumnnum-1).getStringCellValue();
+				if(columnvalue.equalsIgnoreCase("Claim Status")) {
+					modelType="General";
+					
+				}
+				else if(columnvalue.equalsIgnoreCase("Pend Reason Code")) {
+					modelType="Pend";
+				}
+				else if(columnvalue.equalsIgnoreCase("Reject Reason Code")) {
+					modelType="Reject";
+				}
 				int nbrMergedRegions = sourceSheet.getNumMergedRegions();
 				
 				if(nbrMergedRegions >0){
@@ -189,9 +211,24 @@ public class PrepareTrainDataController {
 	 @RequestMapping(value={"convertToCsv.htm"},method = RequestMethod.POST)
 	 public String convertToCsv(HttpServletRequest request, @RequestParam("excelId") String id,@RequestParam("language") String language) throws Exception {
 		ModelAndView modelandview = new ModelAndView();
+		System.out.println(id);
+		List<String> excelIds = new ArrayList<String>();
+		ObjectMapper mapper1 = new ObjectMapper();
+		String[] array = mapper1.readValue(id, String[].class);
+System.out.println(array);
+	for(String ary : array) {
+		excelIds.add(ary);
+	}
+
+	
+ System.out.println(excelIds);
+
 		try
 		{
-		ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id));
+			for(String id1 :excelIds) {
+			
+		ExcelFile excelFile = prepareTrainDataService.getExcelFileById(Integer.valueOf(id1));
+		
 		int position = excelFile.getFileName().lastIndexOf(".");
 		String fileType = excelFile.getFileName().substring(position);
 		InputStream inputStream = new ByteArrayInputStream(excelFile.getFileContent());
@@ -217,6 +254,7 @@ public class PrepareTrainDataController {
 			csvFile.setIsJava(false);
 		
 		prepareTrainDataService.saveCsvFile(csvFile);
+			}
 		}
 		catch(Exception e)
 		{
