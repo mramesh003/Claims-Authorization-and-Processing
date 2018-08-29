@@ -12,9 +12,24 @@
 <script  type="text/javascript" src = "javascript/arffextensionvalidation.js"></script>
 
 <script>
+
 	$(document).ready(function(){
 	$('#arffTable').DataTable();
 	$('#csvTable').DataTable();
+	
+	 $("#btn_convert").click(function() {
+ 		
+			var inputs = $(".denied");
+			var init = [];
+			for (var i = 0; i < inputs.length; i++) {
+				init.push($(inputs[i]).val());
+			}
+			var id = JSON.stringify(init);
+			//alert(id);
+			window.location.href = 'executeeModel.htm?id='+ id+ '';
+	 });
+	
+	
  });
 
  </script>
@@ -39,6 +54,10 @@
 
 
 	<h1>Train And Save Model</h1><br>
+	<div>
+<center><img src="images/ajax-loader (1).gif" id="loading-indicator" style="display:none" /></center>
+
+</div> 
   <%--  <form action="uploadArff.htm" method="post" enctype="multipart/form-data" >
    <c:if test="${message == 'successUpload'}">
 <div style="color:#556B2F" ><b> ARFF FILE SAVED SUCCESSFULLY</b>
@@ -56,7 +75,7 @@
 		<input id = "submit" type="submit" value="save ARFF"  disabled>
 	</form>
 	<br> --%>
-	<div>
+	<%-- <div>
 	Java
 	<table class="display jqueryDataTable" id="arffTable">
 		<thead>
@@ -96,9 +115,9 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	</div>
+	</div> --%>
 	<div>
-	Python
+
 	<table class="display jqueryDataTable" id="csvTable">
 		<thead>
 			<tr>
@@ -126,7 +145,7 @@
 					</a>
 				</td> 
 				<td>
-					<a href="executeeModel.htm?id=${csvFiles.id}">Train and Save Model</a>
+					<a href="executeeModel.htm?id=[${csvFiles.id}]">Train and Save Model</a>
 				</td>
 				<td><a href="deletecsv.htm?id=${csvFiles.id}&page=trainSaveModel">				
 				<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;">
@@ -137,6 +156,13 @@
 			</c:forEach>
 		</tbody>
 	</table>
+		<c:forEach items="${csvFiles}" var = "csvFiles" varStatus = "loop">
+	<input type ="hidden" name ="excelid" value ="${csvFiles.id}" class="denied">
+	</c:forEach>
+	<center>
+	<Button style="color: black" class="convert" id="btn_convert" class="btn btn-primary">Train and Save All Model</Button>
+	</center>
+	
 	</div>
 </body>
 </html>

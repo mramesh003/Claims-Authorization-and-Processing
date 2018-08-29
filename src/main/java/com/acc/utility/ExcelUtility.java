@@ -433,6 +433,7 @@ public class ExcelUtility {
 		int acceptrowcount =0;
 		Row row;
 		Cell cell;
+		
 		row = sheet.getRow(0);
 		int columnCount = row.getLastCellNum();
 		int rowCount = sheet.getLastRowNum();
@@ -442,15 +443,15 @@ public class ExcelUtility {
 		
 		rejectRow = rejectsheet.createRow(rejectrowcount++);
 		pendRow = pendsheet.createRow(pendrowcount++);
-		for (int colnum = 0; colnum < 13; colnum++) {
+		for (int colnum = 0; colnum < columnCount-1; colnum++) {
 			cell = row.getCell(colnum);
 			rejectRow.createCell(colnum).setCellValue(cell.getStringCellValue());
 			pendRow.createCell(colnum).setCellValue(cell.getStringCellValue());
 			
 		}
 		
-		rejectRow.createCell(13).setCellValue("Reason Code");
-		pendRow.createCell(13).setCellValue("Reason Code");
+		rejectRow.createCell(columnCount-1).setCellValue("Reason Code");
+		pendRow.createCell(columnCount-1).setCellValue("Reason Code");
 		
 		
 		for (int rownum = 1; rownum <= rowCount; rownum++) {
@@ -466,7 +467,7 @@ public class ExcelUtility {
 			else if(cell.getStringCellValue().equalsIgnoreCase("reject"))
 			{
 				rejectRow = rejectsheet.createRow(rejectrowcount++);
-				for (int colnum = 0; colnum < 13; colnum++) {
+				for (int colnum = 0; colnum < columnCount-1; colnum++) {
 					cell = row.getCell(colnum);
 					if (cell == null) {
 						rejectRow.createCell(colnum).setCellValue("");
@@ -502,7 +503,7 @@ public class ExcelUtility {
 			else if(cell.getStringCellValue().equalsIgnoreCase("pend"))
 			{
 				pendRow = pendsheet.createRow(pendrowcount++);
-				for (int colnum = 0; colnum < 13; colnum++) {
+				for (int colnum = 0; colnum < columnCount-1; colnum++) {
 					cell = row.getCell(colnum);
 					if (cell == null) {
 						pendRow.createCell(colnum).setCellValue("");

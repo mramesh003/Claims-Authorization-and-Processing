@@ -32,6 +32,13 @@
 
 <script>
        $(document).ready(function(){
+    	   $(document).ajaxSend(function(event, request, settings) {
+    			  $('#loading-indicator').show();
+    			});
+
+    			$(document).ajaxComplete(function(event, request, settings) {
+    			  $('#loading-indicator').hide();
+    			}); 
     	   document.getElementById("submit").style.color = "black";
     		//document.getElementById("submit").style.background = "#000";
     		document.getElementById("submit").style.background = null;
@@ -51,17 +58,23 @@
     			}
     		});
     	   $('#excelTable').DataTable();
-    	   $('#excelTable').on('click', '.convert', function(){
+    	    $('#excelTable').on('click', '.convert', function(){
     		   butId = $(this).attr('id');
                var lastChar = butId.substr(7);
                var selectId = "select_"+lastChar;
-               var language = $("#"+selectId).val();
+               var language = 'Python';
                var id= $("#"+butId).val();
+               var init = [];
+           
+			init[0]=id;
+           
+               var id2 =JSON.stringify(init);
+             
                $.ajax({
                    type: "POST",
                    url: "convertToCsv.htm",
                   dataType: 'text',
-       			   data:{excelId:id,
+       			   data:{excelId:id2,
        				language : language
        			},
                    success: function (result) {
@@ -71,9 +84,38 @@
                 	   alert("file conversion successfull");
                    }
                });
-    		});
+    		}); 
     	   
-    	   
+    	
+    		
+    	    	   $("#btn_convert").click(function() {
+    	    		
+    	    			var inputs = $(".denied");
+						var init = [];
+						for (var i = 0; i < inputs.length; i++) {
+							init.push($(inputs[i]).val());
+						}
+						var id = JSON.stringify(init);
+					
+						var language = 'Python';
+						//alert(id);
+						
+						 $.ajax({
+			                   type: "POST",
+			                   url: "convertToCsv.htm",
+			                  dataType: 'text',
+			       			   data:{excelId:id,
+			       				language : language
+			       			},
+			                   success: function (result) {
+			                       alert("file conversion successfull");
+			                   },
+			                   error: function (result) {
+			                	   alert("file conversion successfull");
+			                   }
+			               });
+    	    		 
+    	    	   });
 });
        
 </script>
@@ -81,16 +123,21 @@
 </head>	
 <body >
 <h1>Prepare Training Data</h1><br>
+<div>
+<center><img src="images/ajax-loader (1).gif" id="loading-indicator" style="display:none" /></center>
+
+</div> 
+
 	<form action="uploadExcel.htm" method="post" enctype="multipart/form-data">
 		<label>Select Excel File :</label>
 	
-		<input id = "file" name="file" type="file"> <br> <br> 
-		<input type="radio" name="modeltype" value="General"> Main Model<br>
+		<input id = "file" name="file" type="file" multiple="multiple"> <br> <br> 
+		<!-- <input type="radio" name="modeltype" value="General"> Main Model<br>
 			<input type="radio" name="modeltype" value="Pend"> Pend Model<br>
-               <input type="radio" name="modeltype" value="Reject"> Reject Model<br>
-		<input id = "submit" type="submit" value="Upload File" disabled>
+               <input type="radio" name="modeltype" value="Reject"> Reject Model<br> -->
+		<input id = "submit" type="submit" value="Upload File" disabled  >
 
-	</form>
+	</form> 
 	<br>
 	<br>
 	<table class="display jqueryDataTable" id="excelTable">
@@ -101,8 +148,8 @@
 				<th>Data Count</th>
 				<th>Attribute Count</th>
 				<th>Download</th>
-				<th>Java/Python</th>
-				<th>Convert to CSV</th>
+				<th>Python</th>
+			 	<th>Convert to CSV</th> 
 				<th>Delete</th>
 			</tr>
 		</thead>
@@ -119,26 +166,33 @@
   					</a>
 				</td> 
 				<td>
-				<select  id="select_${loop.count}">
+				<%-- <select  id="select_${loop.count}">
 				      <option>Select Language</option>
 					  <option value="python">Python</option>
 					  <option value="java">Java</option>
-				</select>
+				</select> --%>
 				
 				</td>
 			
-				<td><Button class="convert" id = "button_${loop.count}" value="${excelFiles.id}">Convert</Button></td>
-					
+				 <td><Button class="convert" id = "button_${loop.count}" value="${excelFiles.id}">Convert</Button></td> 
+				
 				<td>
 					<a href="deleteExcel.htm?id=${excelFiles.id}">
 					<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;"></a>
 				</td>
 				<%-- <td><input type="hidden" id="excelid_${loop.count}" value="${excelFiles.id}"></td> --%>
+	<%-- 			<td><input type ="hidden" name ="excelid" value ="${excelFiles.id}"></td> --%>
 			</tr>
 			</c:forEach>
 		</tbody>
 	</table>
+	<c:forEach items="${excelFiles}" var = "excelFiles" varStatus = "loop">
+	<input type ="hidden" name ="excelid" value ="${excelFiles.id}" class="denied">
+	</c:forEach>
+	<center>
+	<Button style="color: black" class="convert" id="btn_convert" class="btn btn-primary">Convert All Files</Button>
+	</center>
 </body>
 </html>
 
-
+ 
