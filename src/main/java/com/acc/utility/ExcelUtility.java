@@ -3,6 +3,7 @@ package com.acc.utility;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -566,4 +567,226 @@ public class ExcelUtility {
 		return list;
 	}
 
+	
+	
+	
+	
+	
+	
+	public static List<Workbook> modelSplitExcel(XSSFWorkbook workbook)
+	{
+
+		XSSFSheet sheet = workbook.getSheetAt(0);
+		Workbook rejectworkBook = new XSSFWorkbook(); 
+		Workbook pendworkBook = new XSSFWorkbook(); 
+		Workbook acceptworkBook = new XSSFWorkbook(); 
+		
+		XSSFSheet rejectsheet = (XSSFSheet) rejectworkBook.createSheet("rejectsheet");
+		XSSFSheet pendsheet = (XSSFSheet) pendworkBook.createSheet("pendsheet");
+		XSSFSheet acceptsheet = (XSSFSheet) acceptworkBook.createSheet("acceptsheet");
+		
+		List<Workbook> list = new ArrayList<Workbook>();
+		int rejectrowcount = 0;
+		int pendrowcount=0;
+		int acceptrowcount =0;
+		Row row;
+		Cell cell;
+		
+		row = sheet.getRow(0);
+		int columnCount = row.getLastCellNum();
+		int rowCount = sheet.getLastRowNum();
+		XSSFRow rejectRow = null;
+		XSSFRow pendRow = null;
+		XSSFRow acceptRow = null;
+		
+		rejectRow = rejectsheet.createRow(rejectrowcount++);
+		pendRow = pendsheet.createRow(pendrowcount++);
+		acceptRow = acceptsheet.createRow(acceptrowcount++);
+		
+		for (int colnum = 0; colnum < columnCount; colnum++) {
+			cell = row.getCell(colnum);
+		if(colnum==columnCount-2) {
+			acceptRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+			continue;
+		}
+		if(colnum==columnCount-1) {
+			rejectRow.createCell(colnum-1).setCellValue(cell.getStringCellValue());
+			pendRow.createCell(colnum-1).setCellValue(cell.getStringCellValue());
+			continue;
+		}
+			rejectRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+			pendRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+	
+			acceptRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+		
+		}
+		
+		/*rejectRow.createCell(columnCount-1).setCellValue("Reason Code");
+		pendRow.createCell(columnCount-1).setCellValue("Reason Code");*/
+		
+		
+		for (int rownum = 1; rownum <= rowCount; rownum++) {
+			
+			row = sheet.getRow(rownum);
+			cell = row.getCell(columnCount-1);
+			System.out.println(cell.getStringCellValue());
+			
+			
+			/*if(cell.getStringCellValue().equalsIgnoreCase("accept")) {*/
+				acceptRow = acceptsheet.createRow(acceptrowcount++);
+				for (int colnum = 0; colnum < columnCount-1; colnum++) {
+					row = sheet.getRow(rownum);
+					cell = row.getCell(columnCount-2);
+					cell = row.getCell(colnum);
+					if (cell == null) {
+						acceptRow.createCell(colnum).setCellValue("");
+					} else {
+						switch (cell.getCellType()) {
+
+						case Cell.CELL_TYPE_BOOLEAN:
+							acceptRow.createCell(colnum).setCellValue(cell.getBooleanCellValue());
+							break;
+
+						case Cell.CELL_TYPE_NUMERIC:
+							acceptRow.createCell(colnum).setCellValue(cell.getNumericCellValue());
+							break;
+
+						case Cell.CELL_TYPE_STRING:
+							acceptRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+							break;
+
+						case Cell.CELL_TYPE_BLANK:
+							acceptRow.createCell(colnum).setCellValue("");
+							break;
+
+						default:
+							acceptRow.createCell(colnum).setCellValue("");
+							break;
+
+						}
+
+					}
+
+				}
+				
+			if(cell.getStringCellValue().equalsIgnoreCase("reject"))
+			{
+				rejectRow = rejectsheet.createRow(rejectrowcount++);
+				for (int colnum = 0; colnum < columnCount; colnum++) {
+					
+					if(colnum==columnCount-2) {
+						continue;
+					}
+					if(colnum==columnCount-1) {
+						cell = row.getCell(colnum);
+						rejectRow.createCell(colnum-1).setCellValue(cell.getStringCellValue());
+						continue;
+					}
+					cell = row.getCell(colnum);
+					if (cell == null) {
+						rejectRow.createCell(colnum).setCellValue("");
+					} else {
+						switch (cell.getCellType()) {
+
+						case Cell.CELL_TYPE_BOOLEAN:
+							rejectRow.createCell(colnum).setCellValue(cell.getBooleanCellValue());
+							break;
+
+						case Cell.CELL_TYPE_NUMERIC:
+							rejectRow.createCell(colnum).setCellValue(cell.getNumericCellValue());
+							break;
+
+						case Cell.CELL_TYPE_STRING:
+							rejectRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+							break;
+
+						case Cell.CELL_TYPE_BLANK:
+							rejectRow.createCell(colnum).setCellValue("");
+							break;
+
+						default:
+							rejectRow.createCell(colnum).setCellValue("");
+							break;
+
+						}
+
+					}
+
+				}
+			}
+			else if(cell.getStringCellValue().equalsIgnoreCase("pend"))
+			{
+				pendRow = pendsheet.createRow(pendrowcount++);
+				for (int colnum = 0; colnum < columnCount; colnum++) {
+					if(colnum==columnCount-2) {
+						continue;
+					}
+					if(colnum==columnCount-1) {
+						cell = row.getCell(colnum);
+						pendRow.createCell(colnum-1).setCellValue(cell.getStringCellValue());
+						continue;
+					}
+					cell = row.getCell(colnum);					
+					if (cell == null) {
+						pendRow.createCell(colnum).setCellValue("");
+					} else {
+						switch (cell.getCellType()) {
+
+						case Cell.CELL_TYPE_BOOLEAN:
+							pendRow.createCell(colnum).setCellValue(cell.getBooleanCellValue());
+							break;
+
+						case Cell.CELL_TYPE_NUMERIC:
+							pendRow.createCell(colnum).setCellValue(cell.getNumericCellValue());
+							break;
+
+						case Cell.CELL_TYPE_STRING:
+							pendRow.createCell(colnum).setCellValue(cell.getStringCellValue());
+							break;
+
+						case Cell.CELL_TYPE_BLANK:
+							pendRow.createCell(colnum).setCellValue("");
+							break;
+
+						default:
+							pendRow.createCell(colnum).setCellValue("");
+							break;
+
+						}
+
+					}
+
+				}
+			}
+		
+		}
+		
+		list.add(acceptworkBook);
+		list.add(pendworkBook);
+		list.add(rejectworkBook);
+		/*ByteArrayOutputStream boas = new ByteArrayOutputStream();
+		try {
+			acceptworkBook.write(boas);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] bytes = boas.toByteArray();
+		try {
+			FileOutputStream file = new FileOutputStream("C:\\Users\\prasanna.prakasam\\workbook1.xlsx");
+			try {
+				file.write(bytes);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		return list;
+	}
+		
+		
+		
 }

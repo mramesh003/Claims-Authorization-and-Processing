@@ -18,11 +18,11 @@
 			alert("Excel File Converted to CSV Successfully");
 		</script>
 	</c:if>
-	<c:if test="${message == 'deletedSuccessfully'}">
+	<%-- <c:if test="${message == 'deletedSuccessfully'}">
 		<script>
 			alert("Excel File deleted Successfully");
 		</script>
-	</c:if>
+	</c:if> --%>
 	<c:if test="${message == 'CannotDeleteExcel'}">
 		<script>
 			alert("Selected Excel file cannot be deleted as it has CSV dependency");
@@ -78,10 +78,28 @@
        				language : language
        			},
                    success: function (result) {
-                       alert("file conversion successfull");
+                	   $("#div1")
+						.fadeTo(1000, 100)
+						.slideUp(
+								350,
+								function() {
+									$("#div1")
+											.slideUp(
+													350);
+								});
+				$("#div1").show();
                    },
                    error: function (result) {
-                	   alert("file conversion successfull");
+                	   $("#div2")
+   					.fadeTo(1000, 100)
+   					.slideUp(
+   							350,
+   							function() {
+   								$("#div2")
+   										.slideUp(
+   												350);
+   							});
+   			$("#div2").show();
                    }
                });
     		}); 
@@ -108,10 +126,28 @@
 			       				language : language
 			       			},
 			                   success: function (result) {
-			                       alert("file conversion successfull");
+			                	   $("#div1")
+									.fadeTo(1000, 100)
+									.slideUp(
+											350,
+											function() {
+												$("#div1")
+														.slideUp(
+																350);
+											});
+							$("#div1").show();
 			                   },
 			                   error: function (result) {
-			                	   alert("file conversion successfull");
+			                	   $("#div2")
+									.fadeTo(1000, 100)
+									.slideUp(
+											350,
+											function() {
+												$("#div2")
+														.slideUp(
+																350);
+											});
+							$("#div2").show();
 			                   }
 			               });
     	    		 
@@ -127,6 +163,13 @@
 <center><img src="images/ajax-loader (1).gif" id="loading-indicator" style="display:none" /></center>
 
 </div> 
+<div id="div1" class="alert alert-success" style="display: none;">
+						<strong>Convertion successfull for the file</strong>
+					</div> 
+					
+<div id="div2" class="alert alert-warning" style="display: none;">
+						<strong>Convertion unsuccessfull for the file</strong>
+					</div> 
 
 	<form action="uploadExcel.htm" method="post" enctype="multipart/form-data">
 		<label>Select Excel File :</label>

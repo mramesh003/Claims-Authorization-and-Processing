@@ -125,15 +125,17 @@ public class UserTestModelController {
 			if (".xlsx".equals(fileType)) {
 				csvData = ClaimsUtility.XLSX2CSV(inputStream, language);
 				inputStream = file.getInputStream();
-				excelFile.setRowcount(RowCount.xlsxRowCount(inputStream));
-				numberOfTestClaims = RowCount.xlsxRowCount(file.getInputStream());
-				excelFile.setColCount(ColumnCount.xlsxColumnCount(file.getInputStream()));
+				XSSFWorkbook databook = new XSSFWorkbook(inputStream);
+				excelFile.setRowcount(RowCount.xlsxRowCount(databook));
+				numberOfTestClaims = RowCount.xlsxRowCount(databook);
+				excelFile.setColCount(ColumnCount.xlsxColumnCount(databook));
 			} else if (".xls".equals(fileType)) {
 				csvData = ClaimsUtility.XLS2CSV(inputStream, language);
 				inputStream = file.getInputStream();
-				excelFile.setRowcount(RowCount.xlsRowCount(inputStream));
-				numberOfTestClaims = RowCount.xlsRowCount(file.getInputStream());
-				excelFile.setColCount(ColumnCount.xlsColumnCount(file.getInputStream()));
+				HSSFWorkbook databook = new HSSFWorkbook(inputStream);
+				excelFile.setRowcount(RowCount.xlsRowCount(databook));
+				numberOfTestClaims = RowCount.xlsRowCount(databook);
+				excelFile.setColCount(ColumnCount.xlsColumnCount(databook));
 			}
 			prepareTrainDataService.saveExcelFile(excelFile);
 			CsvFile csvFile = new CsvFile();
@@ -357,22 +359,28 @@ public class UserTestModelController {
 			List<byte[]> list = new ArrayList<byte[]>();
 		XSSFWorkbook workbook = (XSSFWorkbook) session.getAttribute("workbook");
 		list = ExcelUtility.splitExcel(workbook, request);
+		
 		byte[] pendarray = list.get(0);
+		ByteArrayInputStream bis = new ByteArrayInputStream(pendarray);
+		XSSFWorkbook pendbook = new XSSFWorkbook(bis);
 		byte[] rejectarray = list.get(1);
+		ByteArrayInputStream bis1 = new ByteArrayInputStream(rejectarray);
+		XSSFWorkbook rejectbook = new XSSFWorkbook(bis1);
+		
 		ExcelFile excelfile  =new ExcelFile();
 		excelfile.setActiveStatus(false);
 		excelfile.setFileName("pend.xlsx");
 		excelfile.setFileContent(pendarray);
-		excelfile.setColCount(ColumnCount.xlsxColumnCount(new ByteArrayInputStream(pendarray)));
-		excelfile.setRowcount(RowCount.xlsxRowCount(new ByteArrayInputStream(pendarray)));
+		excelfile.setColCount(ColumnCount.xlsxColumnCount(pendbook));
+		excelfile.setRowcount(RowCount.xlsxRowCount(pendbook));
 		excelfile.setModeltype("pend");
 		
 		ExcelFile excelfile1  =new ExcelFile();
 		excelfile1.setActiveStatus(false);
 		excelfile1.setFileName("reject.xlsx");
 		excelfile1.setFileContent(rejectarray);
-		excelfile1.setColCount(ColumnCount.xlsxColumnCount(new ByteArrayInputStream(rejectarray)));
-		excelfile1.setRowcount(RowCount.xlsxRowCount(new ByteArrayInputStream(rejectarray)));
+		excelfile1.setColCount(ColumnCount.xlsxColumnCount(rejectbook));
+		excelfile1.setRowcount(RowCount.xlsxRowCount(rejectbook));
 		excelfile1.setModeltype("reject");
 		
 		

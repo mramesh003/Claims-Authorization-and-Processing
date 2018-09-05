@@ -14,9 +14,66 @@
 <script>
 
 	$(document).ready(function(){
+		
+		 $(document).ajaxSend(function(event, request, settings) {
+			  $('#loading-indicator').show();
+			});
+
+			$(document).ajaxComplete(function(event, request, settings) {
+			  $('#loading-indicator').hide();
+			}); 
+			
+			
 	$('#arffTable').DataTable();
 	$('#csvTable').DataTable();
 	
+	
+	    $('#csvTable').on('click', '.convert', function(){
+		   butId = $(this).attr('id');
+          var lastChar = butId.substr(7);
+          var selectId = "select_"+lastChar;
+          var language = 'Python';
+          var id= $("#"+butId).val();
+          var init = [];
+      
+		init[0]=id;
+      
+          var id2 =JSON.stringify(init);
+        
+          $.ajax({
+              type: "POST",
+              url: "executeeModel.htm",
+             dataType: 'text',
+  			   data:{id:id2,
+  				language : language
+  			},
+              success: function (result) {
+            	  $("#div1")
+					.fadeTo(1000, 100)
+					.slideUp(
+							350,
+							function() {
+								$("#div1")
+										.slideUp(
+												350);
+							});
+			$("#div1").show();
+              },
+              error: function (result) {
+            	  $("#div2")
+					.fadeTo(1000, 100)
+					.slideUp(
+							350,
+							function() {
+								$("#div2")
+										.slideUp(
+												350);
+							});
+			$("#div2").show();
+              }
+          });
+		});
+	    
 	 $("#btn_convert").click(function() {
  		
 			var inputs = $(".denied");
@@ -26,11 +83,95 @@
 			}
 			var id = JSON.stringify(init);
 			//alert(id);
-			window.location.href = 'executeeModel.htm?id='+ id+ '';
+		
+		//	$.post( "executeeModel.htm");
+			 $.ajax({
+                 type: "POST",
+                 url: "executeeModel.htm",
+                dataType: 'text',
+     			   data:{id:id,
+     				 
+     			},
+                 success: function (result) {
+							$("#div1")
+									.fadeTo(1000, 100)
+									.slideUp(
+											350,
+											function() {
+												$("#div1")
+														.slideUp(
+																350);
+											});
+							$("#div1").show();
+                 },
+                 error: function (result) {
+                	 $("#div2")
+						.fadeTo(1000, 100)
+						.slideUp(
+								350,
+								function() {
+									$("#div2")
+											.slideUp(
+													350);
+								});
+				$("#div2").show();
+  },
+                
+             
+			//window.location.href = 'executeeModel.htm?id='+ id+ '';
 	 });
 	
 	
  });
+	 
+/* 	    $('#csvTable').on('click', '.delete', function(){
+			   butId = $(this).attr('id');
+	          var lastChar = butId.substr(7);
+	          var selectId = "select_"+lastChar;
+	          var language = 'Python';
+	          var id= $("#"+butId).val();
+	          var init = [];
+	      
+			init[0]=id;
+	      
+	          var id2 =JSON.stringify(init);
+	        
+	          $.ajax({
+	              type: "POST",
+	              url: "deletecsv.htm",
+	             dataType: 'text',
+	  			   data:{id:id2,
+	  				language : language
+	  			},
+	              success: function (result) {
+	            	  $("#div1")
+						.fadeTo(1000, 100)
+						.slideUp(
+								350,
+								function() {
+									$("#div1")
+											.slideUp(
+													350);
+								});
+				$("#div1").show();
+	              },
+	              error: function (result) {
+	            	  $("#div2")
+						.fadeTo(1000, 100)
+						.slideUp(
+								350,
+								function() {
+									$("#div2")
+											.slideUp(
+													350);
+								});
+				$("#div2").show();
+	              }
+	          });
+			});
+	     */
+	    
+	});
 
  </script>
  <c:if test="${delete == 'error'}">
@@ -58,6 +199,16 @@
 <center><img src="images/ajax-loader (1).gif" id="loading-indicator" style="display:none" /></center>
 
 </div> 
+
+<div id="div1" class="alert alert-success" style="display: none;">
+						<strong>Model is trained and Saved Successfully for the file</strong>
+					</div> 
+					
+<div id="div2" class="alert alert-warning" style="display: none;">
+						<strong>Model failed to be trained and saved for the file</strong>
+					</div> 
+					
+					
   <%--  <form action="uploadArff.htm" method="post" enctype="multipart/form-data" >
    <c:if test="${message == 'successUpload'}">
 <div style="color:#556B2F" ><b> ARFF FILE SAVED SUCCESSFULLY</b>
@@ -143,14 +294,22 @@
 						Download
   						
 					</a>
-				</td> 
-				<td>
-					<a href="executeeModel.htm?id=[${csvFiles.id}]">Train and Save Model</a>
 				</td>
+				
+				 
+				<%-- <td>
+					<a href="executeeModel.htm?id=[${csvFiles.id}]">Train and Save Model</a>
+				</td> --%>
+				
+				<td><Button class="convert" id = "button_${loop.count}" value="${csvFiles.id}">Train and Save Model</Button></td> 
+				
+				
+				
+			
 				<td><a href="deletecsv.htm?id=${csvFiles.id}&page=trainSaveModel">				
 				<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;">
 				</a>
-				
+				<%-- <input id="delete1_${loop.count}" class="delete" type="image" src="images/delete.png" alt="delete" value="${csvFiles.id}" style="width: 30px; height: 28px; border: 0;"> --%>
 				</td>
 			</tr>
 			</c:forEach>
