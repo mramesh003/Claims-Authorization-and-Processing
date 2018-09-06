@@ -329,7 +329,7 @@ public class PrepareTrainDataController {
 		return "prepareTrainingData";
 	}
 	@RequestMapping("deleteExcel.htm")
-	public ModelAndView deleteExcel(HttpServletRequest request, @RequestParam("id") String id) throws Exception {
+	public ModelAndView deleteExcel(HttpServletRequest request, @RequestParam("var1") String id) throws Exception {
 		ModelAndView modelandview = new ModelAndView();
 		try
 		{
