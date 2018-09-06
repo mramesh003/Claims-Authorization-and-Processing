@@ -127,7 +127,7 @@ public class CSVController {
 	 }
 	 
 	 @RequestMapping("deletecsv.htm")
-	 public ModelAndView deleteCsv(HttpServletRequest request,@RequestParam("id") String id,@RequestParam("page") String page)
+	 public ModelAndView deleteCsv(HttpServletRequest request,@RequestParam("var1") String id,@RequestParam("page") String page)
 	 {
 		 ModelAndView modelandview = new ModelAndView();
 		 try
@@ -143,7 +143,8 @@ public class CSVController {
 		 else
 		 {			 
 			 CsvFile csvFile = prepareTrainDataService.getCsvFileById(Integer.valueOf(id));
-			 prepareTrainDataService.deleteCsv(csvFile);		
+			 prepareTrainDataService.deleteCsv(csvFile);	
+			 modelandview.addObject("deleteCsv","success");
 		 }
 		 if(page.equalsIgnoreCase("trainsavemodel"))
 		 {

@@ -187,42 +187,24 @@ public class TrainSaveModelController {
      }
 	 
 	 @RequestMapping("executeeModel.htm")
-		public ModelAndView executeModel(HttpServletRequest request, HttpServletResponse response,
+		public String executeModel(HttpServletRequest request, HttpServletResponse response,
 				@RequestParam("id") String id) throws Exception {
 		 ObjectMapper mapper = new ObjectMapper();
-		 ModelAndView modelandview = new ModelAndView();
 		 String[] array =mapper.readValue(id, String[].class);
 		 for(String ary : array) {
 			 
 		 
 			
 			
-			try
-			{
+			
 				String baseUrl = "http://localhost:5000/saveModel/";
 				String completeUrl = baseUrl + ary;
 				URL url = new URL(completeUrl);
 		
 			URLConnection urlcon = url.openConnection();
 			InputStream stream = urlcon.getInputStream();
-			List<ArffFile> arffFiles = trainModelService.listAllArffs();
-			modelandview.addObject("arffFiles", arffFiles);
-			List<CsvFile> csvFiles = prepareTrainDataService.listAllPythonCsv();
-			modelandview.addObject("csvFiles", csvFiles);
-			modelandview.addObject("message", "SuccessTrain");
-			modelandview.setViewName("trainSaveModel");
-		
-			}
-		 
-			catch(Exception e)
-			{
-				modelandview.addObject("error", e.getMessage());
-				modelandview.setViewName("errorPage");
-				
-			}
-		 
-		
 	 }
-			return modelandview;
+		 return "errorPage";
+			
 }
 }

@@ -10,7 +10,18 @@
 	<script type="text/javascript" src = "javascript/excelFileExtensionValidation.js"></script>
 	<c:if test="${message == 'successUpload'}">
 		<script>
-			alert("Excel File Saved Successfully");
+		$(document).ready(function(){
+			 $("#div5")
+				.fadeTo(1000, 100)
+				.slideUp(
+						350,
+						function() {
+							$("#div5")
+									.slideUp(
+											350);
+						});
+		$("#div5").show();
+		});
 		</script>
 	</c:if>
 	<c:if test="${message == 'successConversion'}">
@@ -18,20 +29,30 @@
 			alert("Excel File Converted to CSV Successfully");
 		</script>
 	</c:if>
-	<c:if test="${message == 'deletedSuccessfully'}">
+	<%-- <c:if test="${message == 'deletedSuccessfully'}">
 		<script>
 			alert("Excel File deleted Successfully");
 		</script>
-	</c:if>
-	<c:if test="${message == 'CannotDeleteExcel'}">
-		<script>
-			alert("Selected Excel file cannot be deleted as it has CSV dependency");
-		</script>
-	</c:if>
+	</c:if> --%>
+	
 	
 
 <script>
        $(document).ready(function(){
+    	   var inputs = $(".denied");
+			var init = [];
+			for (var i = 0; i < inputs.length; i++) {
+				init.push($(inputs[i]).val());
+			}
+			
+			if(init.length==0){
+				$('#btn_convert').attr("disabled", true);
+				document.getElementById("btn_convert").style.color = "black";
+	    		//document.getElementById("submit").style.background = "#000";
+	    		document.getElementById("btn_convert").style.background = null;
+	    		document.getElementById("btn_convert").style.opacity = ".5";
+			}
+    	   
     	   $(document).ajaxSend(function(event, request, settings) {
     			  $('#loading-indicator').show();
     			});
@@ -78,10 +99,28 @@
        				language : language
        			},
                    success: function (result) {
-                       alert("file conversion successfull");
+                	   $("#div1")
+						.fadeTo(1000, 100)
+						.slideUp(
+								350,
+								function() {
+									$("#div1")
+											.slideUp(
+													350);
+								});
+				$("#div1").show();
                    },
                    error: function (result) {
-                	   alert("file conversion successfull");
+                	   $("#div2")
+   					.fadeTo(1000, 100)
+   					.slideUp(
+   							350,
+   							function() {
+   								$("#div2")
+   										.slideUp(
+   												350);
+   							});
+   			$("#div2").show();
                    }
                });
     		}); 
@@ -108,14 +147,36 @@
 			       				language : language
 			       			},
 			                   success: function (result) {
-			                       alert("file conversion successfull");
+			                	   $("#div1")
+									.fadeTo(1000, 100)
+									.slideUp(
+											350,
+											function() {
+												$("#div1")
+														.slideUp(
+																350);
+											});
+							$("#div1").show();
 			                   },
 			                   error: function (result) {
-			                	   alert("file conversion successfull");
+			                	   $("#div2")
+									.fadeTo(1000, 100)
+									.slideUp(
+											350,
+											function() {
+												$("#div2")
+														.slideUp(
+																350);
+											});
+							$("#div2").show();
 			                   }
 			               });
     	    		 
     	    	   });
+    	    	   $(".delete").click(function(){
+    	    			 $("#var1").val(this.value);
+    	    			 $("#form").submit();
+    	    		 });
 });
        
 </script>
@@ -127,6 +188,56 @@
 <center><img src="images/ajax-loader (1).gif" id="loading-indicator" style="display:none" /></center>
 
 </div> 
+
+
+<c:if test="${message == 'CannotDeleteExcel'}">
+	<script>
+	$(document).ready(function(){
+	 $("#div4")
+		.fadeTo(1000, 100)
+		.slideUp(
+				350,
+				function() {
+					$("#div4")
+							.slideUp(
+									350);
+				});
+$("#div4").show();
+	});
+	</script>
+</c:if>
+<c:if test="${message == 'deletedSuccessfully'}">
+	<script>
+	$(document).ready(function(){
+	 $("#div3")
+		.fadeTo(1000, 100)
+		.slideUp(
+				350,
+				function() {
+					$("#div3")
+							.slideUp(
+									350);
+				});
+$("#div3").show();
+	});
+	</script>
+</c:if>
+<div id="div1" class="alert alert-success" style="display: none;">
+						<strong>Conversion successful for the file</strong>
+					</div> 
+					
+<div id="div2" class="alert alert-warning" style="display: none;">
+						<strong>Conversion unsuccessful for the file</strong>
+					</div> 
+<div id="div3" class="alert alert-success" style="display: none;">
+		<strong>Successfully deleted</strong>
+	</div>
+	<div id="div4" class="alert alert-warning" style="display: none;">
+		<strong>CSV file is saved to DB.,so cannot delete Excel</strong>
+	</div>
+	<div id="div5" class="alert alert-success" style="display: none;">
+		<strong>Excel File uploaded successfully</strong>
+	</div>
 
 	<form action="uploadExcel.htm" method="post" enctype="multipart/form-data">
 		<label>Select Excel File :</label>
@@ -148,7 +259,7 @@
 				<th>Data Count</th>
 				<th>Attribute Count</th>
 				<th>Download</th>
-				<th>Python</th>
+				<!-- <th>Python</th> -->
 			 	<th>Convert to CSV</th> 
 				<th>Delete</th>
 			</tr>
@@ -165,20 +276,21 @@
 						Download
   					</a>
 				</td> 
-				<td>
-				<%-- <select  id="select_${loop.count}">
+				<%-- <td>
+				<select  id="select_${loop.count}">
 				      <option>Select Language</option>
 					  <option value="python">Python</option>
 					  <option value="java">Java</option>
-				</select> --%>
+				</select>
 				
-				</td>
+				</td> --%>
 			
 				 <td><Button class="convert" id = "button_${loop.count}" value="${excelFiles.id}">Convert</Button></td> 
 				
 				<td>
-					<a href="deleteExcel.htm?id=${excelFiles.id}">
-					<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;"></a>
+					<%-- <a href="deleteExcel.htm?id=${excelFiles.id}">
+					<img src="images/delete.png" alt="delete" style="width:30px;height:28px;border:0;"></a> --%>
+					<input id="delete1_${loop.count}" class="delete"  type="image" src="images/delete.png" alt="delete" value="${excelFiles.id}" style="width: 30px; height: 28px; border: 0;">
 				</td>
 				<%-- <td><input type="hidden" id="excelid_${loop.count}" value="${excelFiles.id}"></td> --%>
 	<%-- 			<td><input type ="hidden" name ="excelid" value ="${excelFiles.id}"></td> --%>
@@ -192,6 +304,11 @@
 	<center>
 	<Button style="color: black" class="convert" id="btn_convert" class="btn btn-primary">Convert All Files</Button>
 	</center>
+	<form style="display: hidden" action="deleteExcel.htm" method="POST" id="form">
+  <input type="hidden" id="var1" name="var1" value=""/>
+
+
+</form>
 </body>
 </html>
 
