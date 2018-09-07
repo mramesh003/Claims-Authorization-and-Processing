@@ -94,10 +94,13 @@ body, html {
 	</table>
 
 </div>
+
+
 <div id="bg">
 	<br>
 	<h3 align="center"><b>Final Result</b></h3>
 <br>
+<a href="userTestModel.htm"><img src="images/back-icon.png" style="width: 115px;" height="35px"></a>
 	<div >
 	<table width="80%" align="center"  cellpadding="2px">
 	<tr>

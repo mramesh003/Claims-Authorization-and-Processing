@@ -11,7 +11,7 @@
 	<c:if test="${message == 'successUpload'}">
 		<script>
 		$(document).ready(function(){
-			 $("#div5")
+			/*  $("#div5")
 				.fadeTo(1000, 100)
 				.slideUp(
 						350,
@@ -19,7 +19,11 @@
 							$("#div5")
 									.slideUp(
 											350);
-						});
+						}); */
+						$("#div1").hide();
+						$("#div2").hide();
+						$("#div4").hide();
+						$("#div3").hide();
 		$("#div5").show();
 		});
 		</script>
@@ -99,7 +103,7 @@
        				language : language
        			},
                    success: function (result) {
-                	   $("#div1")
+                	  /*uncomment for fading out the div  $("#div1")
 						.fadeTo(1000, 100)
 						.slideUp(
 								350,
@@ -107,11 +111,15 @@
 									$("#div1")
 											.slideUp(
 													350);
-								});
+								}); */
+								$("#div3").hide();
+								$("#div2").hide();
+								$("#div4").hide();
+								$("#div5").hide();
 				$("#div1").show();
                    },
                    error: function (result) {
-                	   $("#div2")
+                	   /* $("#div2")
    					.fadeTo(1000, 100)
    					.slideUp(
    							350,
@@ -119,7 +127,11 @@
    								$("#div2")
    										.slideUp(
    												350);
-   							});
+   							}); */
+   							$("#div1").hide();
+   							$("#div3").hide();
+   							$("#div4").hide();
+   							$("#div5").hide();
    			$("#div2").show();
                    }
                });
@@ -147,7 +159,7 @@
 			       				language : language
 			       			},
 			                   success: function (result) {
-			                	   $("#div1")
+			                	   /* $("#div1")
 									.fadeTo(1000, 100)
 									.slideUp(
 											350,
@@ -155,11 +167,15 @@
 												$("#div1")
 														.slideUp(
 																350);
-											});
+											}); */
+											$("#div3").hide();
+											$("#div2").hide();
+											$("#div4").hide();
+											$("#div5").hide();
 							$("#div1").show();
 			                   },
 			                   error: function (result) {
-			                	   $("#div2")
+			                	   /* $("#div2")
 									.fadeTo(1000, 100)
 									.slideUp(
 											350,
@@ -167,7 +183,11 @@
 												$("#div2")
 														.slideUp(
 																350);
-											});
+											}); */
+											$("#div1").hide();
+											$("#div3").hide();
+											$("#div4").hide();
+											$("#div5").hide();
 							$("#div2").show();
 			                   }
 			               });
@@ -193,7 +213,7 @@
 <c:if test="${message == 'CannotDeleteExcel'}">
 	<script>
 	$(document).ready(function(){
-	 $("#div4")
+	 /* $("#div4")
 		.fadeTo(1000, 100)
 		.slideUp(
 				350,
@@ -201,7 +221,11 @@
 					$("#div4")
 							.slideUp(
 									350);
-				});
+				}); */
+				$("#div1").hide();
+				$("#div2").hide();
+				$("#div3").hide();
+				$("#div5").hide();
 $("#div4").show();
 	});
 	</script>
@@ -209,7 +233,7 @@ $("#div4").show();
 <c:if test="${message == 'deletedSuccessfully'}">
 	<script>
 	$(document).ready(function(){
-	 $("#div3")
+	/*  $("#div3")
 		.fadeTo(1000, 100)
 		.slideUp(
 				350,
@@ -217,7 +241,11 @@ $("#div4").show();
 					$("#div3")
 							.slideUp(
 									350);
-				});
+				}); */
+				$("#div1").hide();
+				$("#div2").hide();
+				$("#div4").hide();
+				$("#div5").hide();
 $("#div3").show();
 	});
 	</script>
