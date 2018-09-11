@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -61,7 +62,7 @@
   				language : language
   			},
               success: function (result) {
-            	  $("#div1")
+            	 /*  $("#div1")
 					.fadeTo(1000, 100)
 					.slideUp(
 							350,
@@ -69,20 +70,49 @@
 								$("#div1")
 										.slideUp(
 												350);
-							});
+							}); */
+							$("#div3").hide();
+							$("#div2").hide();
+							$("#div4").hide();
+							$("#div5").hide();
+							$("#div6").hide();
+							$("#div7").hide();
+							
 			$("#div1").show();
               },
               error: function (result) {
-            	  $("#div2")
+            	  /* $("#div2")
 					.fadeTo(1000, 100)
 					.slideUp(
 							350,
 							function() {
 								$("#div2")
 										.slideUp(
+										
 												350);
-							});
-			$("#div2").show();
+							}); */
+							$("#div1").hide();
+							$("#div3").hide();
+							$("#div4").hide();
+							$("#div2").hide();
+							$("#div6").hide();
+							$("#div7").hide();
+							$("#div5").hide();
+							//add error type here for alert
+							var typeError1 = "'<' not supported between instances of 'float' and 'str'";
+							var typeError2 = "'>' not supported between instances of 'float' and 'str'";
+							var typeError3 = "'<' not supported between instances of 'str' and 'float'";
+							var typeError4 = "'>' not supported between instances of 'str' and 'float'";
+							var typeError5 = "	'NoneType' object is not subscriptable";
+							if ("${fn:contains(tainAndSave, typreError1 || typeError2 || typreError3 || typeError4)}" ) {
+								$("#div6").show();
+							}
+							else if( "${tainAndSave == 'Connection refused: connect'}"){ 
+								$("#div5").show();
+							}
+							else if( "${tainAndSave == typeError5}"){ 
+								$("#div7").show();
+							}
               }
           });
 		});
@@ -106,7 +136,7 @@
      				 
      			},
                  success: function (result) {
-							$("#div1")
+							/* $("#div1")
 									.fadeTo(1000, 100)
 									.slideUp(
 											350,
@@ -114,11 +144,18 @@
 												$("#div1")
 														.slideUp(
 																350);
-											});
+											}); */
+											 $("#div5").hide();
+											$("#div3").hide();
+											$("#div4").hide();
+											$("#div2").hide();
+											$("#div6").hide();
+											$("#div7").hide();
+											
 							$("#div1").show();
                  },
                  error: function (result) {
-                	 $("#div2")
+                	 /* $("#div2")
 						.fadeTo(1000, 100)
 						.slideUp(
 								350,
@@ -126,8 +163,29 @@
 									$("#div2")
 											.slideUp(
 													350);
-								});
-				$("#div2").show();
+								}); */
+								$("#div1").hide();
+								$("#div3").hide();
+								$("#div4").hide();
+								$("#div2").hide();
+								$("#div6").hide();
+								$("#div7").hide();
+								$("#div5").hide();
+						//add error type here for alert
+						var typeError1 = "'<' not supported between instances of 'float' and 'str'";
+						var typeError2 = "'>' not supported between instances of 'float' and 'str'";
+						var typeError3 = "'<' not supported between instances of 'str' and 'float'";
+						var typeError4 = "'>' not supported between instances of 'str' and 'float'";
+						var typeError5 = "	'NoneType' object is not subscriptable";
+						if ("${fn:contains(tainAndSave, typreError1 || typeError2 || typreError3 || typeError4 )}" ) {
+							$("#div6").show();
+						}
+						else if( "${tainAndSave == 'Connection refused: connect'}"){ 
+							$("#div5").show();
+						}
+						else if( "${tainAndSave == typeError5}"){ 
+							$("#div7").show();
+						}
   },
                 
              
@@ -199,7 +257,7 @@
 <c:if test="${deleteCsv == 'error'}">
 	<script>
 	$(document).ready(function(){
-	 $("#div4")
+	 /* $("#div4")
 		.fadeTo(1000, 100)
 		.slideUp(
 				350,
@@ -207,7 +265,14 @@
 					$("#div4")
 							.slideUp(
 									350);
-				});
+				}); */
+				 $("#div1").hide();
+				$("#div3").hide();
+				$("#div4").hide();
+				$("#div2").hide();
+				$("#div6").hide();
+				$("#div7").hide();
+				
 $("#div4").show();
 	});
 	</script>
@@ -215,7 +280,7 @@ $("#div4").show();
 <c:if test="${deleteCsv == 'success'}">
 	<script>
 	$(document).ready(function(){
-	 $("#div3")
+/* 	 $("#div3")
 		.fadeTo(1000, 100)
 		.slideUp(
 				350,
@@ -223,7 +288,13 @@ $("#div4").show();
 					$("#div3")
 							.slideUp(
 									350);
-				});
+				}); */
+				 $("#div1").hide();
+				$("#div5").hide();
+				$("#div4").hide();
+				$("#div2").hide();
+				$("#div6").hide();
+				$("#div7").hide();
 $("#div3").show();
 	});
 	</script>
@@ -259,8 +330,18 @@ $("#div3").show();
 		<strong>Successfully deleted</strong>
 	</div>
 	<div id="div4" class="alert alert-warning" style="display: none;">
-		<strong>Model file is saved to DB.,so cannot delete CSV</strong>
+		<strong>Model file is saved to DB, so cannot delete CSV</strong>
 	</div>
+	<div id="div5" class="alert alert-warning" style="display: none;">
+		<strong>Connection refused by Claims AI engine</strong>
+	</div>
+	<div id="div6" class="alert alert-warning" style="display: none;">
+		<strong>There is a type mismatch in a column</strong>
+	</div>
+	<div id="div7" class="alert alert-warning" style="display: none;">
+		<strong>No model file is available in DB for prediction</strong>
+	</div>
+	
 
 
 	<%--  <form action="uploadArff.htm" method="post" enctype="multipart/form-data" >

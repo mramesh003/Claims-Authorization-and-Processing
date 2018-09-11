@@ -206,6 +206,7 @@ public class UserTestModelController {
 			{
 				String baseUrl = "http://localhost:5000/evaluate/";
 				String completeUrl = baseUrl + csvFile.getId();
+				String result1 = null;
 				URL url = new URL(completeUrl);
 				URLConnection urlcon = url.openConnection();
 				Map<String, Object> evaluationResult = new HashMap<String, Object>();
@@ -217,6 +218,9 @@ public class UserTestModelController {
 					sb.append(line);
 				}
 				String result = sb.toString();
+				if(result.contains("ACCEPT")) {
+					System.out.println("=========================================="+result);
+				
 				int index = result.indexOf("result");
 				//int index1 = result.indexOf("acc");
 				String claimsStr = result.substring(0,index);
@@ -256,6 +260,40 @@ public class UserTestModelController {
 				modelandview.addObject("rejectCount", rejectCount);
 				//modelandview.addObject("accScore", accScore);
 				modelandview.setViewName("evalResultDisplay");
+				}
+				else if(result.equalsIgnoreCase("'<' not supported between instances of 'float' and 'str'")) {
+					String result2 =result.replace("'<'", "<");
+					 result2 =result.replace("'float'", "float");
+					 result2 =result.replace("'str'", "str");
+					 modelandview.addObject("userTest",result2);
+					 modelandview.setViewName("userTestModel");
+				}
+				else if(result.equalsIgnoreCase("'<' not supported between instances of 'str' and 'float'")) {
+					String result2 =result.replace("'<'", "<");
+					 result2 =result.replace("'float'", "float");
+					 result2 =result.replace("'str'", "str");
+					 modelandview.addObject("userTest",result2);
+					 modelandview.setViewName("userTestModel");
+				}
+				else if(result.equalsIgnoreCase("'>' not supported between instances of 'float' and 'str'")) {
+					String result2 =result.replace("'>'", ">");
+					 result2 =result.replace("'float'", "float");
+					 result2 =result.replace("'str'", "str");
+					 modelandview.addObject("userTest",result2);
+					 modelandview.setViewName("userTestModel");
+				}
+				else if(result.equalsIgnoreCase("'>' not supported between instances of 'str' and 'float'")) {
+					String result2 =result.replace("'>'", ">");
+					 result2 =result.replace("'float'", "float");
+					 result2 =result.replace("'str'", "str");
+					 modelandview.addObject("userTest",result2);
+					 modelandview.setViewName("userTestModel");
+				}
+				else if(result.equalsIgnoreCase("'NoneType' object is not subscriptable")) {
+				String result2 =result.replace("'NoneType'", "NoneType");
+					 modelandview.addObject("userTest",result2);
+					 modelandview.setViewName("userTestModel");
+				}
 			}
 		}
 		}
@@ -330,12 +368,12 @@ public class UserTestModelController {
 		catch(NoClassDefFoundError e)
 		{
 			modelandview.addObject("error", e.getMessage());
-			modelandview.setViewName("errorPage");
+			modelandview.setViewName("userTestModel");
 		}
 		catch(Exception e)
 		{
-			modelandview.addObject("error", e.getMessage());
-			modelandview.setViewName("errorPage");
+			modelandview.addObject("userTest", e.getMessage());
+			modelandview.setViewName("userTestModel");
 		}
 		
 		
