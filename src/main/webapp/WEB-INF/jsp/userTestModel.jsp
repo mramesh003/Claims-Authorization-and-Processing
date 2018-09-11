@@ -2,36 +2,90 @@
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script type="text/javascript" src="javascript/buttonDisable.js"></script>
+<script language="javascript" type="text/javascript"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />  
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
 <title>User Test Model</title>
 
 <script>
 $(document).ready(function(){
-       $("#result").hide();
-       $("#result1").hide();
-    });
+         $("#div1").hide();  
+         $("#div2").hide();
+         $("#div3").hide();
+    	 	/* var typeError1 = "'<' not supported between instances of 'float' and 'str'";
+			var typeError2 = "'>' not supported between instances of 'float' and 'str'";
+			var typeError3 = "'<' not supported between instances of 'str' and 'float'";
+			var typeError4 = "'>' not supported between instances of 'str' and 'float'";
+			var typeError5 = "	'NoneType' object is not subscriptable";
+    	 if ("${fn:contains(userTest, typreError1 || typeError2 || typreError3 || typeError4 )}" ) {
+    		 $("#div1").hide();  
+             $("#div2").hide();
+    		  $("#div3").show(); 
+    		  $("#div2").show(); 
+    		  $("#div1").show(); 
+			}
+			else if("${userTest == 'Connection refused: connect'}"){ 
+				 $("#div1").hide();  
+		         $("#div3").hide();
+				 $("#div2").show();
+			}
+			else if("${fn:contains(userTest, typreError5)}" ){
+		         $("#div2").hide();
+		         $("#div3").hide();
+				 $("#div1").show();
+			} */});
+    		 
+  	
 
 </script>
-<c:if test="${resultpage == 'yes' and isjava == 'yes'}">
-		<script>
-		$(document).ready(function(){
-			$("#result").show();
-		 });
-		</script>
-</c:if>
-<c:if test="${resultpage == 'yes' and isjava == 'no'}">
-		<script>
-		$(document).ready(function(){
-			$("#result1").show();
-		 });
-		</script>
-	</c:if>	
 
+<c:if test="${userTest == 'NoneType object is not subscriptable'}">
+	<script>
+	 $(document).ready(function(){
+			 $("#div1").show();
+			 });
+	</script>
+</c:if>
+<c:if test="${userTest == '< not supported between instances of float and str'}">
+	<script>
+	 $(document).ready(function(){
+			 $("#div3").show();
+			 });
+	</script>
+</c:if>
+<c:if test="${userTest == '< not supported between instances of str and float'}">
+	<script>
+	 $(document).ready(function(){
+			 $("#div3").show();
+			 });
+	</script>
+</c:if>
+<c:if test="${userTest == '> not supported between instances of str and float'}">
+	<script>
+	 $(document).ready(function(){
+			 $("#div3").show();
+			 });
+	</script>
+</c:if>
+<c:if test="${userTest == '> not supported between instances of float and str'}">
+	<script>
+	 $(document).ready(function(){
+			 $("#div3").show();
+			 });
+	</script>
+</c:if>
+<c:if test="${userTest == 'Connection refused: connect'}">
+	<script>
+	 $(document).ready(function(){
+			 $("#div2").show();
+			 });
+	</script>
+</c:if>
 <style>
  #headerContainer {
 	-moz-box-shadow: inset 0px 1px 0px 0px #97c4fe;
@@ -68,6 +122,7 @@ $(document).ready(function(){
 </style>
 </head>
 <body>
+	
 <div id="headerContainer">
 	<table width="100%">
 		<tr>
@@ -108,19 +163,36 @@ $(document).ready(function(){
   <center>
 	<form name="evaluate" action="evaluateResults.xls" method="post"
 		enctype="multipart/form-data">
-		<h3 align="center" style="color:#064d81">USER TEST MODEL</h3><br><br>
-		<strong style="font-size: 20px;">Select Excel File:
+		<h3 align="center" style="color:#064d81; font-size: 20px;">USER TEST MODEL</h3><br><br>
+		
+		<div id="div1"  style="width: 750px" class="alert alert-warning" > <!-- style="display: none;" --> 	
+		<strong>No model file is available in DB for prediction</strong>
+	</div>
+	<div id="div2" style="width: 750px" class="alert alert-warning" style="display: none;">
+		<strong>Connection refused by Claims AI engine</strong>
+	</div>
+	<div id="div3" style="width: 750px" class="alert alert-warning" style="display: none;">
+		<strong>There is a type mismatch in a column</strong>
+	</div><br>
+	
+
+		<strong style="font-size: 15px;">Select Excel File:
 		<br><br> <input id="file" name="file"
 			type="file">
 			 <br> </br></strong>
 			<!--  <label><b>Language</b> : </label><input type="radio" name="language" value="python" checked> Python
   										<input type="radio" name="language" value="java"> Java<br><br> -->
-			  <input id="submit"
+			  <input style="font-size: 15px;" class="predict" id="submit"
 			type="submit" value="Test" >
 
 	</form>
+	
+
+	
 	</center><br>
 	</div>
+	
+	
 	<%-- <div id="result">
 		<div style="float: left; width: 20%">
 			<Table border="1">

@@ -1,8 +1,10 @@
 package com.acc.controller;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -190,21 +192,57 @@ public class TrainSaveModelController {
 		public String executeModel(HttpServletRequest request, HttpServletResponse response,
 				@RequestParam("id") String id) throws Exception {
 		 ObjectMapper mapper = new ObjectMapper();
+		 ModelAndView modelandview = new ModelAndView();
+		 String result = null;
+		 try {
 		 String[] array =mapper.readValue(id, String[].class);
 		 for(String ary : array) {
-			 
-		 
-			
-			
-			
 				String baseUrl = "http://localhost:5000/saveModel/";
 				String completeUrl = baseUrl + ary;
 				URL url = new URL(completeUrl);
-		
 			URLConnection urlcon = url.openConnection();
+			result = "trainSaveModel";
+			modelandview.addObject("tainAndSave", "Connected");
 			InputStream stream = urlcon.getInputStream();
+			String line = null;
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			String result1 = sb.toString();
+			System.out.println("result"+result1);
+			if(result1.equalsIgnoreCase("success")) {
+				modelandview.addObject("tainAndSave", "success");
+			}
+			else if(result1.equalsIgnoreCase("'<' not supported between instances of 'float' and 'str'")) {
+				 result = "error";
+				 modelandview.addObject("tainAndSave",result1);
+			}
+			else if(result1.equalsIgnoreCase("'<' not supported between instances of 'str' and 'float'")) {
+				 result = "error";
+				 modelandview.addObject("tainAndSave",result1);
+			}
+			else if(result1.equalsIgnoreCase("'>' not supported between instances of 'float' and 'str'")) {
+				 result = "error";
+				 modelandview.addObject("tainAndSave",result1);
+			}
+			else if(result1.equalsIgnoreCase("'>' not supported between instances of 'str' and 'float'")) {
+				 result = "error";
+				 modelandview.addObject("tainAndSave",result1);
+			}
+			else if(result1.equalsIgnoreCase("'NoneType' object is not subscriptable")) {
+				 result = "error";
+				 modelandview.addObject("tainAndSave",result1);
+			}
+		 }
+		 
+	 }catch(Exception e) {
+		 System.out.println("python error"+ e.getMessage());
+		 result = "error";
+		 modelandview.addObject("tainAndSave", e.getMessage());
 	 }
-		 return "errorPage";
+		 return result;
 			
 }
 }

@@ -6,16 +6,28 @@ app = Flask(__name__)
 
 @app.route('/saveModel/<fileid>')
 def save_model(fileid):
-   Claim_adjudication = claim_process_engine.claim_adjudication()
-   result = Claim_adjudication.train_model(fileid)
-   return result;
+   try:
+      Claim_adjudication = claim_process_engine.claim_adjudication()
+      result = Claim_adjudication.train_model(fileid)
+      return result;
+   except Exception as err:
+      print("errorrrrrrr", err);
+      result = str(err);
+      return result;
 @app.route('/evaluate/<fileid>')
 def evaluate_model(fileid):
-   Claim_adjudication = claim_process_engine.claim_adjudication()
-   prediction,cnfmatrix = Claim_adjudication.execute_model(fileid)
-   #prediction = ','.join(str(e) for e in dtc1)
-   predictions_confmatrix = ','.join(str(e) for e in prediction) + "result"
-   return predictions_confmatrix
+   try:
+      Claim_adjudication = claim_process_engine.claim_adjudication()
+      prediction,cnfmatrix = Claim_adjudication.execute_model(fileid)
+      #prediction = ','.join(str(e) for e in dtc1)
+      predictions_confmatrix = ','.join(str(e) for e in prediction) + "result"
+      return predictions_confmatrix
+
+   except Exception as err:
+      print("errorrrrrrr", err);
+      result = str(err);
+      return result;
+
 @app.route('/getmatrix')
 def display_matrix():
    Claim_adjudication = claim_process_engine.claim_adjudication()
@@ -33,3 +45,5 @@ def save_modell():
 
 if __name__ == '__main__':
    app.run(port=5000,debug=True)
+
+''' '''
